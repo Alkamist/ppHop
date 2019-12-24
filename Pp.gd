@@ -27,10 +27,10 @@ func update_state(dt):
 	
 	if _is_on_ground and _should_jump and _time_since_jump >= _jump_cooldown:
 		var jump_vector = _mouse_position - global_position
-		#jump_vector.y = min(jump_vector.y, tan(0.5) * -abs(jump_vector.x))
 		jump_vector = jump_vector.clamped(200.0)
-		jump_vector = 23.0 * jump_vector / pow(jump_vector.length(), 0.3)
-		_velocity = jump_vector
+		jump_vector = pow(200.0, 0.3) * jump_vector / pow(jump_vector.length(), 0.3)
+		jump_vector.y = min(jump_vector.y, -50.0)
+		_velocity = jump_vector * 5.0
 		_just_jumped = true
 		_time_since_jump = 0.0
 		get_node("Sprite").set_flip_h(jump_vector.x < 0)
@@ -60,6 +60,16 @@ remote func _update_clients(dt, new_position, new_velocity):
 	_velocity = new_velocity
 	if is_controlling_player():
 		update_state(dt)
+
+#func _draw():
+#	var jump_vector = _mouse_position - global_position
+#	jump_vector = jump_vector.clamped(200.0)
+#	jump_vector = pow(200.0, 0.3) * jump_vector / pow(jump_vector.length(), 0.3)
+#	jump_vector.y = min(jump_vector.y, -50.0)
+#	draw_line(Vector2.ZERO, jump_vector, Color(255, 0, 0), 1)
+
+#func _process(dt):
+#	update()
 
 func _physics_process(dt):
 	if is_controlling_player():
