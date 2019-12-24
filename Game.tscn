@@ -122,8 +122,8 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Platform8" type="StaticBody2D" parent="."]
-position = Vector2( 298.983, -59.7502 )
-rotation = -0.85038
+position = Vector2( 295.484, -56.2512 )
+rotation = -0.785397
 scale = Vector2( 0.0869155, 0.705595 )
 __meta__ = {
 "_edit_group_": true

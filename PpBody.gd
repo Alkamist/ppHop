@@ -8,25 +8,31 @@ export var gravity := 1500.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
-var _just_launched := false
-var _time_since_launch := 0.0
+var _friction_is_suspended := false
+var _suspend_friction_timer := 0.0
+var _is_on_ground := false
 
-func mark_launch():
-	_just_launched = true
-	_time_since_launch = 0
+func suspend_friction():
+	_friction_is_suspended = true
+	_suspend_friction_timer = 0.0
 
-puppet func _update_position(value):
-	position = value
-
-puppet func _update_velocity(value):
-	velocity = value
+func jump(raw_jump_vector):
+	if not _is_on_ground:
+		return
+	raw_jump_vector.y = min(raw_jump_vector.y, tan(0.1) * -abs(raw_jump_vector.x))
+	raw_jump_vector = raw_jump_vector.clamped(200.0)
+	var jump_vector = 23.0 * raw_jump_vector / pow(raw_jump_vector.length(), 0.3)
+	velocity = jump_vector
+	velocity_before_collision = velocity
+	get_node("../Smoothing2D/Sprite").set_flip_h(jump_vector.x < 0)
+	suspend_friction()
 
 func _bounce_off_walls(collision):
 	if abs(collision.normal.x) > 0.90:
 		velocity = velocity_before_collision.bounce(collision.normal) * bounciness
 
 func _collide_with_other_pp(collision, collider):
-	collider.mark_launch()
+	collider.suspend_friction()
 	var vector_to_collider = global_position - collider.global_position
 	var collider_velocity = collision.collider_velocity
 	var collider_velocity_length = collider_velocity.length()
@@ -38,16 +44,15 @@ func _collide_with_other_pp(collision, collider):
 	else:
 		collider.velocity = velocity_before_collision * bounciness
 
-func _physics_process(dt):
-	_time_since_launch += dt
-	
-	if is_on_floor() and not _just_launched:
-		velocity.x = lerp(velocity.x, 0, clamp(friction, -1.0, 1.0))
+func _handle_friction(dt):
+	if _is_on_ground and not _friction_is_suspended:
+		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * dt, -1.0, 1.0))
+
+func _handle_gravity(dt):
 	velocity.y += gravity * dt
 	velocity.y = min(velocity.y, terminal_fall_velocity)
-	velocity_before_collision = velocity
-	velocity = move_and_slide(velocity, Vector2.UP)
 
+func _handle_collisions():
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.collider
@@ -56,9 +61,25 @@ func _physics_process(dt):
 		else:
 			_bounce_off_walls(collision)
 
-	if _time_since_launch > 0.03:
-		_just_launched = false
+func _handle_physics(dt):
+	_suspend_friction_timer += dt
+	_handle_gravity(dt)
+	_handle_friction(dt)
+	velocity_before_collision = velocity
+	velocity = move_and_slide(velocity, Vector2.UP)
+	_handle_collisions()
+	if _suspend_friction_timer > 0.03:
+		_friction_is_suspended = false
 
+remote func _update_clients(new_position, new_velocity, new_velocity_before_collision):
+	position = new_position
+	velocity = new_velocity
+	velocity_before_collision = new_velocity_before_collision
+
+func _physics_process(dt):
+	var raycast = get_node("RayCast2D")
+	var slope_is_ok = raycast.is_colliding() and raycast.get_collision_normal().y < -0.8
+	_is_on_ground = slope_is_ok and test_move(transform, Vector2(0, 5))
+	_handle_physics(dt)
 	if is_network_master():
-		rpc_unreliable("_update_position", position)
-		rpc_unreliable("_update_velocity", velocity)
+		rpc_unreliable("_update_clients", position, velocity, velocity_before_collision)
