@@ -1,7 +1,7 @@
 extends KinematicBody2D
 class_name PpBody
 
-export var friction := 0.0
+export var friction := 20.0
 export var bounciness := 0.8
 export var terminal_fall_velocity := 1400.0
 export var gravity := 1500.0
@@ -44,9 +44,16 @@ func _collide_with_other_pp(collision, collider):
 	else:
 		collider.velocity = velocity_before_collision * bounciness
 
+func _calculate_is_on_ground():
+	var raycast = get_node("RayCast2D")
+	var slope_is_ok = raycast.is_colliding() and raycast.get_collision_normal().y < -0.8
+	_is_on_ground = slope_is_ok and test_move(transform.translated(get_node("../").position), Vector2(0, 5))
+
 func _handle_friction(dt):
 	if _is_on_ground and not _friction_is_suspended:
 		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * dt, -1.0, 1.0))
+		if velocity.length() < 20.0:
+			velocity.y = 0
 
 func _handle_gravity(dt):
 	velocity.y += gravity * dt
@@ -62,13 +69,14 @@ func _handle_collisions():
 			_bounce_off_walls(collision)
 
 func _handle_physics(dt):
-	_suspend_friction_timer += dt
-	_handle_gravity(dt)
-	_handle_friction(dt)
 	velocity_before_collision = velocity
 	velocity = move_and_slide(velocity, Vector2.UP)
+	_calculate_is_on_ground()
+	_handle_gravity(dt)
+	_handle_friction(dt)
 	_handle_collisions()
-	if _suspend_friction_timer > 0.03:
+	_suspend_friction_timer += dt
+	if _suspend_friction_timer > 0.15:
 		_friction_is_suspended = false
 
 remote func _update_clients(new_position, new_velocity, new_velocity_before_collision):
@@ -77,9 +85,6 @@ remote func _update_clients(new_position, new_velocity, new_velocity_before_coll
 	velocity_before_collision = new_velocity_before_collision
 
 func _physics_process(dt):
-	var raycast = get_node("RayCast2D")
-	var slope_is_ok = raycast.is_colliding() and raycast.get_collision_normal().y < -0.8
-	_is_on_ground = slope_is_ok and test_move(transform, Vector2(0, 5))
 	_handle_physics(dt)
 	if is_network_master():
 		rpc_unreliable("_update_clients", position, velocity, velocity_before_collision)
