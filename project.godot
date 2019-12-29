@@ -23,6 +23,10 @@ _global_script_class_icons={
 config/name="ppHop"
 run/main_scene="res://interface/Menu.tscn"
 
+[autoload]
+
+Network="*res://Network.gd"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "smoothing" )
@@ -54,6 +58,10 @@ up={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[physics]
+
+common/physics_fps=30
 
 [rendering]
 
