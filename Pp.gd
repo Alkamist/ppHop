@@ -1,17 +1,20 @@
 extends KinematicBody2D
 class_name Pp
 
+export var maximum_collisions_per_frame := 4
 export var controlling_player := 0
-export var friction := 0.0
+export var friction := 1.0
 export var bounciness := 1.0
 export var maximum_fall_velocity := 1400.0
 export var gravity := 1500.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
+var _input_history := []
+var _client_tick := -1
+var _should_jump := false
+var _jump_direction := Vector2.ZERO
 var _time := 0.0
-var _jump_buffer := []
-var _jump_buffer_time := 0.066
 var _just_jumped := false
 var _friction_is_suspended := false
 var _time_since_jump := 0.0
@@ -29,97 +32,111 @@ func suspend_friction():
 	_friction_is_suspended = true
 	_suspend_friction_timer = 0.0
 
-func update_state(delta):
-	_handle_jumping()
-	#_handle_friction(delta)
-	_handle_gravity(delta)
-	
+func _jump_if_needed(delta):
+	#if is_on_floor() and _time_since_jump >= _jump_cooldown:
+	if _should_jump:
+		var jump_vector = _jump_direction
+		jump_vector = jump_vector.clamped(200.0)
+		jump_vector = pow(200.0, 0.3) * jump_vector / pow(jump_vector.length(), 0.3)
+		#jump_vector.y = min(jump_vector.y, -50.0)
+		velocity = jump_vector * 5.0
+		_just_jumped = true
+		_time_since_jump = 0.0
+		#get_node("Sprite").set_flip_h(jump_vector.x < 0)
+		suspend_friction()
+
+func _apply_gravity(delta):
+	velocity.y += gravity * delta
+	velocity.y = min(velocity.y, maximum_fall_velocity)
+
+func _apply_friction(delta):
+	if is_on_floor() and not _friction_is_suspended:
+		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * delta, -1.0, 1.0))
+
+func _handle_movement_and_collisions(delta):
 	var collision = move_and_collide(velocity * delta)
-	for i in range(0, 3):
-		if collision:
-			var collider = collision.collider
-			if collider.is_in_group("ppBody"):
-				_collide_with_other_pp(collision, collider)
-			elif abs(collision.normal.angle_to(Vector2.UP)) < 0.78:
-				velocity = velocity.slide(collision.normal)
-			else:
-				velocity = velocity.bounce(collision.normal) * bounciness
-			collision = move_and_collide(velocity * delta)
+	var collision_count = 0
+	while collision and collision_count < maximum_collisions_per_frame and collision.remainder.length() > 0.0:
+		# Slide on the floor.
+		if abs(collision.normal.angle_to(Vector2.UP)) < 0.78:
+			velocity = velocity.slide(collision.normal)
+			var slide_movement = collision.remainder.slide(collision.normal)
+			collision = move_and_collide(slide_movement)
 			
+		# Bounce off walls.
+		else:
+			velocity = velocity.bounce(collision.normal) * bounciness
+			var bounce_movement = collision.remainder.bounce(collision.normal)
+			collision = move_and_collide(bounce_movement)
+		
+		collision_count += 1
+		
+		#if collider.is_in_group("ppBody"):
+			#collider.suspend_friction()
+			#var vector_to_collider = global_position - collider.global_position
+			#var collider_velocity = collision.collider_velocity
+			#var collider_velocity_length = collider_velocity.length()
+			#var collider_is_stationary = collider_velocity_length == 0
+			#var collider_is_moving_away = not collider_is_stationary and vector_to_collider.dot(collider_velocity) / collider_velocity_length < 0
+			#if not collider_is_moving_away and not collider_is_stationary:
+			#	collider.velocity = velocity_before_collision * bounciness
+			#	velocity = collider.velocity_before_collision * bounciness
+			#else:
+			#	collider.velocity = velocity_before_collision * bounciness
+
+func update_state(delta):
+	_jump_if_needed(delta)
+	_apply_gravity(delta)
+	#_apply_friction(delta)
+	_handle_movement_and_collisions(delta)
 	_time_since_jump += delta
 	_suspend_friction_timer += delta
 	if _suspend_friction_timer > 0.15:
 		_friction_is_suspended = false
 
-func _queue_jump(direction):
-	var jump = {
-		time = _time,
-		direction = direction
-	}
-	_jump_buffer.push_back(jump)
-	rpc("_update_server", _jump_buffer)
-
-func _clear_old_jumps():
-	if _jump_buffer.size() > 0:
-		if _time >= _jump_buffer[0].time + _jump_buffer_time:
-			_jump_buffer.pop_front()
-
-func _handle_jumping():
-	#if is_on_floor() and _time_since_jump >= _jump_cooldown:
-		if _jump_buffer.size() > 0:
-			var jump_vector = _jump_buffer[0].direction
-			jump_vector = jump_vector.clamped(200.0)
-			jump_vector = pow(200.0, 0.3) * jump_vector / pow(jump_vector.length(), 0.3)
-			#jump_vector.y = min(jump_vector.y, -50.0)
-			velocity = jump_vector * 5.0
-			_just_jumped = true
-			_time_since_jump = 0.0
-			#get_node("Sprite").set_flip_h(jump_vector.x < 0)
-			suspend_friction()
-			_jump_buffer.pop_front()
-
-func _handle_gravity(delta):
-	velocity.y += gravity * delta
-	velocity.y = min(velocity.y, maximum_fall_velocity)
-
-func _handle_friction(delta):
-	if is_on_floor() and not _friction_is_suspended:
-		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * delta, -1.0, 1.0))
-
-func _collide_with_other_pp(collision, collider):
-	collider.suspend_friction()
-	var vector_to_collider = global_position - collider.global_position
-	var collider_velocity = collision.collider_velocity
-	var collider_velocity_length = collider_velocity.length()
-	var collider_is_stationary = collider_velocity_length == 0
-	var collider_is_moving_away = not collider_is_stationary and vector_to_collider.dot(collider_velocity) / collider_velocity_length < 0
-	if not collider_is_moving_away and not collider_is_stationary:
-		collider.velocity = velocity_before_collision * bounciness
-		velocity = collider.velocity_before_collision * bounciness
-	else:
-		collider.velocity = velocity_before_collision * bounciness
-
-func _unhandled_input(event):
-	if not is_controlling_player():
-		return
-	if event.is_action_pressed("jump"):
-		_queue_jump(get_global_mouse_position() - global_position)
-
-#func _process(delta):
-#	update_state(delta)
-#	_clear_old_jumps()
-#	_time += delta
-
 func _physics_process(delta):
-	update_state(delta)
-	_clear_old_jumps()
+	if is_controlling_player():
+		if Input.is_action_pressed("jump"):
+			_should_jump = true
+			_jump_direction = get_global_mouse_position() - global_position
+		else:
+			_should_jump = false
+		
+		if not is_network_master():
+			_input_history.push_back({
+				tick = _client_tick,
+				should_jump = _should_jump,
+				jump_direction = _jump_direction
+			})
+			rpc_unreliable("_update_server", _client_tick, _should_jump, _jump_direction)
+			update_state(delta)
+			_client_tick += 1
+	
+	if is_network_master():
+		rpc_unreliable("_update_clients", _client_tick, position, velocity)
+		update_state(delta)
+	
 	_time += delta
-#	if is_network_master():
-#		rpc_unreliable("_update_clients", position, velocity)
 
-master func _update_server(jump_buffer):
-	_jump_buffer = jump_buffer
+master func _update_server(tick, should_jump, jump_direction):
+	_should_jump = should_jump
+	_jump_direction = jump_direction
+	_client_tick = tick
 
-remote func _update_clients(new_position, new_velocity):
+remote func _update_clients(tick, new_position, new_velocity):
+	var delta = get_physics_process_delta_time()
 	position = new_position
 	velocity = new_velocity
+	
+	if is_controlling_player() and _input_history.size() > 0:
+		while _input_history[0].tick < tick:
+			_input_history.pop_front()
+			if _input_history.size() <= 0:
+				break
+		
+		for input in _input_history:
+			_should_jump = input.should_jump
+			_jump_direction = input.jump_direction
+			update_state(delta)
+	else:
+		update_state(delta)
