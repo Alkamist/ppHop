@@ -19,6 +19,7 @@ func _spawn_player(network_id):
 	var new_player = load("res://Pp.tscn").instance()
 	new_player.name = str(network_id)
 	add_child(new_player)
-	new_player.get_node("KinematicBody2D").controlling_player = network_id
-	#new_player.initialize()
+	var body = new_player.get_node("KinematicBody2D")
+	body.controlling_player = network_id
+	body.initialize()
 	return new_player

@@ -3,8 +3,8 @@ class_name Pp
 
 export var maximum_collisions_per_frame := 4
 export var controlling_player := 0
-export var friction := 1.0
-export var bounciness := 1.0
+export var friction := 20.0
+export var bounciness := 0.8
 export var maximum_fall_velocity := 1400.0
 export var gravity := 1500.0
 export var velocity := Vector2.ZERO
@@ -22,10 +22,11 @@ var _friction_is_suspended := false
 var _time_since_jump := 0.0
 var _jump_cooldown := 0.05
 var _suspend_friction_timer := 0.0
+var _is_on_ground := false
 
-#func initialize():
-	#if is_controlling_player():
-		#get_node("Camera2D").current = true
+func initialize():
+	if is_controlling_player():
+		get_node("../Smoothing2D/Camera2D").current = true
 
 func is_controlling_player():
 	return get_tree().get_network_unique_id() == controlling_player
@@ -35,24 +36,26 @@ func suspend_friction():
 	_suspend_friction_timer = 0.0
 
 func _jump_if_needed(delta):
-	#if is_on_floor() and _time_since_jump >= _jump_cooldown:
-	if _should_jump:
+	if _should_jump and _is_on_ground and _time_since_jump >= _jump_cooldown:
 		var jump_vector = _jump_direction
 		jump_vector = jump_vector.clamped(200.0)
 		jump_vector = pow(200.0, 0.3) * jump_vector / pow(jump_vector.length(), 0.3)
-		#jump_vector.y = min(jump_vector.y, -50.0)
+		jump_vector.y = min(jump_vector.y, -50.0)
 		velocity = jump_vector * 5.0
 		_just_jumped = true
 		_time_since_jump = 0.0
-		#get_node("Sprite").set_flip_h(jump_vector.x < 0)
-		#suspend_friction()
+		suspend_friction()
+
+func _check_if_on_ground(delta):
+	var collision = move_and_collide(Vector2.DOWN, true, true, true)
+	_is_on_ground = collision and collision.normal.angle_to(Vector2.UP) < 0.78
 
 func _apply_gravity(delta):
 	velocity.y += gravity * delta
 	velocity.y = min(velocity.y, maximum_fall_velocity)
 
 func _apply_friction(delta):
-	if is_on_floor() and not _friction_is_suspended:
+	if _is_on_ground and not _friction_is_suspended:
 		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * delta, -1.0, 1.0))
 
 func _handle_movement_and_collisions(delta):
@@ -81,10 +84,14 @@ func _handle_movement_and_collisions(delta):
 		
 		collision_count += 1
 
+remotesync func _set_sprite_direction(jump_direction):
+	get_node("../Smoothing2D/Sprite").set_flip_h(jump_direction.x < 0)
+
 func update_state(delta):
+	_check_if_on_ground(delta)
 	_jump_if_needed(delta)
 	_apply_gravity(delta)
-	#_apply_friction(delta)
+	_apply_friction(delta)
 	_handle_movement_and_collisions(delta)
 	_time_since_jump += delta
 	_suspend_friction_timer += delta
@@ -93,12 +100,9 @@ func update_state(delta):
 
 func _physics_process(delta):
 	if is_controlling_player():
-		if Input.is_action_pressed("jump"):
-			_should_jump = true
-			_jump_direction = get_global_mouse_position() - global_position
-		else:
-			_should_jump = false
-			_jump_direction = Vector2.ZERO
+		_jump_direction = get_global_mouse_position() - global_position
+		_should_jump = Input.is_action_pressed("jump")
+		rpc_unreliable("_set_sprite_direction", _jump_direction)
 		
 		if not is_network_master():
 			_input_history.push_back({
