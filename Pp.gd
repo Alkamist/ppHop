@@ -56,14 +56,22 @@ func _apply_friction(delta):
 		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * delta, -1.0, 1.0))
 
 func _handle_movement_and_collisions(delta):
+	velocity_before_collision = velocity
 	var collision = move_and_collide(velocity * delta)
 	var collision_count = 0
 	while collision and collision_count < maximum_collisions_per_frame and collision.remainder.length() > 0.0:
-		# Slide on the floor.
+		var collider = collision.collider
+		
+		# Slide on the floor or a pp head.
 		if abs(collision.normal.angle_to(Vector2.UP)) < 0.78:
 			velocity = velocity.slide(collision.normal)
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
+			
+		elif collider.is_in_group("ppBody"):
+			collider.suspend_friction()
+			collider.velocity = velocity_before_collision * bounciness
+			velocity = collider.velocity_before_collision * bounciness
 			
 		# Bounce off walls.
 		else:
@@ -72,29 +80,16 @@ func _handle_movement_and_collisions(delta):
 			collision = move_and_collide(bounce_movement)
 		
 		collision_count += 1
-		
-		#if collider.is_in_group("ppBody"):
-			#collider.suspend_friction()
-			#var vector_to_collider = global_position - collider.global_position
-			#var collider_velocity = collision.collider_velocity
-			#var collider_velocity_length = collider_velocity.length()
-			#var collider_is_stationary = collider_velocity_length == 0
-			#var collider_is_moving_away = not collider_is_stationary and vector_to_collider.dot(collider_velocity) / collider_velocity_length < 0
-			#if not collider_is_moving_away and not collider_is_stationary:
-			#	collider.velocity = velocity_before_collision * bounciness
-			#	velocity = collider.velocity_before_collision * bounciness
-			#else:
-			#	collider.velocity = velocity_before_collision * bounciness
 
 func update_state(delta):
 	_jump_if_needed(delta)
 	_apply_gravity(delta)
 	#_apply_friction(delta)
 	_handle_movement_and_collisions(delta)
-	#_time_since_jump += delta
-	#_suspend_friction_timer += delta
-	#if _suspend_friction_timer > 0.15:
-	#	_friction_is_suspended = false
+	_time_since_jump += delta
+	_suspend_friction_timer += delta
+	if _suspend_friction_timer > 0.15:
+		_friction_is_suspended = false
 
 func _physics_process(delta):
 	if is_controlling_player():
@@ -122,7 +117,6 @@ func _physics_process(delta):
 		var distance = position.distance_to(_server_transform.origin)
 		if distance > 0.0:
 			position = position.linear_interpolate(_server_transform.origin, 0.3)
-			#position = position.linear_interpolate(_server_transform.origin, clamp(5.0 / pow(distance, 0.5), 0.0, 1.0))
 		else:
 			position = _server_transform.origin
 		
@@ -130,7 +124,7 @@ func _physics_process(delta):
 	
 	update_state(delta)
 	
-	#_time += delta
+	_time += delta
 
 master func _ping_server(network_id, tick):
 	if tick > _client_tick:
