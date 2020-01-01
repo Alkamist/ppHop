@@ -116,7 +116,7 @@ func _physics_process(delta):
 		
 		var distance = position.distance_to(_server_transform.origin)
 		if distance > 0.0:
-			position = position.linear_interpolate(_server_transform.origin, 0.3)
+			position = position.linear_interpolate(_server_transform.origin, 0.1)
 		else:
 			position = _server_transform.origin
 		
