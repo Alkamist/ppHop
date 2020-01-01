@@ -55,6 +55,10 @@ up={
  ]
 }
 
+[physics]
+
+common/physics_fps=20
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

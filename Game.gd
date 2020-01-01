@@ -20,5 +20,5 @@ func _spawn_player(network_id):
 	new_player.name = str(network_id)
 	add_child(new_player)
 	new_player.controlling_player = network_id
-	new_player.initialize()
+	#new_player.initialize()
 	return new_player
