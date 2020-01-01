@@ -113,21 +113,22 @@ func _physics_process(delta):
 				jump_direction = _jump_direction
 			})
 			rpc_unreliable("_update_server", _should_jump, _jump_direction)
-			update_state(delta)
 	
 	if is_network_master():
 		rpc_unreliable("_update_clients", _client_tick, transform, velocity)
-		update_state(delta)
 	else:
 		rpc_unreliable("_ping_server", get_tree().get_network_unique_id(), _client_tick)
 		
 		var distance = position.distance_to(_server_transform.origin)
 		if distance > 0.0:
-			position = position.linear_interpolate(_server_transform.origin, clamp(5.0 / pow(distance, 0.5), 0.0, 1.0))
+			position = position.linear_interpolate(_server_transform.origin, 0.3)
+			#position = position.linear_interpolate(_server_transform.origin, clamp(5.0 / pow(distance, 0.5), 0.0, 1.0))
 		else:
 			position = _server_transform.origin
-
+		
 		_client_tick += 1
+	
+	update_state(delta)
 	
 	#_time += delta
 
