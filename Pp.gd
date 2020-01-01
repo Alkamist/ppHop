@@ -13,7 +13,7 @@ export var velocity_before_collision := Vector2.ZERO
 var _server_transform := Transform2D()
 var _input_history := []
 var _client_tick := -1
-var _server_tick := -1
+puppet var _server_tick := -1
 var _should_jump := false
 var _jump_direction := Vector2.ZERO
 var _time := 0.0
@@ -106,13 +106,14 @@ func _physics_process(delta):
 			_jump_direction = Vector2.ZERO
 		
 		if not is_network_master():
-			#_input_history.push_back({
-			#	tick = _client_tick,
-			#	delta = delta,
-			#	should_jump = _should_jump,
-			#	jump_direction = _jump_direction
-			#})
+			_input_history.push_back({
+				tick = _client_tick,
+				delta = delta,
+				should_jump = _should_jump,
+				jump_direction = _jump_direction
+			})
 			rpc_unreliable("_update_server", _should_jump, _jump_direction)
+			update_state(delta)
 	
 	if is_network_master():
 		rpc_unreliable("_update_clients", _client_tick, transform, velocity)
@@ -125,20 +126,15 @@ func _physics_process(delta):
 			position = position.linear_interpolate(_server_transform.origin, clamp(5.0 / pow(distance, 0.5), 0.0, 1.0))
 		else:
 			position = _server_transform.origin
-		
-		_client_tick += 1
 
-	#update_state(delta)
+		_client_tick += 1
 	
 	#_time += delta
 
 master func _ping_server(network_id, tick):
-	_client_tick = tick
-	rpc_unreliable_id(network_id, "_set_server_tick", tick)
-
-puppet func _set_server_tick(tick):
-	if tick > _server_tick:
-		_server_tick = tick
+	if tick > _client_tick:
+		_client_tick = tick
+		rset_unreliable_id(network_id, "_server_tick", tick)
 
 master func _update_server(should_jump, jump_direction):
 	_should_jump = should_jump
@@ -147,14 +143,23 @@ master func _update_server(should_jump, jump_direction):
 remote func _update_clients(tick, new_transform, new_velocity):
 	if tick < _server_tick:
 		return
-	_server_transform = new_transform
+	
 	velocity = new_velocity
-	#if is_controlling_player():
-	#	while _input_history.size() > 0 and _input_history[0].tick < tick:
-	#		_input_history.pop_front()
-	#	
-	#	for i in range(_input_history.size()):
-	#		var input = _input_history[i]
-	#		_should_jump = input.should_jump
-	#		_jump_direction = input.jump_direction
-	#		update_state(input.delta)
+	
+	if is_controlling_player():
+		var old_transform = transform
+		transform = new_transform
+		
+		while _input_history.size() > 0 and _input_history[0].tick < tick:
+			_input_history.pop_front()
+		
+		for i in range(_input_history.size() - 1):
+			var input = _input_history[i]
+			_should_jump = input.should_jump
+			_jump_direction = input.jump_direction
+			update_state(input.delta)
+		
+		_server_transform = transform
+		transform = old_transform
+	else:
+		_server_transform = new_transform
