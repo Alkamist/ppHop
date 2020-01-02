@@ -23,6 +23,10 @@ _global_script_class_icons={
 config/name="ppHop"
 run/main_scene="res://interface/Menu.tscn"
 
+[autoload]
+
+SFX="*res://SFX.tscn"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "smoothing" )

@@ -23,6 +23,7 @@ var _time_since_jump := 0.0
 var _jump_cooldown := 0.05
 var _suspend_friction_timer := 0.0
 var _is_on_ground := false
+var _play_jump_sound := false
 
 func initialize():
 	if is_controlling_player():
@@ -35,7 +36,7 @@ func suspend_friction():
 	_friction_is_suspended = true
 	_suspend_friction_timer = 0.0
 
-func _jump_if_needed(delta):
+func _jump_if_needed(delta, play_sounds = true):
 	if _should_jump and _is_on_ground and _time_since_jump >= _jump_cooldown:
 		var jump_vector = _jump_direction
 		jump_vector = jump_vector.clamped(200.0)
@@ -45,6 +46,8 @@ func _jump_if_needed(delta):
 		_just_jumped = true
 		_time_since_jump = 0.0
 		suspend_friction()
+		if play_sounds:
+			_play_jump_sound = true
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
@@ -71,6 +74,7 @@ func _handle_movement_and_collisions(delta):
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
 			
+		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
 			collider.suspend_friction()
 			collider.velocity = velocity_before_collision * bounciness
@@ -87,9 +91,9 @@ func _handle_movement_and_collisions(delta):
 remotesync func _set_sprite_direction(jump_direction):
 	get_node("../Smoothing2D/Sprite").set_flip_h(jump_direction.x < 0)
 
-func update_state(delta):
+func update_state(delta, play_sounds = true):
 	_check_if_on_ground(delta)
-	_jump_if_needed(delta)
+	_jump_if_needed(delta, play_sounds)
 	_apply_gravity(delta)
 	_apply_friction(delta)
 	_handle_movement_and_collisions(delta)
@@ -128,7 +132,17 @@ func _physics_process(delta):
 	
 	update_state(delta)
 	
+	if _play_jump_sound:
+		SFX.play("PPJump", self)
+		_play_jump_sound = false
+		if is_network_master():
+			rpc_unreliable("_queue_jump_sound_on_clients")
+	
 	_time += delta
+
+remote func _queue_jump_sound_on_clients():
+	if not is_controlling_player():
+		_play_jump_sound = true
 
 master func _ping_server(network_id, tick):
 	if tick > _client_tick:
@@ -156,7 +170,7 @@ remote func _update_clients(tick, new_transform, new_velocity):
 			var input = _input_history[i]
 			_should_jump = input.should_jump
 			_jump_direction = input.jump_direction
-			update_state(input.delta)
+			update_state(input.delta, false)
 		
 		_server_transform = transform
 		transform = old_transform

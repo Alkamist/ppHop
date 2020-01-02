@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://sounds/bounceSound1.wav" type="AudioStream" id=1]
+[ext_resource path="res://sounds/jumpSound1.wav" type="AudioStream" id=2]
+[ext_resource path="res://SFX.gd" type="Script" id=3]
+
+[sub_resource type="AudioStreamRandomPitch" id=1]
+audio_stream = ExtResource( 1 )
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 2 )
+
+[node name="SFX" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="PPBounce" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 1 )
+
+[node name="PPJump" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 2 )
