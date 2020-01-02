@@ -23,7 +23,7 @@ var _time_since_jump := 0.0
 var _jump_cooldown := 0.05
 var _suspend_friction_timer := 0.0
 var _is_on_ground := false
-var _play_jump_sound := false
+var _is_muted := false
 
 func initialize():
 	if is_controlling_player():
@@ -36,7 +36,7 @@ func suspend_friction():
 	_friction_is_suspended = true
 	_suspend_friction_timer = 0.0
 
-func _jump_if_needed(delta, play_sounds = true):
+func _jump_if_needed(delta):
 	if _should_jump and _is_on_ground and _time_since_jump >= _jump_cooldown:
 		var jump_vector = _jump_direction
 		jump_vector = jump_vector.clamped(200.0)
@@ -46,8 +46,7 @@ func _jump_if_needed(delta, play_sounds = true):
 		_just_jumped = true
 		_time_since_jump = 0.0
 		suspend_friction()
-		if play_sounds:
-			_play_jump_sound = true
+		play_sound("PPJump")
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
@@ -85,15 +84,16 @@ func _handle_movement_and_collisions(delta):
 			velocity = velocity.bounce(collision.normal) * bounciness
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
+			play_sound("PPBounce")
 		
 		collision_count += 1
 
 remotesync func _set_sprite_direction(jump_direction):
 	get_node("../Smoothing2D/Sprite").set_flip_h(jump_direction.x < 0)
 
-func update_state(delta, play_sounds = true):
+func update_state(delta):
 	_check_if_on_ground(delta)
-	_jump_if_needed(delta, play_sounds)
+	_jump_if_needed(delta)
 	_apply_gravity(delta)
 	_apply_friction(delta)
 	_handle_movement_and_collisions(delta)
@@ -132,17 +132,14 @@ func _physics_process(delta):
 	
 	update_state(delta)
 	
-	if _play_jump_sound:
-		SFX.play("PPJump", self)
-		_play_jump_sound = false
-		if is_network_master():
-			rpc_unreliable("_queue_jump_sound_on_clients")
-	
 	_time += delta
 
-remote func _queue_jump_sound_on_clients():
-	if not is_controlling_player():
-		_play_jump_sound = true
+func play_sound(sound_name):
+	if is_controlling_player() and not _is_muted:
+		rpc_unreliable("_play_networked_sound", sound_name)
+
+remotesync func _play_networked_sound(sound_name):
+	SFX.play(sound_name, self)
 
 master func _ping_server(network_id, tick):
 	if tick > _client_tick:
@@ -162,6 +159,7 @@ remote func _update_clients(tick, new_transform, new_velocity):
 	if is_controlling_player():
 		var old_transform = transform
 		transform = new_transform
+		_is_muted = true
 		
 		while _input_history.size() > 0 and _input_history[0].tick < tick:
 			_input_history.pop_front()
@@ -170,8 +168,9 @@ remote func _update_clients(tick, new_transform, new_velocity):
 			var input = _input_history[i]
 			_should_jump = input.should_jump
 			_jump_direction = input.jump_direction
-			update_state(input.delta, false)
+			update_state(input.delta)
 		
+		_is_muted = false
 		_server_transform = transform
 		transform = old_transform
 	else:
