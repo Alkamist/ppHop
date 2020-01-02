@@ -166,7 +166,7 @@ remote func _update_clients(tick, new_transform, new_velocity):
 		while _input_history.size() > 0 and _input_history[0].tick < tick:
 			_input_history.pop_front()
 		
-		for i in range(_input_history.size() - 1):
+		for i in range(_input_history.size()):
 			var input = _input_history[i]
 			_should_jump = input.should_jump
 			_jump_direction = input.jump_direction
