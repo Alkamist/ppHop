@@ -6,24 +6,25 @@ export var controlling_player := 0
 export var friction := 20.0
 export var bounciness := 0.8
 export var maximum_fall_velocity := 1400.0
+export var minimum_bounce_normal := 250.0
 export var gravity := 1500.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
-var _server_transform := Transform2D()
-var _input_history := []
-var _client_tick := -1
-puppet var _server_tick := -1
+var _tick := 0
+var _ping := 0
+var _target_transform := Transform2D()
 var _should_jump := false
 var _jump_direction := Vector2.ZERO
 var _time := 0.0
 var _just_jumped := false
 var _friction_is_suspended := false
 var _time_since_jump := 0.0
-var _jump_cooldown := 0.05
+var _jump_cooldown := 0.1
 var _suspend_friction_timer := 0.0
 var _is_on_ground := false
-var _is_muted := false
+var _cant_launch_pp := false
+var _cant_launch_pp_timer := 0.0
 
 func initialize():
 	if is_controlling_player():
@@ -32,9 +33,19 @@ func initialize():
 func is_controlling_player():
 	return get_tree().get_network_unique_id() == controlling_player
 
+func is_server():
+	return get_tree().get_network_unique_id() == 1
+
 func suspend_friction():
 	_friction_is_suspended = true
 	_suspend_friction_timer = 0.0
+
+func launch(new_velocity):
+	rpc_unreliable("_launch_master", new_velocity)
+
+master func _launch_master(new_velocity):
+	suspend_friction()
+	velocity = new_velocity
 
 func _jump_if_needed(delta):
 	if _should_jump and _is_on_ground and _time_since_jump >= _jump_cooldown:
@@ -48,9 +59,12 @@ func _jump_if_needed(delta):
 		suspend_friction()
 		play_sound("PPJump")
 
+func _collision_is_ground(collision):
+	return abs(collision.normal.angle_to(Vector2.UP)) < 0.78
+
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
-	_is_on_ground = collision and collision.normal.angle_to(Vector2.UP) < 0.78
+	_is_on_ground = collision and _collision_is_ground(collision)
 
 func _apply_gravity(delta):
 	velocity.y += gravity * delta
@@ -68,24 +82,30 @@ func _handle_movement_and_collisions(delta):
 		var collider = collision.collider
 		
 		# Slide on the floor or a pp head.
-		if abs(collision.normal.angle_to(Vector2.UP)) < 0.78:
+		if _collision_is_ground(collision):
 			velocity = velocity.slide(collision.normal)
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
-			
+
 		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
-			collider.suspend_friction()
-			collider.velocity = velocity_before_collision * bounciness
 			velocity = collider.velocity_before_collision * bounciness
-			
+			if not _cant_launch_pp:
+				collider.launch(velocity_before_collision * bounciness)
+				_cant_launch_pp = true
+				_cant_launch_pp_timer = 0.0
+
 		# Bounce off walls.
 		else:
-			velocity = velocity.bounce(collision.normal) * bounciness
+			var bounce_vector = velocity.bounce(collision.normal) * bounciness
+			var original_bounce_normal_length = bounce_vector.dot(collision.normal)
+			var bounce_normal_scale = clamp(0.5 * PI - abs(collision.normal.angle_to(Vector2.UP)), 0.0, 1.0)
+			var bounce_normal_multiplier = max(0.0, minimum_bounce_normal - original_bounce_normal_length) * bounce_normal_scale
+			velocity = bounce_vector + collision.normal * bounce_normal_multiplier
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
 			play_sound("PPBounce")
-		
+
 		collision_count += 1
 
 remotesync func _set_sprite_direction(jump_direction):
@@ -99,79 +119,47 @@ func update_state(delta):
 	_handle_movement_and_collisions(delta)
 	_time_since_jump += delta
 	_suspend_friction_timer += delta
+	_cant_launch_pp_timer += delta
 	if _suspend_friction_timer > 0.15:
 		_friction_is_suspended = false
+	if _cant_launch_pp_timer > 0.15:
+		_cant_launch_pp = false
 
 func _physics_process(delta):
+	if not is_server():
+		rpc_unreliable_id(1, "_ping_server", get_tree().get_network_unique_id(), _tick)
+
 	if is_controlling_player():
 		_jump_direction = get_global_mouse_position() - global_position
 		_should_jump = Input.is_action_pressed("jump")
-		rpc_unreliable("_set_sprite_direction", _jump_direction)
-		
-		if not is_network_master():
-			_input_history.push_back({
-				tick = _client_tick,
-				delta = delta,
-				should_jump = _should_jump,
-				jump_direction = _jump_direction
-			})
-			rpc_unreliable("_update_server", _should_jump, _jump_direction)
-	
+
 	if is_network_master():
-		rpc_unreliable("_update_clients", _client_tick, transform, velocity)
+		update_state(delta)
+		rpc_unreliable("_set_sprite_direction", _jump_direction)
+		rpc_unreliable("_update_clients", transform, velocity, velocity_before_collision)
 	else:
-		rpc_unreliable("_ping_server", get_tree().get_network_unique_id(), _client_tick)
-		
-		var distance = position.distance_to(_server_transform.origin)
+		var distance = position.distance_to(_target_transform.origin)
 		if distance > 0.0:
-			position = position.linear_interpolate(_server_transform.origin, 0.1)
+			position = position.linear_interpolate(_target_transform.origin, 0.44)
 		else:
-			position = _server_transform.origin
-		
-		_client_tick += 1
-	
-	update_state(delta)
-	
+			position = _target_transform.origin
+
 	_time += delta
+	_tick += 1
 
 func play_sound(sound_name):
-	if is_controlling_player() and not _is_muted:
-		rpc_unreliable("_play_networked_sound", sound_name)
+	rpc_unreliable("_play_networked_sound", sound_name)
 
 remotesync func _play_networked_sound(sound_name):
 	SFX.play(sound_name, self)
 
-master func _ping_server(network_id, tick):
-	if tick > _client_tick:
-		_client_tick = tick
-		rset_unreliable_id(network_id, "_server_tick", tick)
+remote func _ping_server(network_id, tick):
+	rpc_unreliable_id(network_id, "_update_ping", tick)
 
-master func _update_server(should_jump, jump_direction):
-	_should_jump = should_jump
-	_jump_direction = jump_direction
+remote func _update_ping(tick):
+	_ping = _tick - tick
 
-remote func _update_clients(tick, new_transform, new_velocity):
-	if tick < _server_tick:
-		return
-	
+remote func _update_clients(new_transform, new_velocity, new_velocity_before_collision):
 	velocity = new_velocity
-	
-	if is_controlling_player():
-		var old_transform = transform
-		transform = new_transform
-		_is_muted = true
-		
-		while _input_history.size() > 0 and _input_history[0].tick < tick:
-			_input_history.pop_front()
-		
-		for i in range(_input_history.size()):
-			var input = _input_history[i]
-			_should_jump = input.should_jump
-			_jump_direction = input.jump_direction
-			update_state(input.delta)
-		
-		_is_muted = false
-		_server_transform = transform
-		transform = old_transform
-	else:
-		_server_transform = new_transform
+	velocity_before_collision = new_velocity_before_collision
+	_target_transform = new_transform

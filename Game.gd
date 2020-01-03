@@ -18,6 +18,7 @@ func _on_server_disconnected():
 func _spawn_player(network_id):
 	var new_player = load("res://Pp.tscn").instance()
 	new_player.name = str(network_id)
+	new_player.set_network_master(network_id, true)
 	add_child(new_player)
 	var body = new_player.get_node("KinematicBody2D")
 	body.controlling_player = network_id
