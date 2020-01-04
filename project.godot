@@ -61,4 +61,9 @@ up={
 
 [rendering]
 
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
+
+[tiled_importer]
+
+enable_json_format=true
