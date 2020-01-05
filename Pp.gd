@@ -53,18 +53,15 @@ func _handle_jumping(delta, x_power, y_power):
 	var jump_power = (_time - _jump_time)
 	if not _should_jump or jump_power > 0.5:
 		if _is_on_ground and _is_charging_jump:
-			velocity.x = _movement_direction * x_power
-			velocity.y = -y_power * clamp(jump_power, 0.1, 0.5)
+			velocity.x += _movement_direction * x_power
+			velocity.y += -y_power * clamp(jump_power, 0.1, 0.5)
 			suspend_friction()
 			play_sound("PPJump")
 			_is_charging_jump = false
 
-func _collision_is_ground(collision):
-	return abs(collision.normal.angle_to(Vector2.UP)) < 0.78
-
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
-	_is_on_ground = collision and _collision_is_ground(collision)
+	_is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.78
 
 func _apply_gravity(delta, gravity):
 	velocity.y += 60.0 * gravity * delta
@@ -89,8 +86,8 @@ func _handle_movement_and_collisions(delta, bounciness):
 	while collision and collision_count < _maximum_collisions_per_frame and collision.remainder.length() > 0.0:
 		var collider = collision.collider
 
-		# Slide on the floor or a pp head.
-		if _collision_is_ground(collision):
+		# Slide on floor, slope, or pp head.
+		if abs(collision.normal.angle_to(Vector2.UP)) < 1.0:
 			velocity = velocity.slide(collision.normal)
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
@@ -118,13 +115,13 @@ func _handle_movement_and_collisions(delta, bounciness):
 
 func update_state(delta):
 	_check_if_on_ground(delta)
-	_handle_jumping(delta, 400.0, 2000.0)
+	_handle_jumping(delta, 500.0, 2000.0)
 	_apply_gravity(delta, 20.0)
 	_apply_air_resistance(delta, 0.01)
 	if _is_on_ground:
-		_apply_horizontal_movement(delta, 1.0, 1.0, 200.0)
+		_apply_horizontal_movement(delta, 0.01, 0.1, 200.0)
 	else:
-		_apply_horizontal_movement(delta, 0.0, 0.1, 200.0)
+		_apply_horizontal_movement(delta, 0.0, 0.1, 140.0)
 	_handle_movement_and_collisions(delta, 0.8)
 	_time += delta
 	if _time - _suspend_friction_time > 0.15:
