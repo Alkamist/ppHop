@@ -6,7 +6,6 @@ export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
 var _maximum_collisions_per_frame := 4
-var _minimum_bounce_normal = 250.0
 var _movement_direction := 0
 var _target_transform := Transform2D()
 var _is_on_ground := false
@@ -85,13 +84,15 @@ func _handle_movement_and_collisions(delta, bounciness):
 	var collision_count = 0
 	while collision and collision_count < _maximum_collisions_per_frame and collision.remainder.length() > 0.0:
 		var collider = collision.collider
-
-		# Slide on floor, slope, or pp head.
-		if abs(collision.normal.angle_to(Vector2.UP)) < 1.0:
+		var impact_intensity = abs(velocity.dot(collision.normal))
+		var do_not_bounce = impact_intensity < 50.0 or _is_on_ground and impact_intensity < 210.0
+		
+		# Handle sliding.
+		if abs(collision.normal.angle_to(Vector2.UP)) < 1.0 or do_not_bounce:
 			velocity = velocity.slide(collision.normal)
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
-
+		
 		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
 			velocity = collider.velocity_before_collision * bounciness
@@ -99,18 +100,14 @@ func _handle_movement_and_collisions(delta, bounciness):
 				collider.launch(velocity_before_collision * bounciness)
 				_cant_launch_pp = true
 				_launched_pp_time = _time
-
+		
 		# Bounce off walls.
 		else:
-			var bounce_vector = velocity.bounce(collision.normal) * bounciness
-			var original_bounce_normal_length = bounce_vector.dot(collision.normal)
-			var bounce_normal_scale = clamp(0.5 * PI - abs(collision.normal.angle_to(Vector2.UP)), 0.0, 1.0)
-			var bounce_normal_multiplier = max(0.0, _minimum_bounce_normal - original_bounce_normal_length) * bounce_normal_scale
-			velocity = bounce_vector + collision.normal * bounce_normal_multiplier
+			velocity = velocity.bounce(collision.normal) * bounciness
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
 			play_sound("PPBounce")
-
+		
 		collision_count += 1
 
 func update_state(delta):
@@ -119,7 +116,7 @@ func update_state(delta):
 	_apply_gravity(delta, 20.0)
 	_apply_air_resistance(delta, 0.01)
 	if _is_on_ground:
-		_apply_horizontal_movement(delta, 0.01, 0.1, 200.0)
+		_apply_horizontal_movement(delta, 1.0, 0.3, 200.0)
 	else:
 		_apply_horizontal_movement(delta, 0.0, 0.1, 140.0)
 	_handle_movement_and_collisions(delta, 0.8)
