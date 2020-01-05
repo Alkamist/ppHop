@@ -1,16 +1,12 @@
 extends KinematicBody2D
 class_name Pp
 
-export var maximum_collisions_per_frame := 4
 export var controlling_player := 0
-export var friction := 60.0
-export var bounciness := 0.8
-export var maximum_fall_velocity := 1400.0
-export var minimum_bounce_normal := 250.0
-export var gravity := 1500.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
+var _maximum_collisions_per_frame := 4
+var _minimum_bounce_normal = 250.0
 var _movement_direction := 0
 var _target_transform := Transform2D()
 var _is_on_ground := false
@@ -45,18 +41,20 @@ master func _launch_master(new_velocity):
 	suspend_friction()
 	velocity = new_velocity
 
-func _handle_jumping(delta):
+func _handle_jumping(delta, x_power, y_power):
 	if _should_jump:
 		if _is_on_ground and not _is_charging_jump:
 			_is_charging_jump = true
 			_jump_time = _time
+	
 	if not _is_on_ground:
 		_is_charging_jump = false
+	
 	var jump_power = (_time - _jump_time)
 	if not _should_jump or jump_power > 0.5:
 		if _is_on_ground and _is_charging_jump:
-			velocity.x = _movement_direction * 500.0
-			velocity.y = -2000.0 * clamp(jump_power, 0.1, 0.5)
+			velocity.x = _movement_direction * x_power
+			velocity.y = -y_power * clamp(jump_power, 0.1, 0.5)
 			suspend_friction()
 			play_sound("PPJump")
 			_is_charging_jump = false
@@ -68,19 +66,27 @@ func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
 	_is_on_ground = collision and _collision_is_ground(collision)
 
-func _apply_gravity(delta):
-	velocity.y += gravity * delta
-	velocity.y = min(velocity.y, maximum_fall_velocity)
+func _apply_gravity(delta, gravity):
+	velocity.y += 60.0 * gravity * delta
 
-func _apply_friction(delta):
-	if _is_on_ground and not _friction_is_suspended:
-		velocity = lerp(velocity, Vector2.ZERO, clamp(friction * delta, -1.0, 1.0))
+func _apply_air_resistance(delta, resistance):
+	velocity = lerp(velocity, Vector2.ZERO, 60.0 * resistance * delta)
 
-func _handle_movement_and_collisions(delta):
+func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
+	if not _is_charging_jump and _movement_direction != 0:
+		var target_speed = _movement_direction * maximum_speed
+		if abs(velocity.x) < maximum_speed:
+			velocity.x = lerp(velocity.x, target_speed, 60.0 * acceleration * delta)
+		elif not _friction_is_suspended:
+			velocity.x = lerp(velocity.x, target_speed, 60.0 * friction * delta)
+	elif not _friction_is_suspended:
+		velocity.x = lerp(velocity.x, 0.0, 60.0 * friction * delta)
+
+func _handle_movement_and_collisions(delta, bounciness):
 	velocity_before_collision = velocity
 	var collision = move_and_collide(velocity * delta)
 	var collision_count = 0
-	while collision and collision_count < maximum_collisions_per_frame and collision.remainder.length() > 0.0:
+	while collision and collision_count < _maximum_collisions_per_frame and collision.remainder.length() > 0.0:
 		var collider = collision.collider
 
 		# Slide on the floor or a pp head.
@@ -102,7 +108,7 @@ func _handle_movement_and_collisions(delta):
 			var bounce_vector = velocity.bounce(collision.normal) * bounciness
 			var original_bounce_normal_length = bounce_vector.dot(collision.normal)
 			var bounce_normal_scale = clamp(0.5 * PI - abs(collision.normal.angle_to(Vector2.UP)), 0.0, 1.0)
-			var bounce_normal_multiplier = max(0.0, minimum_bounce_normal - original_bounce_normal_length) * bounce_normal_scale
+			var bounce_normal_multiplier = max(0.0, _minimum_bounce_normal - original_bounce_normal_length) * bounce_normal_scale
 			velocity = bounce_vector + collision.normal * bounce_normal_multiplier
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
@@ -112,13 +118,14 @@ func _handle_movement_and_collisions(delta):
 
 func update_state(delta):
 	_check_if_on_ground(delta)
-	_handle_jumping(delta)
-	_apply_gravity(delta)
-	#_apply_friction(delta)
-	var new_x_velocity = velocity.x + _movement_direction * 25.0
-	if abs(new_x_velocity) < 200.0:
-		velocity.x = new_x_velocity
-	_handle_movement_and_collisions(delta)
+	_handle_jumping(delta, 400.0, 2000.0)
+	_apply_gravity(delta, 20.0)
+	_apply_air_resistance(delta, 0.01)
+	if _is_on_ground:
+		_apply_horizontal_movement(delta, 1.0, 1.0, 200.0)
+	else:
+		_apply_horizontal_movement(delta, 0.0, 0.1, 200.0)
+	_handle_movement_and_collisions(delta, 0.8)
 	_time += delta
 	if _time - _suspend_friction_time > 0.15:
 		_friction_is_suspended = false
