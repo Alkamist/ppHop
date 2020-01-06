@@ -7,11 +7,11 @@ export var velocity_before_collision := Vector2.ZERO
 
 var _maximum_collisions_per_frame := 4
 var _movement_direction := 0
+var _previous_movement_direction := 0
 var _target_transform := Transform2D()
 var _jump_direction := Vector2.ZERO
 var _is_on_ground := false
 var _should_jump := false
-var _is_charging_jump := false
 var _friction_is_suspended := false
 var _cant_launch_pp := false
 
@@ -55,6 +55,7 @@ func _get_contribution_component(contributor, component, maximum):
 		return min(contributor, clamp(maximum - component, 0.0, maximum))
 	elif contributor < 0.0:
 		return max(contributor, clamp(-maximum - component, -maximum, 0.0))
+	return 0.0
 
 func _handle_jumping(delta, power, maximum_speed):
 	if _should_jump and _is_on_ground and _time - _jump_time > 0.15:
@@ -80,18 +81,14 @@ func _check_if_on_ground(delta):
 func _apply_gravity(delta, gravity):
 	velocity.y += 60.0 * gravity * delta
 
-func _apply_air_resistance(delta, resistance):
-	velocity = lerp(velocity, Vector2.ZERO, 60.0 * resistance * delta)
+func _apply_horizontal_movement(delta, acceleration, maximum_speed):
+	if _movement_direction != 0:
+		if sign(_movement_direction) == sign(_previous_movement_direction) or abs(_previous_movement_direction) == 0:
+			_friction_is_suspended = true
+		velocity.x += _get_contribution_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
 
-func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
-	if not _is_charging_jump and _movement_direction != 0:
-		var target_speed = _movement_direction * maximum_speed
-		if abs(velocity.x) < maximum_speed:
-			velocity.x = lerp(velocity.x, target_speed, 60.0 * acceleration * delta)
-		elif not _friction_is_suspended:
-			velocity.x = lerp(velocity.x, target_speed, 60.0 * friction * delta)
-	elif not _friction_is_suspended:
-		velocity.x = lerp(velocity.x, 0.0, 60.0 * friction * delta)
+func _apply_friction(delta, friction):
+	velocity = lerp(velocity, Vector2.ZERO, 60.0 * friction * delta)
 
 func _handle_movement_and_collisions(delta, bounciness):
 	velocity_before_collision = velocity
@@ -131,17 +128,20 @@ func update_state(delta):
 	_check_if_on_ground(delta)
 	_handle_jumping(delta, 3.35, 1400.0)
 	_apply_gravity(delta, 20.0)
-	_apply_air_resistance(delta, 0.005)
 	if _is_on_ground:
-		_apply_horizontal_movement(delta, 1.0, 0.3, 200.0)
+		_apply_horizontal_movement(delta, 1000.0, 200.0)
+		if not _friction_is_suspended:
+			_apply_friction(delta, 1.0)
 	else:
-		_apply_horizontal_movement(delta, 0.0, 0.1, 140.0)
+		_apply_horizontal_movement(delta, 300.0, 140.0)
+		_apply_friction(delta, 0.005)
 	_handle_movement_and_collisions(delta, 0.8)
 	_time += delta
 	if _time - _suspend_friction_time > 0.2:
 		_friction_is_suspended = false
 	if _time - _launched_pp_time > 0.15:
 		_cant_launch_pp = false
+	_previous_movement_direction = _movement_direction
 
 remotesync func _set_sprite_facing_right(value):
 	get_node("../Smoothing2D/Position2D/Sprite").set_flip_h(not value)
