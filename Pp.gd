@@ -41,12 +41,13 @@ func suspend_friction():
 func launch(new_velocity):
 	rpc_unreliable("_launch_master", new_velocity)
 
-func jiggle(intensity):
+remotesync func jiggle(intensity):
 	_jiggle_amplitude = intensity * 0.00025
 	_jiggle_phase = 0.0
 
 master func _launch_master(new_velocity):
 	suspend_friction()
+	rpc_unreliable("jiggle", new_velocity.length())
 	velocity = new_velocity
 
 func _get_contribution_component(contributor, component, maximum):
@@ -71,7 +72,6 @@ func _handle_jumping(delta, power, maximum_speed):
 		_jump_time = _time
 		suspend_friction()
 		play_sound("PPJump")
-		#jiggle(velocity.length())
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
@@ -110,8 +110,8 @@ func _handle_movement_and_collisions(delta, bounciness):
 		
 		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
+			rpc_unreliable("jiggle", velocity.length())
 			velocity = collider.velocity_before_collision * bounciness
-			jiggle(velocity.length())
 			if not _cant_launch_pp:
 				collider.launch(velocity_before_collision * bounciness)
 				_cant_launch_pp = true
@@ -120,7 +120,7 @@ func _handle_movement_and_collisions(delta, bounciness):
 		# Bounce off walls.
 		else:
 			velocity = velocity.bounce(collision.normal) * bounciness
-			jiggle(velocity.length())
+			rpc_unreliable("jiggle", velocity.length())
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
 			play_sound("PPBounce")
