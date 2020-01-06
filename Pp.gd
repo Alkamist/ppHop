@@ -2,6 +2,7 @@ extends KinematicBody2D
 class_name Pp
 
 export var controlling_player := 0
+export var ground_friction := 1.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
@@ -80,11 +81,13 @@ func _check_if_on_ground(delta):
 func _apply_gravity(delta, gravity):
 	velocity.y += 60.0 * gravity * delta
 
-func _apply_horizontal_movement(delta, acceleration, maximum_speed):
+func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
 	if _movement_direction != 0:
+		velocity.x += _add_to_velocity_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
 		if sign(_movement_direction) == sign(velocity.x) or velocity.x == 0.0:
 			_friction_is_suspended = true
-		velocity.x += _add_to_velocity_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
+			if abs(velocity.x) > maximum_speed:
+				velocity.x = lerp(velocity.x, sign(velocity.x) * maximum_speed, 60.0 * friction * delta)
 
 func _apply_friction(delta, friction):
 	velocity = lerp(velocity, Vector2.ZERO, 60.0 * friction * delta)
@@ -125,15 +128,15 @@ func _handle_movement_and_collisions(delta, bounciness):
 
 func update_state(delta):
 	_check_if_on_ground(delta)
-	_handle_jumping(delta, 3.35, 1400.0)
-	_apply_gravity(delta, 20.0)
 	if _is_on_ground:
-		_apply_horizontal_movement(delta, 1000.0, 200.0)
+		_apply_horizontal_movement(delta, ground_friction, 1000.0, 200.0)
 		if not _friction_is_suspended:
-			_apply_friction(delta, 1.0)
+			_apply_friction(delta, ground_friction)
 	else:
-		_apply_horizontal_movement(delta, 300.0, 140.0)
+		_apply_horizontal_movement(delta, 0.0, 300.0, 140.0)
 		_apply_friction(delta, 0.005)
+	_handle_jumping(delta, 3.0, 1400.0)
+	_apply_gravity(delta, 20.0)
 	_handle_movement_and_collisions(delta, 0.8)
 	_time += delta
 	if _time - _suspend_friction_time > 0.2:
