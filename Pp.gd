@@ -20,6 +20,10 @@ var _launched_pp_time := 0.0
 var _suspend_friction_time := 0.0
 var _jump_time := 0.0
 
+const twoPI := 2.0 * PI
+var _jiggle_phase := 0.0
+var _jiggle_amplitude := 0.0
+
 func initialize():
 	if is_controlling_player():
 		get_node("../Smoothing2D/Camera2D").current = true
@@ -36,6 +40,10 @@ func suspend_friction():
 
 func launch(new_velocity):
 	rpc_unreliable("_launch_master", new_velocity)
+
+func jiggle(intensity):
+	_jiggle_amplitude = intensity * 0.00025
+	_jiggle_phase = 0.0
 
 master func _launch_master(new_velocity):
 	suspend_friction()
@@ -59,10 +67,11 @@ func _handle_jumping(delta, power, maximum_speed):
 			jump_vector.y -= 0.25
 			jump_vector *= 300.0
 		velocity.x += _get_contribution_component(jump_vector.x * power, velocity.x, maximum_speed)
-		velocity.y += _get_contribution_component(jump_vector.y * power, velocity.y, maximum_speed)
+		velocity.y = jump_vector.y * power
 		_jump_time = _time
 		suspend_friction()
 		play_sound("PPJump")
+		#jiggle(velocity.length())
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
@@ -102,6 +111,7 @@ func _handle_movement_and_collisions(delta, bounciness):
 		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
 			velocity = collider.velocity_before_collision * bounciness
+			jiggle(velocity.length())
 			if not _cant_launch_pp:
 				collider.launch(velocity_before_collision * bounciness)
 				_cant_launch_pp = true
@@ -110,6 +120,7 @@ func _handle_movement_and_collisions(delta, bounciness):
 		# Bounce off walls.
 		else:
 			velocity = velocity.bounce(collision.normal) * bounciness
+			jiggle(velocity.length())
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
 			play_sound("PPBounce")
@@ -118,9 +129,9 @@ func _handle_movement_and_collisions(delta, bounciness):
 
 func update_state(delta):
 	_check_if_on_ground(delta)
-	_handle_jumping(delta, 3.5, 1400.0)
+	_handle_jumping(delta, 3.35, 1400.0)
 	_apply_gravity(delta, 20.0)
-	_apply_air_resistance(delta, 0.01)
+	_apply_air_resistance(delta, 0.005)
 	if _is_on_ground:
 		_apply_horizontal_movement(delta, 1.0, 0.3, 200.0)
 	else:
@@ -133,7 +144,24 @@ func update_state(delta):
 		_cant_launch_pp = false
 
 remotesync func _set_sprite_facing_right(value):
-	get_node("../Smoothing2D/Sprite").set_flip_h(not value)
+	get_node("../Smoothing2D/Position2D/Sprite").set_flip_h(not value)
+
+func _handle_jiggle(delta, speed, dampening):
+	var appearance = get_node("../Smoothing2D/Position2D")
+	var jiggle_scale = clamp(1.0 - sin(_jiggle_phase) * _jiggle_amplitude, 0.85, 1.15)
+	if abs(1.0 - jiggle_scale) < 0.01:
+		jiggle_scale = 1.0
+	appearance.scale.x = jiggle_scale
+	appearance.scale.y = jiggle_scale
+	appearance.position.y = 10.0 * (1.0 - jiggle_scale)
+	_jiggle_amplitude -= dampening * _jiggle_amplitude * delta
+	_jiggle_amplitude = max(_jiggle_amplitude, 0.0)
+	_jiggle_phase += speed * delta
+	if _jiggle_phase >= twoPI:
+		_jiggle_phase -= twoPI
+
+func _process(delta):
+	_handle_jiggle(delta, 30.0, 2.0)
 
 func _physics_process(delta):
 	if is_controlling_player():
