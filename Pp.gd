@@ -7,7 +7,6 @@ export var velocity_before_collision := Vector2.ZERO
 
 var _maximum_collisions_per_frame := 4
 var _movement_direction := 0
-var _previous_movement_direction := 0
 var _target_transform := Transform2D()
 var _jump_direction := Vector2.ZERO
 var _is_on_ground := false
@@ -50,11 +49,11 @@ master func _launch_master(new_velocity):
 	rpc_unreliable("jiggle", new_velocity.length())
 	velocity = new_velocity
 
-func _get_contribution_component(contributor, component, maximum):
-	if contributor > 0.0:
-		return min(contributor, clamp(maximum - component, 0.0, maximum))
-	elif contributor < 0.0:
-		return max(contributor, clamp(-maximum - component, -maximum, 0.0))
+func _add_to_velocity_component(adder, velocity_component, maximum):
+	if adder > 0.0:
+		return min(adder, clamp(maximum - velocity_component, 0.0, maximum))
+	elif adder < 0.0:
+		return max(adder, clamp(-maximum - velocity_component, -maximum, 0.0))
 	return 0.0
 
 func _handle_jumping(delta, power, maximum_speed):
@@ -68,7 +67,7 @@ func _handle_jumping(delta, power, maximum_speed):
 			jump_vector *= 1.0 / pow(length, 0.5)
 			jump_vector.y -= 0.25
 			jump_vector *= 300.0
-		velocity.x += _get_contribution_component(jump_vector.x * power, velocity.x, maximum_speed)
+		velocity.x += _add_to_velocity_component(jump_vector.x * power, velocity.x, maximum_speed)
 		velocity.y = jump_vector.y * power
 		_jump_time = _time
 		suspend_friction()
@@ -83,9 +82,9 @@ func _apply_gravity(delta, gravity):
 
 func _apply_horizontal_movement(delta, acceleration, maximum_speed):
 	if _movement_direction != 0:
-		if sign(_movement_direction) == sign(_previous_movement_direction) or abs(_previous_movement_direction) == 0:
+		if sign(_movement_direction) == sign(velocity.x) or velocity.x == 0.0:
 			_friction_is_suspended = true
-		velocity.x += _get_contribution_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
+		velocity.x += _add_to_velocity_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
 
 func _apply_friction(delta, friction):
 	velocity = lerp(velocity, Vector2.ZERO, 60.0 * friction * delta)
@@ -141,7 +140,6 @@ func update_state(delta):
 		_friction_is_suspended = false
 	if _time - _launched_pp_time > 0.15:
 		_cant_launch_pp = false
-	_previous_movement_direction = _movement_direction
 
 remotesync func _set_sprite_facing_right(value):
 	get_node("../Smoothing2D/Position2D/Sprite").set_flip_h(not value)
