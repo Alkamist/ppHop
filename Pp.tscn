@@ -5,11 +5,11 @@
 [ext_resource path="res://assets/ppLNormalMap.png" type="Texture" id=3]
 [ext_resource path="res://Pp.gd" type="Script" id=4]
 
-[sub_resource type="OccluderPolygon2D" id=2]
+[sub_resource type="OccluderPolygon2D" id=1]
 cull_mode = 1
-polygon = PoolVector2Array( -6, -13, 18, -13, 18, -1, 10, 15, -18, 15, -18, -1 )
+polygon = PoolVector2Array( -6, -9, 14, -9, 10, 11, -18, 11 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 10, 12.5601 )
 
 [node name="Node2D" type="Node2D"]
@@ -18,13 +18,16 @@ extents = Vector2( 10, 12.5601 )
 script = ExtResource( 1 )
 target = NodePath("../KinematicBody2D")
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D"]
-occluder = SubResource( 2 )
-
 [node name="Position2D" type="Position2D" parent="Smoothing2D"]
 position = Vector2( 0, 1 )
 
-[node name="Sprite" type="Sprite" parent="Smoothing2D/Position2D"]
+[node name="Position2D" type="Position2D" parent="Smoothing2D/Position2D"]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D/Position2D/Position2D"]
+position = Vector2( 0, -1 )
+occluder = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Smoothing2D/Position2D/Position2D"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 normal_map = ExtResource( 3 )
@@ -38,4 +41,4 @@ script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
 visible = false
-shape = SubResource( 1 )
+shape = SubResource( 2 )

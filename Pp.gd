@@ -76,7 +76,7 @@ func _handle_jumping(delta, power, maximum_speed):
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
-	_is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.78
+	_is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.7
 
 func _apply_gravity(delta, gravity):
 	velocity.y += 60.0 * gravity * delta
@@ -145,7 +145,7 @@ func update_state(delta):
 		_cant_launch_pp = false
 
 remotesync func _set_sprite_facing_right(value):
-	get_node("../Smoothing2D/Position2D/Sprite").set_flip_h(not value)
+	get_node("../Smoothing2D/Position2D/Position2D").set_scale(Vector2(1.0 if value else -1.0, 1.0))
 
 func _handle_jiggle(delta, speed, dampening):
 	var appearance = get_node("../Smoothing2D/Position2D")

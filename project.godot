@@ -29,7 +29,7 @@ SFX="*res://SFX.tscn"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "smoothing" )
+enabled=PoolStringArray( "smoothing", "vnen.tiled_importer" )
 
 [input]
 
