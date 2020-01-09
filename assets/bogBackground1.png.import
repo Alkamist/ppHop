@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Extension_green.png-89cf5be79c869fb5006fd00a631910f4.stex"
+path="res://.import/bogBackground1.png-43eb54fbbbd8fdf7822ee13256d1520a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Extension_green.png"
-dest_files=[ "res://.import/Extension_green.png-89cf5be79c869fb5006fd00a631910f4.stex" ]
+source_file="res://assets/bogBackground1.png"
+dest_files=[ "res://.import/bogBackground1.png-43eb54fbbbd8fdf7822ee13256d1520a.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

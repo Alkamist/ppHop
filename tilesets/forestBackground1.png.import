@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bogTileset - Copy.png-daf61c5aa8c2a7eeef594314dc2a291e.stex"
+path="res://.import/forestBackground1.png-a3eedcad42c4dc58f7b5511d42124f7e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bogTileset - Copy.png"
-dest_files=[ "res://.import/bogTileset - Copy.png-daf61c5aa8c2a7eeef594314dc2a291e.stex" ]
+source_file="res://tilesets/forestBackground1.png"
+dest_files=[ "res://.import/forestBackground1.png-a3eedcad42c4dc58f7b5511d42124f7e.stex" ]
 
 [params]
 
@@ -19,8 +19,8 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
-flags/filter=true
+flags/repeat=1
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -1,7 +1,13 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://tilesets/bogTilemap1.png" type="Texture" id=1]
 [ext_resource path="res://assets/light.png" type="Texture" id=2]
+[ext_resource path="res://assets/bogBackground1.png" type="Texture" id=3]
+[ext_resource path="res://assets/bogBackground4.png" type="Texture" id=4]
+[ext_resource path="res://assets/bogBackground2.png" type="Texture" id=5]
+[ext_resource path="res://assets/bogBackground3.png" type="Texture" id=6]
+[ext_resource path="res://water.shader" type="Shader" id=7]
+[ext_resource path="res://EncapsulatedParallax.gd" type="Script" id=8]
 
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( -497, -592.9, -497, -561.9, -481, -544.8, -481, -480.8, -465, -464.8, -465, -401.9, -449, -384.8, -449, -368.5, -448.8, -368, -448.2, -368, -433, -352.8, -433, -287.2, -465, -255.2, -465, -80.8, -463.2, -79, -449, -79, -449, -65, -462, -65, -465, -62.9, -465, 14, -462.9, 17, -449, 17, -449, 31, -463.2, 31, -465, 32.8, -465, 462, -462.9, 465, -449, 465, -449, 575.2, -447.2, 577, -433, 577, -433, 610, -435.1, 610, -449, 624.9, -449, 642, -451.1, 642, -465, 656.9, -465, 690, -467.1, 690, -481, 704.9, -481, 831.2, -465, 847.2, -465, 895.2, -449, 911.2, -449, 927.5, -448.8, 928, -447.9, 928, -430, 929.1, -430, 931.2, -401, 959.2, -401, 975.2, -399.2, 977, -272.8, 977, -256.8, 961, -224.5, 961, -224, 960.8, -224, 959.9, -222.9, 945, -95.2, 945, -81, 959.2, -81, 975.2, -79.2, 977, 30, 977, 33, 974.9, 33, 961, 95.2, 961, 97, 959.2, 97, 945, 146, 945, 146, 947.2, 158.8, 960, 160.1, 960, 175, 961.1, 175, 975.2, 176.8, 977, 272.8, 977, 288.8, 993, 351.2, 993, 353, 991.2, 353, 977, 383.2, 977, 399.2, 961, 431.5, 961, 432, 960.8, 432, 959.9, 433.1, 945, 447.5, 945, 448, 944.8, 448, 943.9, 449.1, 926, 451.2, 926, 464, 913.2, 464, 911.9, 465.1, 897, 479.2, 897, 481, 895.2, 481, 850, 478.9, 847, 465, 847, 465, 832.8, 449, 816.8, 449, 784.5, 448.7, 784, 447.9, 784, 433, 782.9, 433, 768.8, 431.2, 767, 401, 767, 401, 719.2, 417, 703.2, 417, 654, 419.2, 654, 465, 607.2, 465, 496.8, 449, 480.8, 449, 464.5, 448.7, 464, 433, 448.8, 433, 382, 435.1, 382, 449, 367.1, 449, 350, 451.1, 350, 465, 335.1, 465, 302, 467.1, 302, 481, 287.1, 481, 160.8, 465, 144.8, 465, 112.5, 464.7, 112, 449, 96.8, 449, 16.8, 433, 0.800049, 433, -98, 435.1, -98, 449, -112.9, 449, -210, 451.1, -210, 465, -224.9, 465, -354, 467.1, -354, 481, -368.9, 481, -415, 511, -415, 511, 1023, -511, 1023, -511, -602.3, -508.6, -603.4 )
@@ -57,13 +63,63 @@ polygon = PoolVector2Array( -46, 739.1, -33, 751.1, -33, 767.2, -1, 799.2, -1, 8
 [sub_resource type="OccluderPolygon2D" id=18]
 polygon = PoolVector2Array( -206, 819.1, -193, 831.1, -193, 847, -207.2, 847, -209, 848.8, -209, 863, -239, 863, -239, 833, -226, 833, -223, 830.9, -223, 817, -206, 817 )
 
+[sub_resource type="ShaderMaterial" id=19]
+shader = ExtResource( 7 )
+shader_param/blue_tint = Color( 0.54902, 0.505882, 0.619608, 1 )
+shader_param/sprite_scale = Vector2( 1, 20 )
+shader_param/scale_x = 3.0
+
+[sub_resource type="RectangleShape2D" id=20]
+extents = Vector2( 1024, 1696 )
+
 [node name="Node2D" type="Node2D"]
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource( 8 )
+
+[node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+
+[node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 528 )
+
+[node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.19, 0.19 )
+motion_offset = Vector2( 0, 30 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 528 )
+
+[node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.5, 0.5 )
+motion_offset = Vector2( 0, 150 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 528 )
+
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -256, -1696 )
+position = Vector2( -256, -3480 )
 texture = ExtResource( 2 )
 texture_scale = 12.0
 color = Color( 0.811765, 0.478431, 1, 1 )
+range_z_max = 0
+range_layer_min = -100
 shadow_enabled = true
 shadow_gradient_length = 128.0
 shadow_filter = 1
@@ -77,11 +133,12 @@ scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -1784 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-visible = false
+position = Vector2( 0, -1784 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 scale = Vector2( 2, 2 )
@@ -145,7 +202,7 @@ polygon = PoolVector2Array( -81, 447.2, -65, 463.2, -65, 479.5, -64.8, 480, -64.
 
 [node name="CollisionPolygon2D16" type="CollisionPolygon2D" parent="StaticBody2D"]
 scale = Vector2( 2, 2 )
-polygon = PoolVector2Array( -222, 643.2, -177, 687.2, -177, 703, -208.9, 703, -222.9, 688, -224.1, 688, -239, 686.9, -239, 672.5, -239.3, 672, -240.1, 672, -255, 670.9, -255, 641, -222, 641 )
+polygon = PoolVector2Array( -176, 688, -176, 704, -208, 704, -224, 688, -240, 688, -240, 672, -256, 672, -256, 640, -224, 640 )
 
 [node name="CollisionPolygon2D17" type="CollisionPolygon2D" parent="StaticBody2D"]
 scale = Vector2( 2, 2 )
@@ -156,6 +213,7 @@ scale = Vector2( 2, 2 )
 polygon = PoolVector2Array( -206, 819.1, -193, 831.1, -193, 847, -207.2, 847, -209, 848.8, -209, 863, -239, 863, -239, 833, -226, 833, -223, 830.9, -223, 817, -206, 817 )
 
 [node name="Occluders" type="Node2D" parent="."]
+position = Vector2( 0, -1784 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Occluders"]
 scale = Vector2( 2, 2 )
@@ -228,3 +286,20 @@ occluder = SubResource( 17 )
 [node name="LightOccluder2D18" type="LightOccluder2D" parent="Occluders"]
 scale = Vector2( 2, 2 )
 occluder = SubResource( 18 )
+
+[node name="water" type="Sprite" parent="."]
+visible = false
+material = SubResource( 19 )
+position = Vector2( -128, 1304 )
+scale = Vector2( 4, 8 )
+z_index = 1
+texture = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 0, -1784 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 632 )
+shape = SubResource( 20 )
+[connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]

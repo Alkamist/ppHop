@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ppRight.png-594f17281d36ed033f683a1be9ae40c6.stex"
+path="res://.import/forestBackground4.png-e97c14f0ddbc3d56ea3ee0435755974a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ppRight.png"
-dest_files=[ "res://.import/ppRight.png-594f17281d36ed033f683a1be9ae40c6.stex" ]
+source_file="res://tilesets/forestBackground4.png"
+dest_files=[ "res://.import/forestBackground4.png-e97c14f0ddbc3d56ea3ee0435755974a.stex" ]
 
 [params]
 
@@ -19,8 +19,8 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
-flags/filter=true
+flags/repeat=1
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

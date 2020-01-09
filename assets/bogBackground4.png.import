@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Extension_blue.png-1124f9a193cff27aaa3dce2bb12ddb75.stex"
+path="res://.import/bogBackground4.png-cdc380075a244693001484d4c0a5e098.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Extension_blue.png"
-dest_files=[ "res://.import/Extension_blue.png-1124f9a193cff27aaa3dce2bb12ddb75.stex" ]
+source_file="res://assets/bogBackground4.png"
+dest_files=[ "res://.import/bogBackground4.png-cdc380075a244693001484d4c0a5e098.stex" ]
 
 [params]
 

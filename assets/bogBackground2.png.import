@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ppBottom.png-8d7eb6e516bd9bd5b8acd05a789269a0.stex"
+path="res://.import/bogBackground2.png-ee696bcceb8ff8cda1b56660417759e5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ppBottom.png"
-dest_files=[ "res://.import/ppBottom.png-8d7eb6e516bd9bd5b8acd05a789269a0.stex" ]
+source_file="res://assets/bogBackground2.png"
+dest_files=[ "res://.import/bogBackground2.png-ee696bcceb8ff8cda1b56660417759e5.stex" ]
 
 [params]
 
@@ -19,8 +19,8 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
-flags/filter=true
+flags/repeat=1
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
