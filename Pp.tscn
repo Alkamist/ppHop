@@ -10,7 +10,7 @@ cull_mode = 1
 polygon = PoolVector2Array( -6, -9, 14, -9, 10, 11, -18, 11 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 12.5601 )
+extents = Vector2( 10, 9 )
 
 [node name="Node2D" type="Node2D"]
 
@@ -40,5 +40,5 @@ normal_map = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-visible = false
+position = Vector2( 0, 4 )
 shape = SubResource( 2 )

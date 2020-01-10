@@ -24,7 +24,8 @@ const twoPI := 2.0 * PI
 var _jiggle_phase := 0.0
 var _jiggle_amplitude := 0.0
 
-func initialize():
+func initialize(starting_position):
+	position = starting_position
 	if is_controlling_player():
 		get_node("../Smoothing2D/Camera2D").current = true
 
@@ -63,10 +64,12 @@ func _handle_jumping(delta, power, maximum_speed):
 		jump_vector = jump_vector.clamped(1.0)
 		var length = jump_vector.length()
 		if length > 0.0:
-			jump_vector.y += 0.25
-			jump_vector.y = min(jump_vector.y, 0.0)
+			#jump_vector.y += 0.25
+			#jump_vector.y = min(jump_vector.y, 0.0)
+			#jump_vector *= 1.0 / pow(length, 0.7)
+			#jump_vector.y -= 0.25
 			jump_vector *= 1.0 / pow(length, 0.5)
-			jump_vector.y -= 0.25
+			jump_vector.y = min(jump_vector.y, -0.20)
 			jump_vector *= 300.0
 		velocity.x += _add_to_velocity_component(jump_vector.x * power, velocity.x, maximum_speed)
 		velocity.y = jump_vector.y * power
@@ -129,7 +132,7 @@ func _handle_movement_and_collisions(delta, bounciness):
 func update_state(delta):
 	_check_if_on_ground(delta)
 	if _is_on_ground:
-		_apply_horizontal_movement(delta, ground_friction, 1000.0, 200.0)
+		_apply_horizontal_movement(delta, ground_friction, 2000.0, 200.0)
 		if not _friction_is_suspended:
 			_apply_friction(delta, ground_friction)
 	else:

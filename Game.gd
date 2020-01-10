@@ -22,5 +22,5 @@ func _spawn_player(network_id):
 	add_child(new_player)
 	var body = new_player.get_node("KinematicBody2D")
 	body.controlling_player = network_id
-	body.initialize()
+	body.initialize(get_node("Spawn").position)
 	return new_player
