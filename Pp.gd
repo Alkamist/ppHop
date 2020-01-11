@@ -64,10 +64,6 @@ func _handle_jumping(delta, power, maximum_speed):
 		jump_vector = jump_vector.clamped(1.0)
 		var length = jump_vector.length()
 		if length > 0.0:
-			#jump_vector.y += 0.25
-			#jump_vector.y = min(jump_vector.y, 0.0)
-			#jump_vector *= 1.0 / pow(length, 0.7)
-			#jump_vector.y -= 0.25
 			jump_vector *= 1.0 / pow(length, 0.5)
 			jump_vector.y = min(jump_vector.y, -0.20)
 			jump_vector *= 300.0
@@ -106,6 +102,10 @@ func _handle_movement_and_collisions(delta, bounciness):
 		
 		# Handle sliding.
 		if abs(collision.normal.angle_to(Vector2.UP)) < 1.0 or do_not_bounce:
+			if collider.is_in_group("ice"):
+				ground_friction = 0.01
+			else:
+				ground_friction = 1.0
 			velocity = velocity.slide(collision.normal)
 			var slide_movement = collision.remainder.slide(collision.normal)
 			collision = move_and_collide(slide_movement)
