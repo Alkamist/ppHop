@@ -13,6 +13,7 @@ extents = Vector2( 1024, 2048 )
 [node name="Node2D" type="Node2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -0.5 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
 region_enabled = true
