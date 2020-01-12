@@ -14,20 +14,22 @@ extents = Vector2( 10, 9 )
 
 [node name="Node2D" type="Node2D"]
 
+[node name="Tween" type="Tween" parent="."]
+
 [node name="Smoothing2D" type="Node2D" parent="."]
 script = ExtResource( 1 )
 target = NodePath("../KinematicBody2D")
 
-[node name="Position2D" type="Position2D" parent="Smoothing2D"]
+[node name="Jiggle" type="Position2D" parent="Smoothing2D"]
 position = Vector2( 0, 1 )
 
-[node name="Position2D" type="Position2D" parent="Smoothing2D/Position2D"]
+[node name="Visuals" type="Position2D" parent="Smoothing2D/Jiggle"]
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D/Position2D/Position2D"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D/Jiggle/Visuals"]
 position = Vector2( 0, -1 )
 occluder = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="Smoothing2D/Position2D/Position2D"]
+[node name="Sprite" type="Sprite" parent="Smoothing2D/Jiggle/Visuals"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 normal_map = ExtResource( 3 )

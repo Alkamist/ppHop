@@ -12,6 +12,9 @@ var _target_transform := Transform2D()
 var _jump_direction := Vector2.ZERO
 var _is_on_ground := false
 var _should_jump := false
+var _should_crouch := false
+var _is_crouching := false
+var _was_crouching := false
 var _friction_is_suspended := false
 var _cant_launch_pp := false
 
@@ -41,15 +44,6 @@ func suspend_friction():
 
 func launch(new_velocity):
 	rpc_unreliable("_launch_master", new_velocity)
-
-remotesync func jiggle(intensity):
-	_jiggle_amplitude = intensity * 0.00025
-	_jiggle_phase = 0.0
-
-master func _launch_master(new_velocity):
-	suspend_friction()
-	rpc_unreliable("jiggle", new_velocity.length())
-	velocity = new_velocity
 
 func _add_to_velocity_component(adder, velocity_component, maximum):
 	if adder > 0.0:
@@ -87,6 +81,12 @@ func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
 			_friction_is_suspended = true
 			if abs(velocity.x) > maximum_speed:
 				velocity.x = lerp(velocity.x, sign(velocity.x) * maximum_speed, 60.0 * friction * delta)
+	elif _is_crouching:
+		var acceleration_component = acceleration * delta
+		if abs(velocity.x) > acceleration_component:
+			velocity.x += -sign(velocity.x) * acceleration * delta
+		else:
+			velocity.x = 0.0
 
 func _apply_friction(delta, friction):
 	velocity = lerp(velocity, Vector2.ZERO, 60.0 * friction * delta)
@@ -129,6 +129,10 @@ func _handle_movement_and_collisions(delta, bounciness):
 		
 		collision_count += 1
 
+func _handle_crouching(delta):
+	_was_crouching = _is_crouching
+	_is_crouching = _is_on_ground and _movement_direction == 0 and _should_crouch
+
 func update_state(delta):
 	_check_if_on_ground(delta)
 	if _is_on_ground:
@@ -138,6 +142,7 @@ func update_state(delta):
 	else:
 		_apply_horizontal_movement(delta, 0.0, 300.0, 140.0)
 		_apply_friction(delta, 0.005)
+	_handle_crouching(delta)
 	_handle_jumping(delta, 3.0, 1400.0)
 	_apply_gravity(delta, 20.0)
 	_handle_movement_and_collisions(delta, 0.8)
@@ -147,11 +152,8 @@ func update_state(delta):
 	if _time - _launched_pp_time > 0.15:
 		_cant_launch_pp = false
 
-remotesync func _set_sprite_facing_right(value):
-	get_node("../Smoothing2D/Position2D/Position2D").set_scale(Vector2(1.0 if value else -1.0, 1.0))
-
 func _handle_jiggle(delta, speed, dampening):
-	var appearance = get_node("../Smoothing2D/Position2D")
+	var appearance = get_node("../Smoothing2D/Jiggle")
 	var jiggle_scale = clamp(1.0 - sin(_jiggle_phase) * _jiggle_amplitude, 0.85, 1.15)
 	if abs(1.0 - jiggle_scale) < 0.01:
 		jiggle_scale = 1.0
@@ -165,29 +167,45 @@ func _handle_jiggle(delta, speed, dampening):
 		_jiggle_phase -= twoPI
 
 func _process(delta):
-	_handle_jiggle(delta, 30.0, 2.0)
-
-func _physics_process(delta):
 	if is_controlling_player():
 		_jump_direction = get_global_mouse_position() - global_position
-		_should_jump = Input.is_action_pressed("jump")
 		var left = -1 if Input.is_action_pressed("left") else 0
 		var right = 1 if Input.is_action_pressed("right") else 0
 		_movement_direction = left + right
+		
+	_handle_jiggle(delta, 30.0, 2.0)
 
+func _unhandled_input(event):
+	if not is_controlling_player():
+		return
+	if event.is_action_pressed("jump"):
+		_should_jump = true
+	elif event.is_action_released("jump"):
+		_should_jump = false
+	elif event.is_action_pressed("down"):
+		_should_crouch = true
+	elif event.is_action_released("down"):
+		_should_crouch = false
+
+func _physics_process(delta):
 	if is_network_master():
-		if Input.is_action_pressed("down"):
+		if Input.is_action_pressed("up"):
 			position = position.linear_interpolate(get_global_mouse_position(), 0.1)
 			velocity = Vector2.ZERO
 			velocity_before_collision = Vector2.ZERO
 		else:
 			update_state(delta)
+		
 		if _movement_direction == -1:
 			rpc_unreliable("_set_sprite_facing_right", false)
 		elif _movement_direction == 1:
 			rpc_unreliable("_set_sprite_facing_right", true)
 		else:
 			rpc_unreliable("_set_sprite_facing_right", _jump_direction.x >= 0.0)
+		
+		if _is_crouching != _was_crouching:
+			rpc("_set_crouch_visually", _is_crouching)
+		
 		rpc_unreliable("_update_clients", transform, velocity, velocity_before_collision)
 	else:
 		var distance = position.distance_to(_target_transform.origin)
@@ -206,3 +224,27 @@ remote func _update_clients(new_transform, new_velocity, new_velocity_before_col
 	velocity = new_velocity
 	velocity_before_collision = new_velocity_before_collision
 	_target_transform = new_transform
+
+remotesync func _set_sprite_facing_right(value):
+	get_node("../Smoothing2D/Jiggle/Visuals").scale.x = 1.0 if value else -1.0
+
+remotesync func _set_crouch_visually(value):
+	var tween = get_node("../Tween")
+	var visuals = get_node("../Smoothing2D/Jiggle/Visuals")
+	if value:
+		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.5), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 7.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.start()
+	else:
+		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.5), Vector2(visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 7.0), Vector2(visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.start()
+
+remotesync func jiggle(intensity):
+	_jiggle_amplitude = intensity * 0.00025
+	_jiggle_phase = 0.0
+
+master func _launch_master(new_velocity):
+	suspend_friction()
+	rpc_unreliable("jiggle", new_velocity.length())
+	velocity = new_velocity

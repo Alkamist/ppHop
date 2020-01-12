@@ -21,4 +21,4 @@ position = Vector2( -2048, -4064 )
 position = Vector2( -2048, -8232 )
 
 [node name="Spawn" type="Position2D" parent="."]
-position = Vector2( 728, 3800 )
+position = Vector2( -1048, -4440 )

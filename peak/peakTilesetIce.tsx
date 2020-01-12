@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="forestTileset" tilewidth="16" tileheight="16" tilecount="42" columns="7">
- <image source="peakTileset.png" width="112" height="96"/>
+<tileset version="1.2" tiledversion="1.3.1" name="peakTilesetIce" tilewidth="16" tileheight="16" tilecount="42" columns="7">
+ <image source="peakTilesetIce.png" width="112" height="96"/>
  <wangsets>
   <wangset name="New Wang Set" tile="-1">
    <wangedgecolor name="" color="#ff0000" tile="-1" probability="1"/>
