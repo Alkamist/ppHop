@@ -6,15 +6,21 @@ export var ground_friction := 1.0
 export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
+onready var _camera = get_node("../Smoothing2D/Camera2D")
+onready var _visuals = get_node("../Smoothing2D/Visuals")
+onready var _jiggle = get_node("../Smoothing2D/Visuals/Jiggle")
+
 var _maximum_collisions_per_frame := 4
 var _movement_direction := 0
 var _target_transform := Transform2D()
 var _jump_direction := Vector2.ZERO
 var _is_on_ground := false
+var _was_on_ground := false
 var _should_jump := false
 var _should_crouch := false
 var _is_crouching := false
 var _was_crouching := false
+var _just_jumped := false
 var _friction_is_suspended := false
 var _cant_launch_pp := false
 
@@ -30,7 +36,7 @@ var _jiggle_amplitude := 0.0
 func initialize(starting_position):
 	position = starting_position
 	if is_controlling_player():
-		get_node("../Smoothing2D/Camera2D").current = true
+		_camera.current = true
 
 func is_controlling_player():
 	return get_tree().get_network_unique_id() == controlling_player
@@ -65,17 +71,21 @@ func _handle_jumping(delta, power, maximum_speed):
 		velocity.y = jump_vector.y * power
 		_jump_time = _time
 		suspend_friction()
-		play_sound("PPJump")
+		rpc_unreliable("_play_networked_sound", "PPJump")
+		_just_jumped = true
+	else:
+		_just_jumped = false
 
 func _check_if_on_ground(delta):
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
+	_was_on_ground = _is_on_ground
 	_is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.7
 
 func _apply_gravity(delta, gravity):
 	velocity.y += 60.0 * gravity * delta
 
 func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
-	if _movement_direction != 0:
+	if _movement_direction != 0 and not _is_crouching:
 		velocity.x += _add_to_velocity_component(_movement_direction * acceleration * delta, velocity.x, maximum_speed)
 		if sign(_movement_direction) == sign(velocity.x) or velocity.x == 0.0:
 			_friction_is_suspended = true
@@ -112,7 +122,7 @@ func _handle_movement_and_collisions(delta, bounciness):
 		
 		# Collide with other pps.
 		elif collider.is_in_group("ppBody"):
-			rpc_unreliable("jiggle", velocity.length())
+			rpc_unreliable("_jiggle", velocity.length())
 			velocity = collider.velocity_before_collision * bounciness
 			if not _cant_launch_pp:
 				collider.launch(velocity_before_collision * bounciness)
@@ -122,16 +132,16 @@ func _handle_movement_and_collisions(delta, bounciness):
 		# Bounce off walls.
 		else:
 			velocity = velocity.bounce(collision.normal) * bounciness
-			rpc_unreliable("jiggle", velocity.length())
+			rpc_unreliable("_jiggle", velocity.length())
 			var bounce_movement = collision.remainder.bounce(collision.normal)
 			collision = move_and_collide(bounce_movement)
-			play_sound("PPBounce")
+			rpc_unreliable("_play_networked_sound", "PPBounce")
 		
 		collision_count += 1
 
 func _handle_crouching(delta):
 	_was_crouching = _is_crouching
-	_is_crouching = _is_on_ground and _movement_direction == 0 and _should_crouch
+	_is_crouching = _is_on_ground and _should_crouch
 
 func update_state(delta):
 	_check_if_on_ground(delta)
@@ -153,13 +163,12 @@ func update_state(delta):
 		_cant_launch_pp = false
 
 func _handle_jiggle(delta, speed, dampening):
-	var appearance = get_node("../Smoothing2D/Jiggle")
-	var jiggle_scale = clamp(1.0 - sin(_jiggle_phase) * _jiggle_amplitude, 0.85, 1.15)
+	var jiggle_scale = clamp(1.0 - sin(_jiggle_phase) * _jiggle_amplitude, 0.93, 1.07)
 	if abs(1.0 - jiggle_scale) < 0.01:
 		jiggle_scale = 1.0
-	appearance.scale.x = jiggle_scale
-	appearance.scale.y = jiggle_scale
-	appearance.position.y = 10.0 * (1.0 - jiggle_scale)
+	_jiggle.scale.x = jiggle_scale
+	_jiggle.scale.y = jiggle_scale
+	_jiggle.position.y = pow(12.0 * (1.0 - jiggle_scale), 2.0)
 	_jiggle_amplitude -= dampening * _jiggle_amplitude * delta
 	_jiggle_amplitude = max(_jiggle_amplitude, 0.0)
 	_jiggle_phase += speed * delta
@@ -173,7 +182,7 @@ func _process(delta):
 		var right = 1 if Input.is_action_pressed("right") else 0
 		_movement_direction = left + right
 		
-	_handle_jiggle(delta, 30.0, 2.0)
+	_handle_jiggle(delta, 50.0, 3.0)
 
 func _unhandled_input(event):
 	if not is_controlling_player():
@@ -201,10 +210,17 @@ func _physics_process(delta):
 		elif _movement_direction == 1:
 			rpc_unreliable("_set_sprite_facing_right", true)
 		else:
-			rpc_unreliable("_set_sprite_facing_right", _jump_direction.x >= 0.0)
+			if _just_jumped:
+				rpc_unreliable("_set_sprite_facing_right", _jump_direction.x >= 0.0)
 		
 		if _is_crouching != _was_crouching:
 			rpc("_set_crouch_visually", _is_crouching)
+		
+		if _is_on_ground and not _was_on_ground:
+			rpc_unreliable("_land_visually")
+		
+		if _just_jumped:
+			rpc_unreliable("_jump_visually")
 		
 		rpc_unreliable("_update_clients", transform, velocity, velocity_before_collision)
 	else:
@@ -213,9 +229,6 @@ func _physics_process(delta):
 			position = position.linear_interpolate(_target_transform.origin, 0.5)
 		else:
 			position = _target_transform.origin
-
-func play_sound(sound_name):
-	rpc_unreliable("_play_networked_sound", sound_name)
 
 remotesync func _play_networked_sound(sound_name):
 	SFX.play(sound_name, self)
@@ -226,21 +239,41 @@ remote func _update_clients(new_transform, new_velocity, new_velocity_before_col
 	_target_transform = new_transform
 
 remotesync func _set_sprite_facing_right(value):
-	get_node("../Smoothing2D/Jiggle/Visuals").scale.x = 1.0 if value else -1.0
+	if value:
+		if _visuals.scale.x < 0:
+			_visuals.scale.x *= -1
+	else:
+		if _visuals.scale.x >= 0:
+			_visuals.scale.x *= -1
 
 remotesync func _set_crouch_visually(value):
 	var tween = get_node("../Tween")
-	var visuals = get_node("../Smoothing2D/Jiggle/Visuals")
 	if value:
-		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.5), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 7.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.65), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 6.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 		tween.start()
 	else:
-		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.5), Vector2(visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 7.0), Vector2(visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.65), Vector2(_visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 6.0), Vector2(_visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 		tween.start()
 
-remotesync func jiggle(intensity):
+remotesync func _jump_visually():
+	var tween = get_node("../Tween")
+	tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.65), Vector2(_visuals.scale.x, 1.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 6.0), Vector2(_visuals.position.x, 0.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
+
+remotesync func _land_visually():
+	var tween = get_node("../Tween")
+	tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+	tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+	tween.start()
+	yield(tween, "tween_completed")
+	tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.9), Vector2(_visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+	tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 2.0), Vector2(_visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+	tween.start()
+
+remotesync func _jiggle(intensity):
 	_jiggle_amplitude = intensity * 0.00025
 	_jiggle_phase = 0.0
 

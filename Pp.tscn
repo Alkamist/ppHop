@@ -1,16 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/smoothing/smoothing_2d.gd" type="Script" id=1]
 [ext_resource path="res://assets/ppL.png" type="Texture" id=2]
-[ext_resource path="res://assets/ppLNormalMap.png" type="Texture" id=3]
 [ext_resource path="res://Pp.gd" type="Script" id=4]
 
-[sub_resource type="OccluderPolygon2D" id=1]
-cull_mode = 1
-polygon = PoolVector2Array( -6, -9, 14, -9, 10, 11, -18, 11 )
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 9 )
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 12, 10 )
 
 [node name="Node2D" type="Node2D"]
 
@@ -20,21 +15,15 @@ extents = Vector2( 10, 9 )
 script = ExtResource( 1 )
 target = NodePath("../KinematicBody2D")
 
-[node name="Jiggle" type="Position2D" parent="Smoothing2D"]
-position = Vector2( 0, 1 )
-
-[node name="Visuals" type="Position2D" parent="Smoothing2D/Jiggle"]
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D/Jiggle/Visuals"]
-position = Vector2( 0, -1 )
-occluder = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="Smoothing2D/Jiggle/Visuals"]
-scale = Vector2( 4, 4 )
-texture = ExtResource( 2 )
-normal_map = ExtResource( 3 )
-
 [node name="Camera2D" type="Camera2D" parent="Smoothing2D"]
+
+[node name="Visuals" type="Position2D" parent="Smoothing2D"]
+
+[node name="Jiggle" type="Position2D" parent="Smoothing2D/Visuals"]
+
+[node name="Sprite" type="Sprite" parent="Smoothing2D/Visuals/Jiggle"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="." groups=[
 "ppBody",
@@ -42,5 +31,5 @@ normal_map = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-position = Vector2( 0, 4 )
-shape = SubResource( 2 )
+position = Vector2( 0, 6 )
+shape = SubResource( 1 )

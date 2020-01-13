@@ -59,10 +59,10 @@ shape = SubResource( 1 )
 ]]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Ice"]
-polygon = PoolVector2Array( 64, 3968, 608, 3968, 608, 4064, 0, 4064, 0, 2080, 64, 2080 )
+polygon = PoolVector2Array( 64, 3968, 608, 3968, 608, 4064, 0, 4064, 0, -32, 1824, -32, 1824, 32, 64, 32 )
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Ice"]
-polygon = PoolVector2Array( 1984, 2208, 2048, 2208, 2048, 4064, 672, 4064, 672, 3968, 1984, 3968 )
+polygon = PoolVector2Array( 1984, 1760, 1920, 1760, 1920, 1728, 1984, 1728, 1984, 192, 2048, 192, 2048, 4064, 672, 4064, 672, 3968, 1984, 3968 )
 
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Ice"]
 polygon = PoolVector2Array( 1408, 3776, 1568, 3776, 1568, 3808, 1408, 3808 )
@@ -78,7 +78,7 @@ polygon = PoolVector2Array( 320, 3392, 480, 3392, 480, 3424, 320, 3424 )
 polygon = PoolVector2Array( 1504, 3360, 1664, 3360, 1664, 3392, 1504, 3392 )
 
 [node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="Ice"]
-polygon = PoolVector2Array( 1184, 2720, 1280, 2720, 1568, 2432, 1568, 2784, 1184, 2784 )
+polygon = PoolVector2Array( 1184, 2720, 1280, 2720, 1568, 2432, 1600, 2432, 1600, 2784, 1184, 2784 )
 
 [node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="Ice"]
 polygon = PoolVector2Array( 320, 2592, 448, 2592, 448, 2624, 320, 2624 )
@@ -87,20 +87,30 @@ polygon = PoolVector2Array( 320, 2592, 448, 2592, 448, 2624, 320, 2624 )
 polygon = PoolVector2Array( 320, 2400, 448, 2400, 448, 2272, 320, 2272, 320, 2240, 608, 2240, 608, 2272, 480, 2272, 480, 2432, 320, 2432 )
 
 [node name="CollisionPolygon2D10" type="CollisionPolygon2D" parent="Ice"]
-polygon = PoolVector2Array( 1408, 2112, 1568, 2112, 1568, 2144, 1408, 2144 )
+position = Vector2( 192, 0 )
+polygon = PoolVector2Array( 672, 2016, 736, 2016, 736, 2048, 672, 2048 )
 
-[node name="Rock" type="StaticBody2D" parent="."]
+[node name="CollisionPolygon2D11" type="CollisionPolygon2D" parent="Ice"]
+position = Vector2( 896, 32 )
+polygon = PoolVector2Array( 480, 1824, 544, 1824, 544, 1856, 480, 1856 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rock"]
-polygon = PoolVector2Array( 1568, 3232, 1760, 3232, 1760, 3200, 1600, 3200, 1600, 2848, 1568, 2848 )
+[node name="CollisionPolygon2D12" type="CollisionPolygon2D" parent="Ice"]
+polygon = PoolVector2Array( 1568, 2848, 1600, 2848, 1600, 3200, 1760, 3200, 1760, 3232, 1568, 3232 )
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Rock"]
-polygon = PoolVector2Array( 1856, 2976, 1888, 2976, 1888, 3008, 1856, 3008 )
+[node name="CollisionPolygon2D13" type="CollisionPolygon2D" parent="Ice"]
+polygon = PoolVector2Array( 1856, 2976, 1920, 2976, 1920, 3008, 1856, 3008 )
 
-[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Rock"]
-polygon = PoolVector2Array( 1568, 2784, 1568, 2432, 1600, 2432, 1600, 2784 )
+[node name="CollisionPolygon2D14" type="CollisionPolygon2D" parent="Ice"]
+polygon = PoolVector2Array( 1760, 2624, 1824, 2624, 1824, 2656, 1760, 2656 )
 
-[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Rock"]
-polygon = PoolVector2Array( 1792, 2624, 1824, 2624, 1824, 2656, 1792, 2656 )
+[node name="CollisionPolygon2D15" type="CollisionPolygon2D" parent="Ice"]
+polygon = PoolVector2Array( 1440, 1536, 1760, 1536, 1760, 1568, 1440, 1568 )
+
+[node name="CollisionPolygon2D16" type="CollisionPolygon2D" parent="Ice"]
+position = Vector2( 288, 0 )
+polygon = PoolVector2Array( 256, 1344, 416, 1344, 416, 1376, 256, 1376 )
+
+[node name="CollisionPolygon2D17" type="CollisionPolygon2D" parent="Ice"]
+polygon = PoolVector2Array( 224, 1120, 320, 1120, 320, 1152, 224, 1152 )
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]

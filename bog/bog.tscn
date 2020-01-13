@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/ppBones.png" type="Texture" id=1]
 [ext_resource path="res://assets/light.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://bog/bogBackground4.png" type="Texture" id=4]
 [ext_resource path="res://bog/bogBackground2.png" type="Texture" id=5]
 [ext_resource path="res://bog/bogBackground3.png" type="Texture" id=6]
+[ext_resource path="res://assets/MEGALUL.png" type="Texture" id=7]
 [ext_resource path="res://EncapsulatedParallax.gd" type="Script" id=8]
 [ext_resource path="res://bog/bogTilemap1.tmx" type="PackedScene" id=9]
 [ext_resource path="res://assets/ppLNormalMap.png" type="Texture" id=10]
@@ -87,8 +88,8 @@ position = Vector2( 0, 1130 )
 shape = SubResource( 1 )
 
 [node name="DeadPps" type="Node2D" parent="."]
-position = Vector2( 882.255, 3953.99 )
-scale = Vector2( 4, 4 )
+position = Vector2( 880, 3952 )
+scale = Vector2( 2, 2 )
 
 [node name="Sprite" type="Sprite" parent="DeadPps"]
 rotation = -0.436997
@@ -96,38 +97,43 @@ texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite6" type="Sprite" parent="DeadPps"]
-position = Vector2( 4.88445, -4.41175 )
+position = Vector2( 12, -12.0001 )
 rotation = 0.486578
 texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite7" type="Sprite" parent="DeadPps"]
-position = Vector2( 7.24788, 0 )
+position = Vector2( 20, -24.0001 )
 rotation = 0.258206
 texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite8" type="Sprite" parent="DeadPps"]
-position = Vector2( 15.5987, 0 )
+position = Vector2( 28, -12.0001 )
 rotation = -0.262473
 texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite9" type="Sprite" parent="DeadPps"]
-position = Vector2( 12.1323, -4.72688 )
-rotation = -0.407732
+position = Vector2( 36, -7.62939e-05 )
+rotation = 0.32331
 texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite10" type="Sprite" parent="DeadPps"]
-position = Vector2( 9.16033, -9.72521 )
-rotation = -0.16986
+position = Vector2( 16, -0.00012207 )
+rotation = 0.32374
 texture = ExtResource( 1 )
 normal_map = ExtResource( 10 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 606.981, 3885.28 )
+position = Vector2( 616.11, 3879 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 11 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 368, 3808 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 7 )
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]
