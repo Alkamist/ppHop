@@ -7,6 +7,7 @@ export var velocity := Vector2.ZERO
 export var velocity_before_collision := Vector2.ZERO
 
 onready var _camera = get_node("../Smoothing2D/Camera2D")
+onready var _sprite = get_node("../Smoothing2D/Visuals/Jiggle/Sprite")
 onready var _visuals = get_node("../Smoothing2D/Visuals")
 onready var _jiggle = get_node("../Smoothing2D/Visuals/Jiggle")
 
@@ -240,11 +241,11 @@ remote func _update_clients(new_transform, new_velocity, new_velocity_before_col
 
 remotesync func _set_sprite_facing_right(value):
 	if value:
-		if _visuals.scale.x < 0:
-			_visuals.scale.x *= -1
+		if _sprite.scale.x < 0.0:
+			_sprite.scale.x *= -1.0
 	else:
-		if _visuals.scale.x >= 0:
-			_visuals.scale.x *= -1
+		if _sprite.scale.x >= 0.0:
+			_sprite.scale.x *= -1.0
 
 remotesync func _set_crouch_visually(value):
 	var tween = get_node("../Tween")
@@ -264,14 +265,15 @@ remotesync func _jump_visually():
 	tween.start()
 
 remotesync func _land_visually():
-	var tween = get_node("../Tween")
-	tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween.start()
-	yield(tween, "tween_completed")
-	tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.9), Vector2(_visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 2.0), Vector2(_visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween.start()
+	if not _should_crouch:
+		var tween = get_node("../Tween")
+		tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.start()
+		yield(tween, "tween_completed")
+		tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.9), Vector2(_visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 2.0), Vector2(_visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.start()
 
 remotesync func _jiggle(intensity):
 	_jiggle_amplitude = intensity * 0.00025
