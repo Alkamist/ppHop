@@ -23,23 +23,18 @@ func add_y_velocity(value, maximum):
 		adder = max(value, clamp(-maximum - velocity.y, -maximum, 0.0))
 	velocity.y += adder
 
-func _handle_elastic_collision(collision):
-	var collider = collision.collider
-	if "velocity" in collider:
-		var collider_component = collision.normal * collider.velocity.dot(collision.normal)
-		var self_component = collision.normal * velocity.dot(collision.normal)
-		collider.velocity += self_component - collider_component
-		velocity += collider_component - self_component
-	else:
-		velocity = velocity.bounce(collision.normal)
-		return move_and_collide(collision.remainder.bounce(collision.normal))
-
-func _handle_slide_collision(collision):
-	velocity = velocity.slide(collision.normal)
-	return move_and_collide(collision.remainder.slide(collision.normal))
-
 func _handle_collision(collision):
-	_handle_elastic_collision(collision)
+	var collider = collision.collider
+	var self_component = collision.normal * velocity.dot(collision.normal)
+	if "velocity" in collider:
+		var collision_bounce = bounciness * collider.bounciness
+		var collider_component = collision.normal * collider.velocity.dot(collision.normal)
+		collider.velocity += collision_bounce * self_component - collider_component
+		velocity += collision_bounce * collider_component - self_component
+		return move_and_collide(collision.remainder.slide(collision.normal))
+	else:
+		velocity = velocity.bounce(collision.normal) + self_component * (1.0 - bounciness)
+		return move_and_collide(collision.remainder.slide(collision.normal))
 
 func _move(distance):
 	var collision := move_and_collide(distance, true, true, true)
