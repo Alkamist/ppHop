@@ -1,35 +1,24 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/smoothing/smoothing_2d.gd" type="Script" id=1]
+[ext_resource path="res://PpControl.gd" type="Script" id=1]
 [ext_resource path="res://assets/ppL.png" type="Texture" id=2]
 [ext_resource path="res://Pp.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 12, 10 )
 
-[node name="Node2D" type="Node2D"]
-
-[node name="Tween" type="Tween" parent="."]
-
-[node name="Smoothing2D" type="Node2D" parent="."]
+[node name="Pp" type="Node2D"]
 script = ExtResource( 1 )
-target = NodePath("../KinematicBody2D")
 
-[node name="Camera2D" type="Camera2D" parent="Smoothing2D"]
+[node name="Body" type="KinematicBody2D" parent="."]
+script = ExtResource( 4 )
 
-[node name="Visuals" type="Position2D" parent="Smoothing2D"]
-
-[node name="Jiggle" type="Position2D" parent="Smoothing2D/Visuals"]
-
-[node name="Sprite" type="Sprite" parent="Smoothing2D/Visuals/Jiggle"]
+[node name="Sprite" type="Sprite" parent="Body"]
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 
-[node name="KinematicBody2D" type="KinematicBody2D" parent="." groups=[
-"ppBody",
-]]
-script = ExtResource( 4 )
+[node name="Camera2D" type="Camera2D" parent="Body"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2( 0, 6 )
 shape = SubResource( 1 )

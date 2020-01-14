@@ -8,7 +8,8 @@ const DEFAULT_PORT = 31400
 const MAX_PLAYERS = 8
 
 func _load_game():
-	get_tree().change_scene("res://Game.tscn")
+	#get_tree().change_scene("res://Game.tscn")
+	get_tree().change_scene("res://PhysicsTest.tscn")
 
 func _on_NameField_text_changed(new_text):
 	_player_name = new_text

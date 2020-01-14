@@ -10,12 +10,24 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "KinematicBody2D",
+"class": "Mover",
+"language": "GDScript",
+"path": "res://Mover.gd"
+}, {
+"base": "Mover",
 "class": "Pp",
 "language": "GDScript",
 "path": "res://Pp.gd"
+}, {
+"base": "Node2D",
+"class": "PpControl",
+"language": "GDScript",
+"path": "res://PpControl.gd"
 } ]
 _global_script_class_icons={
-"Pp": ""
+"Mover": "",
+"Pp": "",
+"PpControl": ""
 }
 
 [application]

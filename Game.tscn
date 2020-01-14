@@ -22,7 +22,7 @@ position = Vector2( -2048, -4064 )
 position = Vector2( -2048, -8232 )
 
 [node name="Sky" parent="." instance=ExtResource( 6 )]
-position = Vector2( 440, -8168 )
+position = Vector2( -8, -8344 )
 
 [node name="Spawn" type="Position2D" parent="."]
-position = Vector2( -424, -8424 )
+position = Vector2( -1232, -4368 )
