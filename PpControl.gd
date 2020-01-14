@@ -1,5 +1,4 @@
 extends Node2D
-class_name PpControl
 
 export var controlling_player := 0
 
@@ -25,9 +24,7 @@ func _jump(jump_direction):
 		jump_vector *= 1.0 / pow(length, 0.5)
 		#jump_vector.y = min(jump_vector.y, -0.20)
 		jump_vector *= 300.0
-	#_body.add_x_velocity(jump_vector.x * 3.0, 1400.0)
-	_body.velocity.x = jump_vector.x * 3.0
-	_body.velocity.y = jump_vector.y * 3.0
+	_body.jump(Vector2(jump_vector.x * 3.0, jump_vector.y * 3.0))
 
 func _unhandled_input(event):
 	if not is_controlling_player():
