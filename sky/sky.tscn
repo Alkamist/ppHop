@@ -1,3 +1,28 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sky/skyTilemap.tmx" type="PackedScene" id=1]
+[ext_resource path="res://MovingPlatform.tscn" type="PackedScene" id=2]
 
 [node name="Node2D" type="Node2D"]
+
+[node name="skyTilemap" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 2, 2 )
+
+[node name="MovingPlatform" parent="." instance=ExtResource( 2 )]
+position = Vector2( 624, 3728 )
+move_to = Vector2( 200, 0 )
+
+[node name="MovingPlatform2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1200, 3728 )
+move_to = Vector2( -200, 0 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 0, 192, 64, 192, 64, 256, 96, 288, 96, 320, 64, 352, 64, 928, 96, 960, 96, 992, 64, 1024, 64, 1600, 96, 1632, 96, 1664, 64, 1696, 64, 2176, 96, 2208, 96, 2240, 64, 2272, 64, 2720, 96, 2752, 96, 2784, 64, 2816, 64, 3680, 96, 3712, 96, 3744, 64, 3776, 64, 4000, 384, 4000, 448, 3936, 544, 3936, 608, 4000, 704, 4000, 736, 4032, 736, 4064, 0, 4064 )
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 928, 4032, 960, 4000, 1120, 4000, 1152, 4032, 1152, 4064, 928, 4064 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 192, 3776, 192, 3616, 160, 3584, 160, 3552, 192, 3520, 192, 3232, 160, 3200, 160, 3168, 192, 3136, 192, 2400, 160, 2368, 160, 2336, 192, 2304, 192, 2048, 160, 2016, 160, 1984, 192, 1952, 192, 1536, 160, 1504, 160, 1472, 192, 1440, 192, 1312, 160, 1280, 160, 1248, 192, 1216, 192, 576, 160, 544, 160, 512, 192, 480, 192, 32, 0, 32, 0, -32, 256, -32, 256, 3808, 224, 3808 )

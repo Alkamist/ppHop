@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/forestTileset.png-1435887494a662e1a085fc31bc144bd6.stex"
+path="res://.import/skyTileset.png-6d6da7004b1d55dd083b6298583df9a0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://forest/forestTileset.png"
-dest_files=[ "res://.import/forestTileset.png-1435887494a662e1a085fc31bc144bd6.stex" ]
+source_file="res://sky/skyTileset.png"
+dest_files=[ "res://.import/skyTileset.png-6d6da7004b1d55dd083b6298583df9a0.stex" ]
 
 [params]
 

@@ -32,7 +32,6 @@ func _jump(jump_direction):
 	_jump_input_time = _time
 	_should_jump = true
 	_jump_direction = jump_direction
-	#_body.jump(jump_direction)
 
 func _process(delta):
 	if is_controlling_player():

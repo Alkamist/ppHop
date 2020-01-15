@@ -19,10 +19,10 @@ position = Vector2( -96, -3840 )
 position = Vector2( -2048, -4064 )
 
 [node name="Peak" parent="." instance=ExtResource( 5 )]
-position = Vector2( -2048, -8232 )
+position = Vector2( -2048, -8160 )
 
 [node name="Sky" parent="." instance=ExtResource( 6 )]
-position = Vector2( -8, -8344 )
+position = Vector2( 0, -8160 )
 
 [node name="Spawn" type="Position2D" parent="."]
-position = Vector2( -1232, -4368 )
+position = Vector2( 752, 3792 )
