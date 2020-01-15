@@ -20,7 +20,7 @@ target = NodePath("../Body")
 
 [node name="Camera2D" type="Camera2D" parent="Smoothing2D"]
 
-[node name="Visuals" type="Position2D" parent="Smoothing2D"]
+[node name="Visuals" type="Node2D" parent="Smoothing2D"]
 
 [node name="Jiggler" type="Node2D" parent="Smoothing2D/Visuals"]
 script = ExtResource( 5 )

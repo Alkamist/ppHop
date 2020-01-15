@@ -1,5 +1,6 @@
 extends "res://NetworkedMover.gd"
 
+export var bounciness := 0.8
 export var movement_direction := 0
 export var should_crouch := false
 export var is_crouching := false
@@ -48,8 +49,15 @@ func _suspend_friction():
 	_friction_is_suspended = true
 	_suspend_friction_time = _time
 
-func jump(jump_vector):
+func jump(jump_direction):
 	if is_on_floor():
+		var jump_vector = jump_direction / 300.0
+		jump_vector = jump_vector.clamped(1.0)
+		var length = jump_vector.length()
+		if length > 0.0:
+			jump_vector *= 1.0 / pow(length, 0.5)
+			jump_vector.y = min(jump_vector.y, -0.20)
+			jump_vector *= 3.0 * 300.0
 		velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, 1400.0)
 		velocity.y = jump_vector.y
 		_is_jumping = true
@@ -104,11 +112,11 @@ func _handle_collisions():
 		if abs(collision.normal.angle_to(Vector2.UP)) > 1.0:
 			if collider.is_in_group("ppBody"):
 				var collider_velocity = collider.velocity
-				collider.launch_master(velocity)
-				velocity = collider_velocity
+				collider.launch_master(velocity * bounciness)
+				velocity = collider_velocity * bounciness
 			else:
 				emit_signal("just_bounced")
-				velocity = velocity.bounce(collision.normal)
+				velocity = velocity.bounce(collision.normal) * bounciness
 			break
 		else:
 			velocity = velocity.slide(collision.normal)

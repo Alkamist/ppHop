@@ -7,7 +7,11 @@ onready var _tween := get_node("Tween")
 onready var _visuals := get_node("Smoothing2D/Visuals")
 onready var _jiggler := get_node("Smoothing2D/Visuals/Jiggler")
 
+var _time := 0.0
 var _controlling_player := 0
+var _jump_input_time := 0.0
+var _should_jump := false
+var _jump_direction := Vector2.ZERO
 
 func initialize(starting_position):
 	_body.position = starting_position
@@ -25,14 +29,10 @@ func is_server():
 	return get_tree().get_network_unique_id() == 1
 
 func _jump(jump_direction):
-	var jump_vector = jump_direction / 300.0
-	jump_vector = jump_vector.clamped(1.0)
-	var length = jump_vector.length()
-	if length > 0.0:
-		jump_vector *= 1.0 / pow(length, 0.5)
-		jump_vector.y = min(jump_vector.y, -0.20)
-		jump_vector *= 300.0
-	_body.jump(Vector2(jump_vector.x * 3.0, jump_vector.y * 3.0))
+	_jump_input_time = _time
+	_should_jump = true
+	_jump_direction = jump_direction
+	#_body.jump(jump_direction)
 
 func _process(delta):
 	if is_controlling_player():
@@ -44,6 +44,14 @@ func _process(delta):
 			rpc_unreliable("_set_sprite_facing_right", false)
 		elif _body.movement_direction == 1 and _sprite.scale.x < 0.0:
 			rpc_unreliable("_set_sprite_facing_right", true)
+		
+		if _should_jump:
+			_body.jump(_jump_direction)
+		
+		if _time - _jump_input_time > 0.067:
+			_should_jump = false
+	
+	_time += delta
 
 func _unhandled_input(event):
 	if not is_controlling_player():
@@ -103,6 +111,7 @@ func _on_Body_just_landed():
 	rpc_unreliable("_land_visually")
 
 func _on_Body_just_jumped():
+	_should_jump = false
 	rpc_unreliable("_play_networked_sound", "PPJump")
 	rpc_unreliable("_jump_visually")
 
