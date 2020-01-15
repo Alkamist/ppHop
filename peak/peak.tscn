@@ -1,41 +1,13 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://peak/peakTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://mountain/mountainBackground2.png" type="Texture" id=2]
 [ext_resource path="res://mountain/mountainBackground3.png" type="Texture" id=3]
 [ext_resource path="res://mountain/mountainBackground1.png" type="Texture" id=4]
 [ext_resource path="res://EncapsulatedParallax.gd" type="Script" id=5]
-[ext_resource path="res://sky/skyPlatform.png" type="Texture" id=6]
-[ext_resource path="res://MovingPlatform.gd" type="Script" id=7]
-[ext_resource path="res://MovingPlatformAnimation.gd" type="Script" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2103.89, 3782.89 )
-
-[sub_resource type="Animation" id=2]
-resource_name = "Platform"
-length = 2.0
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 0.99 ]
-}
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 64, 16 )
-
-[sub_resource type="Curve2D" id=4]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 286, 0, 0, 0, 0, 128, 286 )
-}
 
 [node name="Node2D" type="Node2D"]
 
@@ -140,40 +112,5 @@ polygon = PoolVector2Array( 256, 1344, 416, 1344, 416, 1376, 256, 1376 )
 
 [node name="CollisionPolygon2D17" type="CollisionPolygon2D" parent="Ice"]
 polygon = PoolVector2Array( 224, 1120, 320, 1120, 320, 1152, 224, 1152 )
-
-[node name="MovingPlatform" type="Node2D" parent="."]
-position = Vector2( 1184, 3664 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="MovingPlatform"]
-playback_process_mode = 0
-anims/Platform = SubResource( 2 )
-script = ExtResource( 8 )
-
-[node name="KinematicBody2D" type="KinematicBody2D" parent="MovingPlatform" groups=[
-"platform",
-]]
-position = Vector2( 98.4771, 286 )
-script = ExtResource( 7 )
-
-[node name="Sprite" type="Sprite" parent="MovingPlatform/KinematicBody2D"]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MovingPlatform/KinematicBody2D"]
-shape = SubResource( 3 )
-
-[node name="Path2D" type="Path2D" parent="MovingPlatform"]
-curve = SubResource( 4 )
-
-[node name="PathFollow2D" type="PathFollow2D" parent="MovingPlatform/Path2D"]
-position = Vector2( 98.4771, 286 )
-rotation = -0.555003
-offset = 98.5149
-rotate = false
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="MovingPlatform/Path2D/PathFollow2D"]
-remote_path = NodePath("../../../KinematicBody2D")
-update_rotation = false
-update_scale = false
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]

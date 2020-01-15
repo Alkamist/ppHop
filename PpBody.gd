@@ -4,9 +4,11 @@ export var movement_direction := 0
 export var should_crouch := false
 export var is_crouching := false
 
+var _controlling_player := 0
+var _was_on_floor := false
 var _was_crouching := false
 var _gravity := 1200.0
-var _ground_friction := 0.01
+var _ground_friction := 1.0
 var _air_resistance := 0.005
 var _time := 0.0
 var _launch_time := 0.0
@@ -18,11 +20,19 @@ var _floor_normal := Vector2.UP
 var _platform_snap := Vector2.ZERO
 var _current_platform
 
-onready var _jiggler := get_node("../Smoothing2D/Visuals/Jiggler")
-
 signal just_jumped
 signal just_crouched
 signal just_uncrouched
+signal just_landed
+signal just_became_airborne
+signal just_got_launched
+signal just_bounced
+
+func set_controlling_player(id):
+	_controlling_player = id
+
+func is_controlling_player():
+	return get_tree().get_network_unique_id() == _controlling_player
 
 func _unsnap_from_platform():
 	_platform_snap.y = 0
@@ -39,12 +49,13 @@ func _suspend_friction():
 	_suspend_friction_time = _time
 
 func jump(jump_vector):
-	velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, 1400.0)
-	velocity.y = jump_vector.y
-	_is_jumping = true
-	_unsnap_from_platform()
-	_suspend_friction()
-	emit_signal("just_jumped")
+	if is_on_floor():
+		velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, 1400.0)
+		velocity.y = jump_vector.y
+		_is_jumping = true
+		_unsnap_from_platform()
+		_suspend_friction()
+		emit_signal("just_jumped")
 
 func launch_master(launch_vector):
 	rpc("_launch_master", launch_vector)
@@ -56,7 +67,7 @@ master func _launch_master(launch_vector):
 		velocity.y = launch_vector.y
 		_unsnap_from_platform()
 		_suspend_friction()
-		_jiggler.jiggle(velocity.length())
+		emit_signal("just_got_launched")
 
 func _add_to_velocity_component(velocity_component, adder, maximum):
 	if adder > 0.0:
@@ -91,20 +102,20 @@ func _handle_collisions():
 		var collision = get_slide_collision(i)
 		var collider = collision.collider
 		if abs(collision.normal.angle_to(Vector2.UP)) > 1.0:
-			_jiggler.jiggle(velocity.length())
 			if collider.is_in_group("ppBody"):
 				var collider_velocity = collider.velocity
 				collider.launch_master(velocity)
 				velocity = collider_velocity
 			else:
+				emit_signal("just_bounced")
 				velocity = velocity.bounce(collision.normal)
 			break
 		else:
 			velocity = velocity.slide(collision.normal)
-			#if collider.is_in_group("ice"):
-			#	_ground_friction = 0.01
-			#else:
-			#	_ground_friction = 1.0
+			if collider.is_in_group("ice"):
+				_ground_friction = 0.01
+			else:
+				_ground_friction = 1.0
 			if collider.is_in_group("platform"):
 				_snap_to_platform(collider)
 
@@ -116,11 +127,14 @@ func _handle_crouching():
 	if not is_crouching and _was_crouching:
 		emit_signal("just_uncrouched")
 
-func update_state(delta):
-	if Input.is_action_pressed("up"):
-		position = get_global_mouse_position()
-		velocity = Vector2.ZERO
-	
+func _handle_floor_signals():
+	if is_on_floor() and not _was_on_floor:
+		emit_signal("just_landed")
+	if not is_on_floor() and _was_on_floor:
+		emit_signal("just_became_airborne")
+	_was_on_floor = is_on_floor()
+
+func _handle_physics(delta):
 	_apply_gravity(delta)
 	_handle_crouching()
 	
@@ -133,11 +147,19 @@ func update_state(delta):
 		_apply_horizontal_movement(delta, 0.0, 300.0, 140.0)
 		_apply_friction(delta, _air_resistance)
 	
-	move_and_slide_with_snap(velocity, _platform_snap, _floor_normal)
+	move_and_slide_with_snap(velocity, _platform_snap, _floor_normal, false, 4, 0.7)
 	_handle_collisions()
+	_handle_floor_signals()
 	
 	_is_jumping = false
 	if _time - _suspend_friction_time > 0.2:
 		_friction_is_suspended = false
 	
 	_time += delta
+
+func update_state(delta):
+	if is_controlling_player() and Input.is_action_pressed("up"):
+		position = lerp(position, get_global_mouse_position(), 0.1)
+		velocity = Vector2.ZERO
+	else:
+		_handle_physics(delta)

@@ -3,7 +3,7 @@
 [ext_resource path="res://PpControl.gd" type="Script" id=1]
 [ext_resource path="res://assets/ppL.png" type="Texture" id=2]
 [ext_resource path="res://addons/smoothing/smoothing_2d.gd" type="Script" id=3]
-[ext_resource path="res://Pp.gd" type="Script" id=4]
+[ext_resource path="res://PpBody.gd" type="Script" id=4]
 [ext_resource path="res://Jiggler.gd" type="Script" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -37,5 +37,9 @@ script = ExtResource( 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2( 0, 6 )
 shape = SubResource( 1 )
+[connection signal="just_bounced" from="Body" to="." method="_on_Body_just_bounced"]
 [connection signal="just_crouched" from="Body" to="." method="_on_Body_just_crouched"]
+[connection signal="just_got_launched" from="Body" to="." method="_on_Body_just_got_launched"]
+[connection signal="just_jumped" from="Body" to="." method="_on_Body_just_jumped"]
+[connection signal="just_landed" from="Body" to="." method="_on_Body_just_landed"]
 [connection signal="just_uncrouched" from="Body" to="." method="_on_Body_just_uncrouched"]

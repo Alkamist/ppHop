@@ -1,13 +1,13 @@
-extends "res://NetworkedMover.gd"
+extends Node2D
 
-onready var _previous_position := position
-var _movement := Vector2.ZERO
-var _time := 0.0
+export var move_to := Vector2.ZERO
+export var speed := 300.0
 
-func update_state(delta):
-	velocity = (position - _previous_position) / delta
-	_movement.x = 500.0 * sin(_time * 5.0) * delta
-	_movement.y = -500.0 * sin(_time * 5.0) * delta
-	position += _movement
-	_previous_position = position
-	_time += delta
+onready var _body := get_node("Body")
+onready var _tween := get_node("Tween")
+
+func _ready():
+	var duration = move_to.length() / speed
+	_tween.interpolate_property(_body, "target", Vector2.ZERO, move_to, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	_tween.interpolate_property(_body, "target", move_to, Vector2.ZERO, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, duration)
+	_tween.start()
