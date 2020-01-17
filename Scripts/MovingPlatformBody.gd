@@ -1,9 +1,9 @@
 extends "res://Scripts/NetworkedMover.gd"
 
 var target := Vector2.ZERO
-onready var previous_position := position
+var movement := Vector2.ZERO
 
 func update_state(delta):
-	velocity = (position - previous_position) / delta
-	position = position.linear_interpolate(target, 0.075)
-	previous_position = position
+	movement = target - position
+	velocity = movement / delta
+	position += movement

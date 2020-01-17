@@ -3,23 +3,20 @@
 [ext_resource path="res://Sky/skyTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/MovingPlatform.tscn" type="PackedScene" id=2]
 
-
-
-
-
-
 [node name="Node2D" type="Node2D"]
 
 [node name="skyTilemap" parent="." instance=ExtResource( 1 )]
 scale = Vector2( 2, 2 )
 
 [node name="MovingPlatform" parent="." instance=ExtResource( 2 )]
-position = Vector2( 624, 3728 )
-move_to = Vector2( 200, 0 )
+position = Vector2( 625.658, 3828.39 )
+move_to = Vector2( 0, -600 )
+speed = 600.0
 
 [node name="MovingPlatform2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1200, 3728 )
-move_to = Vector2( -200, 0 )
+position = Vector2( 1024.92, 3982.36 )
+move_to = Vector2( 200, 0 )
+speed = 600.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
