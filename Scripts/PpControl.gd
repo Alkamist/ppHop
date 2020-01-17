@@ -5,12 +5,12 @@ var controlling_player := -1
 var jump_input_time := 0.0
 var should_jump := false
 var jump_direction := Vector2.ZERO
-onready var camera := get_node("Body/Camera2D")
+onready var camera := get_node("Smoothing2D/Camera2D")
 onready var body := get_node("Body")
-onready var sprite := get_node("Body/Visuals/Jiggler/Sprite")
+onready var sprite := get_node("Smoothing2D/Visuals/Jiggler/Sprite")
 onready var tween := get_node("Tween")
-onready var visuals := get_node("Body/Visuals")
-onready var jiggler := get_node("Body/Visuals/Jiggler")
+onready var visuals := get_node("Smoothing2D/Visuals")
+onready var jiggler := get_node("Smoothing2D/Visuals/Jiggler")
 
 func initialize(starting_position):
 	body.position = starting_position
