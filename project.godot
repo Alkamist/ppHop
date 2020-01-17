@@ -16,15 +16,20 @@ _global_script_class_icons={
 [application]
 
 config/name="ppHop"
-run/main_scene="res://interface/Menu.tscn"
+run/main_scene="res://MainMenu/MainMenu.tscn"
 
 [autoload]
 
-SFX="*res://SFX.tscn"
+SFX="*res://Scenes/SFX.tscn"
+Network="*res://Scripts/Network.gd"
 
 [editor_plugins]
 
 enabled=PoolStringArray( "smoothing", "vnen.tiled_importer" )
+
+[gdnative]
+
+singletons=[ "res://webrtc/webrtc.tres" ]
 
 [input]
 

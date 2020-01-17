@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/skyTilemap.tmx-cbc9903eb7b11d02bd2878f1ee68a989.scn"
+path="res://.import/skyTilemap.tmx-81c287606ceac592f07c575d3d786dd5.scn"
 
 [deps]
 
-source_file="res://sky/skyTilemap.tmx"
-dest_files=[ "res://.import/skyTilemap.tmx-cbc9903eb7b11d02bd2878f1ee68a989.scn" ]
+source_file="res://Sky/skyTilemap.tmx"
+dest_files=[ "res://.import/skyTilemap.tmx-81c287606ceac592f07c575d3d786dd5.scn" ]
 
 [params]
 

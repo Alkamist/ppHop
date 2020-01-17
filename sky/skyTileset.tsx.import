@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_tileset_importer"
 type="TileSet"
-path="res://.import/skyTileset.tsx-15551c8d0b1c2163e98a37cd893bfe03.res"
+path="res://.import/skyTileset.tsx-3545f2ddbb8bcb5f821ae76fe5a71bd7.res"
 
 [deps]
 
-source_file="res://sky/skyTileset.tsx"
-dest_files=[ "res://.import/skyTileset.tsx-15551c8d0b1c2163e98a37cd893bfe03.res" ]
+source_file="res://Sky/skyTileset.tsx"
+dest_files=[ "res://.import/skyTileset.tsx-3545f2ddbb8bcb5f821ae76fe5a71bd7.res" ]
 
 [params]
 

@@ -1,11 +1,16 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://forest/forestBackground3.png" type="Texture" id=1]
-[ext_resource path="res://forest/forestBackground1.png" type="Texture" id=2]
-[ext_resource path="res://forest/forestBackground4.png" type="Texture" id=3]
-[ext_resource path="res://forest/forestBackground2.png" type="Texture" id=4]
-[ext_resource path="res://EncapsulatedParallax.gd" type="Script" id=5]
-[ext_resource path="res://forest/forestTilemap.tmx" type="PackedScene" id=6]
+[ext_resource path="res://Forest/forestBackground3.png" type="Texture" id=1]
+[ext_resource path="res://Forest/forestBackground1.png" type="Texture" id=2]
+[ext_resource path="res://Forest/forestBackground4.png" type="Texture" id=3]
+[ext_resource path="res://Forest/forestBackground2.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=5]
+[ext_resource path="res://Forest/forestTilemap.tmx" type="PackedScene" id=6]
+
+
+
+
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2188.07, 2048 )

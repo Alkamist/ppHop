@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_tileset_importer"
 type="TileSet"
-path="res://.import/forestTileset.tsx-537b231a9c818af709d797d8c9ed21f3.res"
+path="res://.import/forestTileset.tsx-52b1bb54d94df7ec1e4e4b116f2af226.res"
 
 [deps]
 
-source_file="res://forest/forestTileset.tsx"
-dest_files=[ "res://.import/forestTileset.tsx-537b231a9c818af709d797d8c9ed21f3.res" ]
+source_file="res://Forest/forestTileset.tsx"
+dest_files=[ "res://.import/forestTileset.tsx-52b1bb54d94df7ec1e4e4b116f2af226.res" ]
 
 [params]
 

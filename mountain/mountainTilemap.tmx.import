@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/mountainTilemap.tmx-d3d45f3e395af043cc898c9e2c1891a2.scn"
+path="res://.import/mountainTilemap.tmx-bc2e1562d68a378aceb2ae9642771153.scn"
 
 [deps]
 
-source_file="res://mountain/mountainTilemap.tmx"
-dest_files=[ "res://.import/mountainTilemap.tmx-d3d45f3e395af043cc898c9e2c1891a2.scn" ]
+source_file="res://Mountain/mountainTilemap.tmx"
+dest_files=[ "res://.import/mountainTilemap.tmx-bc2e1562d68a378aceb2ae9642771153.scn" ]
 
 [params]
 

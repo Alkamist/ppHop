@@ -1,12 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://interface/Menu.gd" type="Script" id=1]
-[ext_resource path="res://interface/fonts/montserrat_eb_48.tres" type="DynamicFont" id=2]
-[ext_resource path="res://interface/fonts/montserrat_eb_32.tres" type="DynamicFont" id=3]
-[ext_resource path="res://interface/buttons/join.png" type="Texture" id=4]
-[ext_resource path="res://interface/buttons/join-pressed.png" type="Texture" id=5]
-[ext_resource path="res://interface/buttons/create.png" type="Texture" id=6]
-[ext_resource path="res://interface/buttons/create-pressed.png" type="Texture" id=7]
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -17,99 +11,8 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -315.0
-margin_top = -160.0
-margin_right = 315.0
-margin_bottom = 120.0
-custom_constants/separation = 20
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Title2" type="Label" parent="VBoxContainer"]
-margin_right = 630.0
-margin_bottom = 52.0
-custom_fonts/font = ExtResource( 2 )
-text = "Lobby"
-align = 1
-
-[node name="Name" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 630.0
-margin_bottom = 124.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="VBoxContainer/Name"]
-margin_right = 143.0
-margin_bottom = 52.0
-custom_fonts/font = ExtResource( 2 )
-text = "Name:"
-align = 2
-
-[node name="NameField" type="LineEdit" parent="VBoxContainer/Name"]
-margin_left = 163.0
-margin_right = 630.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
-
-[node name="IP" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 144.0
-margin_right = 630.0
-margin_bottom = 196.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="VBoxContainer/IP"]
-margin_right = 173.0
-margin_bottom = 52.0
-custom_fonts/font = ExtResource( 2 )
-text = "Host IP:"
-align = 2
-
-[node name="IPField" type="LineEdit" parent="VBoxContainer/IP"]
-margin_left = 193.0
-margin_right = 630.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 3 )
-
-[node name="Buttons" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 216.0
-margin_right = 630.0
-margin_bottom = 312.0
-custom_constants/separation = 0
-
-[node name="JoinButton" type="TextureButton" parent="VBoxContainer/Buttons"]
-margin_right = 315.0
-margin_bottom = 96.0
-rect_min_size = Vector2( 192, 96 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture_normal = ExtResource( 4 )
-texture_pressed = ExtResource( 5 )
-expand = true
-stretch_mode = 5
-
-[node name="CreateButton" type="TextureButton" parent="VBoxContainer/Buttons"]
-margin_left = 315.0
-margin_right = 630.0
-margin_bottom = 96.0
-rect_min_size = Vector2( 192, 96 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 7 )
-expand = true
-stretch_mode = 5
-[connection signal="text_changed" from="VBoxContainer/Name/NameField" to="." method="_on_NameField_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/IP/IPField" to="." method="_on_IPField_text_changed"]
-[connection signal="button_down" from="VBoxContainer/Buttons/JoinButton" to="." method="_on_JoinButton_button_down"]
-[connection signal="button_down" from="VBoxContainer/Buttons/CreateButton" to="." method="_on_CreateButton_button_down"]

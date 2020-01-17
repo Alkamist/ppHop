@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/peakTilesetRock.png-aea609ea579d15cb7b8652cf8a1abb86.stex"
+path="res://.import/peakTilesetRock.png-f7d3dcb246fe64075da62465580c690f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://peak/peakTilesetRock.png"
-dest_files=[ "res://.import/peakTilesetRock.png-aea609ea579d15cb7b8652cf8a1abb86.stex" ]
+source_file="res://Peak/peakTilesetRock.png"
+dest_files=[ "res://.import/peakTilesetRock.png-f7d3dcb246fe64075da62465580c690f.stex" ]
 
 [params]
 

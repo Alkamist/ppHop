@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/peakTilemap.tmx-2302b815de8ea48f93b547c6a8ce5b97.scn"
+path="res://.import/peakTilemap.tmx-c64064d2074f12e153320b16c638a0fa.scn"
 
 [deps]
 
-source_file="res://peak/peakTilemap.tmx"
-dest_files=[ "res://.import/peakTilemap.tmx-2302b815de8ea48f93b547c6a8ce5b97.scn" ]
+source_file="res://Peak/peakTilemap.tmx"
+dest_files=[ "res://.import/peakTilemap.tmx-c64064d2074f12e153320b16c638a0fa.scn" ]
 
 [params]
 

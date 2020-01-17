@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/bounceSound1.wav-9845b4d3e4a6b7b530be3d967e6de7ff.sample"
+path="res://.import/bounceSound1.wav-84da6a5a2df523cd319bdbfc2d9723af.sample"
 
 [deps]
 
-source_file="res://sounds/bounceSound1.wav"
-dest_files=[ "res://.import/bounceSound1.wav-9845b4d3e4a6b7b530be3d967e6de7ff.sample" ]
+source_file="res://Sounds/bounceSound1.wav"
+dest_files=[ "res://.import/bounceSound1.wav-84da6a5a2df523cd319bdbfc2d9723af.sample" ]
 
 [params]
 

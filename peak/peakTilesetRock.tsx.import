@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_tileset_importer"
 type="TileSet"
-path="res://.import/peakTilesetRock.tsx-30b49fa2508f603a01134d0cc6512f30.res"
+path="res://.import/peakTilesetRock.tsx-659c68ae795f749ed05957bd8618a3cf.res"
 
 [deps]
 
-source_file="res://peak/peakTilesetRock.tsx"
-dest_files=[ "res://.import/peakTilesetRock.tsx-30b49fa2508f603a01134d0cc6512f30.res" ]
+source_file="res://Peak/peakTilesetRock.tsx"
+dest_files=[ "res://.import/peakTilesetRock.tsx-659c68ae795f749ed05957bd8618a3cf.res" ]
 
 [params]
 
