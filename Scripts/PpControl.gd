@@ -1,101 +1,100 @@
 extends Node2D
 
-onready var _camera := get_node("Smoothing2D/Camera2D")
-onready var _body := get_node("Body")
-onready var _sprite := get_node("Smoothing2D/Visuals/Jiggler/Sprite")
-onready var _tween := get_node("Tween")
-onready var _visuals := get_node("Smoothing2D/Visuals")
-onready var _jiggler := get_node("Smoothing2D/Visuals/Jiggler")
-
-var _time := 0.0
-var _controlling_player := -1
-var _jump_input_time := 0.0
-var _should_jump := false
-var _jump_direction := Vector2.ZERO
+var time := 0.0
+var controlling_player := -1
+var jump_input_time := 0.0
+var should_jump := false
+var jump_direction := Vector2.ZERO
+onready var camera := get_node("Smoothing2D/Camera2D")
+onready var body := get_node("Body")
+onready var sprite := get_node("Smoothing2D/Visuals/Jiggler/Sprite")
+onready var tween := get_node("Tween")
+onready var visuals := get_node("Smoothing2D/Visuals")
+onready var jiggler := get_node("Smoothing2D/Visuals/Jiggler")
 
 func initialize(starting_position):
-	_body.position = starting_position
+	body.position = starting_position
 	if is_controlling_player():
-		_camera.current = true
+		camera.current = true
 
 func set_controlling_player(id):
-	_controlling_player = id
-	_body.set_controlling_player(id)
+	controlling_player = id
+	body.set_controlling_player(id)
 
 func is_controlling_player():
-	return get_tree().get_network_unique_id() == _controlling_player
+	return get_tree().get_network_unique_id() == controlling_player
 
-func _jump(jump_direction):
-	_jump_input_time = _time
-	_should_jump = true
-	_jump_direction = jump_direction
+func _jump(direction):
+	jump_input_time = time
+	should_jump = true
+	jump_direction = direction
 
 func _process(delta):
 	if is_controlling_player():
 		var left = -1 if Input.is_action_pressed("left") else 0
 		var right = 1 if Input.is_action_pressed("right") else 0
-		_body.movement_direction = left + right
-	
-		if _body.movement_direction == -1 and _sprite.scale.x >= 0.0:
+		body.movement_direction = left + right
+
+		if body.movement_direction == -1 and sprite.scale.x >= 0.0:
 			rpc_unreliable("_set_sprite_facing_right", false)
-		elif _body.movement_direction == 1 and _sprite.scale.x < 0.0:
+		elif body.movement_direction == 1 and sprite.scale.x < 0.0:
 			rpc_unreliable("_set_sprite_facing_right", true)
-		
-		if _should_jump:
-			_body.jump(_jump_direction)
-		
-		if _time - _jump_input_time > 0.067:
-			_should_jump = false
-	
-	_time += delta
+
+		if should_jump:
+			body.jump(jump_direction)
+
+		if time - jump_input_time > 0.067:
+			should_jump = false
+
+	time += delta
 
 func _unhandled_input(event):
 	if not is_controlling_player():
 		return
 	if event.is_action_pressed("jump"):
-		var jump_direction = get_global_mouse_position() - _body.global_position
+		var jump_direction = get_global_mouse_position() - body.global_position
 		rpc_unreliable("_set_sprite_facing_right", jump_direction.x >= 0.0)
-		_jump(get_global_mouse_position() - _body.global_position)
+		_jump(get_global_mouse_position() - body.global_position)
 	elif event.is_action_pressed("down"):
-		_body.should_crouch = true
+		body.should_crouch = true
 	elif event.is_action_released("down"):
-		_body.should_crouch = false
+		body.should_crouch = false
 
 remotesync func _set_sprite_facing_right(value):
 	if value:
-		if _sprite.scale.x < 0.0:
-			_sprite.scale.x *= -1.0
+		if sprite.scale.x < 0.0:
+			sprite.scale.x *= -1.0
 	else:
-		if _sprite.scale.x >= 0.0:
-			_sprite.scale.x *= -1.0
+		if sprite.scale.x >= 0.0:
+			sprite.scale.x *= -1.0
 
 remotesync func _play_networked_sound(sound_name):
-	SFX.play(sound_name, _body)
+	SFX.play(sound_name, body)
 
 remotesync func _land_visually():
-	if not _body.should_crouch:
-		_tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		_tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		_tween.start()
-		yield(_tween, "tween_completed")
-		_tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.9), Vector2(_visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		_tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 2.0), Vector2(_visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		_tween.start()
+	if not body.should_crouch:
+		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.start()
+		yield(tween, "tween_completed")
+		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.9), Vector2(visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 2.0), Vector2(visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween.start()
 
 remotesync func _jump_visually():
-	_tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.65), Vector2(_visuals.scale.x, 1.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 6.0), Vector2(_visuals.position.x, 0.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.start()
+	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.65), Vector2(visuals.scale.x, 1.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 6.0), Vector2(visuals.position.x, 0.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
 
 remotesync func _crouch_visually():
-	_tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 1.0), Vector2(_visuals.scale.x, 0.65), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 0.0), Vector2(_visuals.position.x, 6.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.start()
+	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.65), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 6.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
 
 remotesync func _uncrouch_visually():
-	_tween.interpolate_property(_visuals, "scale", Vector2(_visuals.scale.x, 0.65), Vector2(_visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.interpolate_property(_visuals, "position", Vector2(_visuals.position.x, 6.0), Vector2(_visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	_tween.start()
+	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.65), Vector2(visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 6.0), Vector2(visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+	tween.start()
 
 func _on_Body_just_crouched():
 	rpc("_crouch_visually")
@@ -107,15 +106,15 @@ func _on_Body_just_landed():
 	rpc_unreliable("_land_visually")
 
 func _on_Body_just_jumped():
-	_should_jump = false
+	should_jump = false
 	rpc_unreliable("_play_networked_sound", "PPJump")
 	rpc_unreliable("_jump_visually")
 
 func _on_Body_just_got_launched():
-	_jiggler.jiggle(_body.velocity.length())
+	jiggler.jiggle(body.velocity.length())
 
 func _on_Body_just_bounced():
-	var impact_speed = _body.velocity.length()
+	var impact_speed = body.velocity.length()
 	if impact_speed > 200.0:
 		rpc_unreliable("_play_networked_sound", "PPBounce")
-		_jiggler.jiggle(impact_speed)
+		jiggler.jiggle(impact_speed)

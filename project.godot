@@ -23,6 +23,11 @@ run/main_scene="res://MainMenu/MainMenu.tscn"
 SFX="*res://Scenes/SFX.tscn"
 Network="*res://Scripts/Network.gd"
 
+[display]
+
+window/size/width=1280
+window/size/height=800
+
 [editor_plugins]
 
 enabled=PoolStringArray( "smoothing", "vnen.tiled_importer" )

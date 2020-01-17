@@ -3,8 +3,8 @@
 [ext_resource path="res://MultiPlayerLobby/MultiPlayerLobby.gd" type="Script" id=1]
 
 [node name="MultiPlayerLobby" type="Control"]
-margin_right = 1024.0
-margin_bottom = 600.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -22,32 +22,32 @@ __meta__ = {
 }
 
 [node name="ConnectTo" type="Label" parent="VBoxContainer"]
-margin_right = 204.0
+margin_right = 256.0
 margin_bottom = 14.0
 text = "Connect to IP:"
 
 [node name="IP" type="LineEdit" parent="VBoxContainer"]
 margin_top = 18.0
-margin_right = 204.0
+margin_right = 256.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 text = "127.0.0.1"
 
 [node name="Join" type="Button" parent="VBoxContainer"]
 margin_top = 46.0
-margin_right = 204.0
+margin_right = 256.0
 margin_bottom = 66.0
 text = "Join"
 
 [node name="Cancel" type="Button" parent="VBoxContainer"]
 margin_top = 70.0
-margin_right = 204.0
+margin_right = 256.0
 margin_bottom = 90.0
 text = "Cancel"
 
 [node name="Host" type="Button" parent="VBoxContainer"]
 margin_top = 94.0
-margin_right = 204.0
+margin_right = 256.0
 margin_bottom = 114.0
 text = "Host"
 [connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_Join_pressed"]
