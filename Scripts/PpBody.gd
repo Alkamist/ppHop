@@ -70,16 +70,6 @@ func _check_if_on_ground():
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
 	was_on_ground = is_on_ground
 	is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.7
-	if collision:
-		var collider = collision.collider
-		if collider.is_in_group("platform"):
-			_snap_to_platform(collider)
-		else:
-			_unsnap_from_platform()
-		if collider.is_in_group("ice"):
-			ground_friction = ice_friction
-		else:
-			ground_friction = normal_ground_friction
 
 func _handle_jumping():
 	if should_jump:
@@ -163,11 +153,23 @@ func move(distance):
 					collider.launch_master(velocity * bounciness)
 					velocity = collider_velocity * bounciness
 				else:
-					emit_signal("just_bounced")
-					velocity = velocity.bounce(collision.normal) * bounciness
-					move(collision.remainder.bounce(collision.normal) * bounciness)
+					var impact_intensity := abs(velocity.dot(collision.normal))
+					# Prevent sticking to walls in the air.
+					if impact_intensity > 50.0:
+						emit_signal("just_bounced")
+						velocity = velocity.bounce(collision.normal) * bounciness
+						move(collision.remainder.bounce(collision.normal) * bounciness)
+					else:
+						velocity = velocity.slide(collision.normal)
+						move(collision.remainder.slide(collision.normal))
 			# Handle sliding.
 			else:
+				if collider.is_in_group("platform"):
+					_snap_to_platform(collider)
+				if collider.is_in_group("ice"):
+					ground_friction = ice_friction
+				else:
+					ground_friction = normal_ground_friction
 				velocity = velocity.slide(collision.normal)
 				move(collision.remainder.slide(collision.normal))
 	else:
@@ -178,7 +180,7 @@ func _handle_physics(delta):
 	current_move_recursions = 0
 	_check_if_on_ground()
 	_apply_gravity(delta)
-	
+
 	if is_on_ground:
 		_apply_horizontal_movement(delta, ground_friction, 2000.0, 200.0)
 		if not friction_is_suspended:
@@ -187,18 +189,18 @@ func _handle_physics(delta):
 		_unsnap_from_platform()
 		_apply_horizontal_movement(delta, 0.0, 300.0, 140.0)
 		_apply_friction(delta, Vector2.ZERO, air_resistance)
-	
+
 	_handle_crouching()
 	_handle_jumping()
 	move(velocity * delta)
 	if current_platform:
 		position += current_platform.velocity * delta
 	_handle_floor_signals()
-	
+
 	is_jumping = false
 	if time - suspend_friction_time > 0.2:
 		friction_is_suspended = false
-	
+
 	time += delta
 
 func update_state(delta):

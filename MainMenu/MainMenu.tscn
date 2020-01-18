@@ -20,13 +20,13 @@ __meta__ = {
 }
 
 [node name="SinglePlayer" type="Button" parent="VBoxContainer"]
-margin_right = 256.0
+margin_right = 160.0
 margin_bottom = 20.0
 text = "Single Player"
 
 [node name="MultiPlayer" type="Button" parent="VBoxContainer"]
 margin_top = 24.0
-margin_right = 256.0
+margin_right = 160.0
 margin_bottom = 44.0
 text = "Multi Player"
 [connection signal="pressed" from="VBoxContainer/SinglePlayer" to="." method="_on_SinglePlayer_pressed"]

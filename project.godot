@@ -25,8 +25,8 @@ Network="*res://Scripts/Network.gd"
 
 [display]
 
-window/size/width=1280
-window/size/height=800
+window/size/width=800
+window/size/height=500
 
 [editor_plugins]
 

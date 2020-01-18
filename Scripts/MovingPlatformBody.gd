@@ -1,8 +1,8 @@
-extends "res://Scripts/NetworkedMover.gd"
+extends KinematicBody2D
 
-var target := Vector2.ZERO
+var velocity := Vector2.ZERO
+onready var previous_position := position
 
-func update_state(delta):
-	var movement = target - position
-	velocity = movement / delta
-	position += movement
+func _physics_process(delta):
+	velocity = (position - previous_position) / delta
+	previous_position = position
