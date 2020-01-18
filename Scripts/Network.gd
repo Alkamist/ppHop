@@ -2,6 +2,7 @@ extends Node
 
 const DEFAULT_PORT := 31400
 const MAXIMUM_PLAYERS := 8
+var use_ENet := false
 var client
 var server
 
@@ -21,17 +22,21 @@ func host_websocket():
 	server.listen(DEFAULT_PORT, PoolStringArray(), true)
 	get_tree().set_network_peer(server)
 
-#func join_ENet(ip):
-#	var peer = NetworkedMultiplayerENet.new()
-#	peer.create_client(_check_ip(ip), DEFAULT_PORT)
-#	get_tree().set_network_peer(peer)
+func join_ENet(ip):
+	use_ENet = true
+	var peer = NetworkedMultiplayerENet.new()
+	peer.create_client(_check_ip(ip), DEFAULT_PORT)
+	get_tree().set_network_peer(peer)
 
-#func host_ENet():
-#	var peer = NetworkedMultiplayerENet.new()
-#	peer.create_server(DEFAULT_PORT, MAXIMUM_PLAYERS)
-#	get_tree().set_network_peer(peer)
+func host_ENet():
+	use_ENet = true
+	var peer = NetworkedMultiplayerENet.new()
+	peer.create_server(DEFAULT_PORT, MAXIMUM_PLAYERS)
+	get_tree().set_network_peer(peer)
 
 func _process(_delta):
+	if use_ENet:
+		return
 	if server and server.is_listening():
 		server.poll()
 	

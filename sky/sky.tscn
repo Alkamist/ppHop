@@ -9,14 +9,14 @@
 scale = Vector2( 2, 2 )
 
 [node name="MovingPlatform" parent="." instance=ExtResource( 2 )]
-position = Vector2( 625.658, 3828.39 )
-move_to = Vector2( 0, -600 )
-speed = 600.0
+position = Vector2( 660, 3780 )
+move_to = Vector2( 300, 0 )
+speed = 300.0
 
 [node name="MovingPlatform2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1024.92, 3982.36 )
-move_to = Vector2( 200, 0 )
-speed = 600.0
+position = Vector2( 1550, 3780 )
+move_to = Vector2( -300, 0 )
+speed = 300.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

@@ -144,6 +144,7 @@ func _handle_floor_signals():
 	was_on_ground = is_on_ground
 
 func move(distance):
+	var delta := get_physics_process_delta_time()
 	var collision := move_and_collide(distance, true, true, true)
 	var collision_count = 0
 	if collision:
@@ -156,7 +157,7 @@ func move(distance):
 				if collider.is_in_group("platform"):
 					emit_signal("just_bounced")
 					velocity = collider.velocity * bounciness
-					move(collider.movement + collision.remainder.bounce(collision.normal) * bounciness)
+					move((collider.velocity * delta) + collision.remainder.bounce(collision.normal) * bounciness)
 				elif collider.is_in_group("ppBody"):
 					var collider_velocity = collider.velocity
 					collider.launch_master(velocity * bounciness)
@@ -191,7 +192,7 @@ func _handle_physics(delta):
 	_handle_jumping()
 	move(velocity * delta)
 	if current_platform:
-		position += current_platform.movement
+		position += current_platform.velocity * delta
 	_handle_floor_signals()
 	
 	is_jumping = false
