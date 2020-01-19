@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Images/ppBones.png" type="Texture" id=1]
+[ext_resource path="res://Marsh/bogTilemap1.png" type="Texture" id=1]
 [ext_resource path="res://Images/light.png" type="Texture" id=2]
 [ext_resource path="res://Marsh/bogBackground1.png" type="Texture" id=3]
 [ext_resource path="res://Marsh/bogBackground4.png" type="Texture" id=4]
@@ -8,17 +8,6 @@
 [ext_resource path="res://Marsh/bogBackground3.png" type="Texture" id=6]
 [ext_resource path="res://Images/MEGALUL.png" type="Texture" id=7]
 [ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
-[ext_resource path="res://Marsh/bogTilemap1.tmx" type="PackedScene" id=9]
-[ext_resource path="res://Images/ppLNormalMap.png" type="Texture" id=10]
-[ext_resource path="res://Images/ppCD.png" type="Texture" id=11]
-
-
-
-
-
-
-
-
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1024, 2190 )
@@ -65,12 +54,18 @@ texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 3000, 528 )
 
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 1024, 2548 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 1 )
+
 [node name="Light2D" type="Light2D" parent="."]
 visible = false
-position = Vector2( -256, -3480 )
+position = Vector2( 708, 2700 )
 texture = ExtResource( 2 )
-texture_scale = 12.0
-color = Color( 0.811765, 0.478431, 1, 1 )
+texture_scale = 13.75
+color = Color( 0.576471, 0.890196, 0.803922, 1 )
+energy = 0.51
 range_z_max = 0
 range_layer_min = -100
 shadow_enabled = true
@@ -82,66 +77,56 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Light2D"]
+visible = false
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 2 )
 
-[node name="bogTilemap" parent="." instance=ExtResource( 9 )]
-scale = Vector2( 2, 2 )
-
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 position = Vector2( 1020, 1060 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, 1130 )
 shape = SubResource( 1 )
 
-[node name="DeadPps" type="Node2D" parent="."]
-position = Vector2( 880, 3952 )
-scale = Vector2( 2, 2 )
-
-[node name="Sprite" type="Sprite" parent="DeadPps"]
-rotation = -0.436997
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite6" type="Sprite" parent="DeadPps"]
-position = Vector2( 12, -12.0001 )
-rotation = 0.486578
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite7" type="Sprite" parent="DeadPps"]
-position = Vector2( 20, -24.0001 )
-rotation = 0.258206
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite8" type="Sprite" parent="DeadPps"]
-position = Vector2( 28, -12.0001 )
-rotation = -0.262473
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite9" type="Sprite" parent="DeadPps"]
-position = Vector2( 36, -7.62939e-05 )
-rotation = 0.32331
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite10" type="Sprite" parent="DeadPps"]
-position = Vector2( 16, -0.00012207 )
-rotation = 0.32374
-texture = ExtResource( 1 )
-normal_map = ExtResource( 10 )
-
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 616.11, 3879 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 11 )
-
 [node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( 368, 3808 )
+visible = false
+position = Vector2( 250, 3792 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( -0.432008, 0.000244141 )
+polygon = PoolVector2Array( 106.432, 3808, 96.432, 3870, 112.432, 3914, 162.432, 3948, 226.432, 3964, 382.432, 3962, 478.432, 3954, 556.432, 3944, 832.432, 3946, 1210.43, 3948, 1408.43, 3926, 1548.43, 3864, 1670.43, 3780, 1832.43, 3638, 1906.43, 3526, 1957.76, 3317.08, 1978.43, 3206, 1965.52, 3012.37, 1934.5, 2912.65, 1961.09, 2761.95, 2023.14, 2595.75, 2024.25, 2416.24, 2408.73, 1887.71, 2381.1, 4200.56, -192.495, 4201.57, -216.854, 64.8956, 48.432, 2772, 72.432, 2842, 96.432, 2982, 122.432, 2982, 120.432, 3044, 112.432, 3084, 126.432, 3208, 162.432, 3208, 176.432, 3264, 262.432, 3452, 326.432, 3528, 366.432, 3570, 386.432, 3608, 388.432, 3632, 250.432, 3672, 142.432, 3720 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 572.092, 3692.68, 608.2, 3692.57, 604.589, 3718.25, 601.049, 3733.1, 590.151, 3748.08, 574.825, 3716.41 )
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 384, -80 )
+polygon = PoolVector2Array( 572.092, 3692.68, 608.2, 3692.57, 604.589, 3718.25, 601.049, 3733.1, 590.151, 3748.08, 574.825, 3716.41 )
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 634, -260 )
+polygon = PoolVector2Array( 572.092, 3692.68, 608.2, 3692.57, 604.589, 3718.25, 601.049, 3733.1, 590.151, 3748.08, 574.825, 3716.41 )
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 242, -382 )
+polygon = PoolVector2Array( 572.092, 3692.68, 608.2, 3692.57, 604.589, 3718.25, 601.049, 3733.1, 590.151, 3748.08, 574.825, 3716.41 )
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 509.841, 3335.47, 573.813, 3335.06, 571.412, 3380.95, 558.807, 3434.53, 545.571, 3452.17, 536.118, 3440.83, 519.731, 3386.63, 515.319, 3358.27 )
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 376.04, 2889.45, 418.944, 2889.18, 411.244, 2968.23, 398.924, 3000.57, 391.224, 3000.57, 372.549, 2950.2 )
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 798.425, 2918.95, 858.006, 2919.72, 878.898, 2962.28, 926.099, 3045.85, 1018.18, 3168.88, 1052.23, 3202.15, 1064.61, 3240.84, 1015.08, 3227.69, 957.05, 3192.86, 802.294, 3038.88, 774.438, 2978.53 )
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1144.31, 2959.18, 1159.01, 2875.62, 1213.95, 2791.27, 1279.72, 2790.5, 1280.49, 2843.12, 1264.24, 2898.83, 1244.9, 3067.51, 1217.04, 3072.93, 1164.42, 3029.6 )
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]
