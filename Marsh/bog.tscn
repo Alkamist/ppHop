@@ -21,38 +21,38 @@ script = ExtResource( 8 )
 motion_scale = Vector2( 0, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
 
 [node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.1, 0.1 )
-motion_offset = Vector2( 0, 250 )
+motion_offset = Vector2( 0, 460 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 528 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.19, 0.19 )
-motion_offset = Vector2( 0, 650 )
+motion_offset = Vector2( 0, 840 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 6 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 528 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.5, 0.5 )
-motion_offset = Vector2( 0, 2000 )
+motion_offset = Vector2( 0, 2200 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 4 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 528 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Sprite3" type="Sprite" parent="."]
 position = Vector2( 1024, 2548 )
@@ -100,7 +100,7 @@ visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 position = Vector2( -0.432008, 0.000244141 )
-polygon = PoolVector2Array( 106.432, 3808, 96.432, 3870, 112.432, 3914, 162.432, 3948, 226.432, 3964, 382.432, 3962, 478.432, 3954, 556.432, 3944, 832.432, 3946, 1210.43, 3948, 1408.43, 3926, 1548.43, 3864, 1670.43, 3780, 1832.43, 3638, 1906.43, 3526, 1957.76, 3317.08, 1978.43, 3206, 1965.52, 3012.37, 1934.5, 2912.65, 1961.09, 2761.95, 2023.14, 2595.75, 2024.25, 2416.24, 2408.73, 1887.71, 2381.1, 4200.56, -192.495, 4201.57, -216.854, 64.8956, 74.432, 1666, 68.432, 1732, 78.432, 1822, 86.432, 1890, 126.432, 1890, 126.432, 1894, 86.432, 1922, 84.432, 1954, 70.432, 1998, 78.432, 2050, 94.432, 2084, 128.432, 2084, 128.432, 2088, 78.432, 2116, 76.432, 2162, 64.432, 2190, 64.432, 2238, 82.432, 2360, 76.432, 2466, 62.432, 2506, 62.432, 2636, 50.432, 2694, 48.432, 2772, 72.432, 2842, 96.432, 2982, 122.432, 2982, 120.432, 3044, 112.432, 3084, 126.432, 3208, 162.432, 3208, 176.432, 3264, 262.432, 3452, 326.432, 3528, 366.432, 3570, 386.432, 3608, 388.432, 3632, 250.432, 3672, 142.432, 3720 )
+polygon = PoolVector2Array( 106.432, 3808, 96.432, 3870, 112.432, 3914, 162.432, 3948, 226.432, 3964, 382.432, 3962, 478.432, 3954, 556.432, 3944, 832.432, 3946, 1210.43, 3948, 1408.43, 3926, 1548.43, 3864, 1670.43, 3780, 1832.43, 3638, 1906.43, 3526, 1957.76, 3317.08, 1978.43, 3206, 1965.52, 3012.37, 1934.5, 2912.65, 1961.09, 2761.95, 2023.14, 2595.75, 2024.25, 2416.24, 1992.43, 2276, 1970.43, 2156, 1934.43, 2058, 1922.43, 1948, 1942.43, 1828, 1960.43, 1656, 1986.43, 1528, 1998.43, 1382, 1978.43, 1216, 1958.43, 1118, 1954.43, 976, 1962.43, 872, 1984.43, 770, 1990.43, 680, 1990.43, 564, 2006.43, 450, 2020.43, 360, 2016.43, 238, 1992.43, 182, 1934.43, 132, 3072.43, 132, 3070.43, 5068, -1025.57, 5088, -1033.57, -0.000244141, -9.56799, -0.000244141, 50.432, 264, 76.432, 316, 78.432, 392, 120.432, 502, 120.432, 584, 78.432, 720, 80.432, 820, 92.432, 840, 96.432, 866, 120.432, 866, 112.432, 914, 90.432, 998, 100.432, 1122, 112.432, 1212, 126.432, 1250, 158.432, 1250, 136.432, 1360, 86.432, 1448, 86.432, 1562, 74.432, 1666, 68.432, 1732, 78.432, 1822, 86.432, 1890, 126.432, 1890, 126.432, 1894, 86.432, 1922, 84.432, 1954, 70.432, 1998, 78.432, 2050, 94.432, 2084, 128.432, 2084, 128.432, 2088, 78.432, 2116, 76.432, 2162, 64.432, 2190, 64.432, 2238, 82.432, 2360, 76.432, 2466, 62.432, 2506, 62.432, 2636, 50.432, 2694, 48.432, 2772, 72.432, 2842, 96.432, 2982, 122.432, 2982, 120.432, 3044, 112.432, 3084, 126.432, 3208, 162.432, 3208, 176.432, 3264, 262.432, 3452, 326.432, 3528, 366.432, 3570, 386.432, 3608, 388.432, 3632, 250.432, 3672, 142.432, 3720 )
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 560, 3702, 618, 3704, 622, 3718, 566, 3712 )
@@ -143,5 +143,49 @@ polygon = PoolVector2Array( 656, 2478, 692, 2478, 692, 2496, 656, 2496 )
 
 [node name="CollisionPolygon2D14" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 336, 2280, 372, 2280, 372, 2294, 336, 2294 )
+
+[node name="CollisionPolygon2D15" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 198, 1978, 198, 1702, 240, 1702, 204, 1978 )
+
+[node name="CollisionPolygon2D16" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 16, -86 )
+polygon = PoolVector2Array( 798, 1960, 834, 1958, 836, 1974, 798, 1974 )
+
+[node name="CollisionPolygon2D17" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1092, 1648, 1140, 1646, 1142, 1664, 1094, 1668 )
+
+[node name="CollisionPolygon2D18" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 896, 1410, 928, 1410, 924, 1422, 896, 1422 )
+
+[node name="CollisionPolygon2D19" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1252, 1266, 1296, 1266, 1296, 1284, 1252, 1284 )
+
+[node name="CollisionPolygon2D20" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 650, 1404, 694, 1334, 762, 1270, 844, 1074, 1036, 1000, 1074, 1000, 1134, 1050, 1176, 1176, 1082, 1054, 1004, 1054, 922, 1098, 874, 1186, 792, 1306, 730, 1336 )
+
+[node name="CollisionPolygon2D21" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1254, 1268, 1296, 1268, 1296, 1284, 1254, 1284 )
+
+[node name="CollisionPolygon2D22" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 448, 1348, 480, 1348, 480, 1362, 448, 1362 )
+
+[node name="CollisionPolygon2D23" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 220, 1030, 256, 1030, 256, 1040, 220, 1040 )
+
+[node name="CollisionPolygon2D24" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 490, 742, 522, 742, 566, 928, 566, 1036, 540, 1136, 524, 1138, 532, 1050, 500, 888, 490, 756 )
+
+[node name="CollisionPolygon2D25" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 742, 610, 770, 610, 782, 588, 782, 546, 742, 462, 782, 462, 788, 504, 794, 546, 794, 594, 776, 622, 742, 624 )
+
+[node name="CollisionPolygon2D26" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( -12, -2 )
+polygon = PoolVector2Array( 1112, 378, 1148, 376, 1150, 388, 1114, 392 )
+
+[node name="CollisionPolygon2D27" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1670, 518, 1694, 518, 1694, 534, 1670, 534 )
+
+[node name="CollisionPolygon2D28" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1826, 292, 1856, 292, 1856, 308, 1826, 308 )
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]
