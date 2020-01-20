@@ -1,68 +1,132 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Forest/forestBackground3.png" type="Texture" id=1]
-[ext_resource path="res://Forest/forestBackground1.png" type="Texture" id=2]
-[ext_resource path="res://Forest/forestBackground4.png" type="Texture" id=3]
-[ext_resource path="res://Forest/forestBackground2.png" type="Texture" id=4]
-[ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=5]
-[ext_resource path="res://Forest/forestTilemap.tmx" type="PackedScene" id=6]
-
-
-
-
-
+[ext_resource path="res://Forest/forestLevel.png" type="Texture" id=1]
+[ext_resource path="res://Forest/TreeHouse1Cover.png" type="Texture" id=2]
+[ext_resource path="res://Marsh/bogBackground1.png" type="Texture" id=3]
+[ext_resource path="res://Marsh/bogBackground4.png" type="Texture" id=4]
+[ext_resource path="res://Marsh/bogBackground2.png" type="Texture" id=5]
+[ext_resource path="res://Marsh/bogBackground3.png" type="Texture" id=6]
+[ext_resource path="res://Forest/FadeSprite.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2188.07, 2048 )
+extents = Vector2( 2048, 2548 )
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-position = Vector2( 0, -0.5 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 3 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 1024, 2048 )
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-script = ExtResource( 5 )
+offset = Vector2( 0, 1607 )
+transform = Transform2D( 1, 0, 0, 1, 0, 1607 )
+script = ExtResource( 8 )
 
 [node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 2 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 3 )
 
 [node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.3, 0.3 )
-motion_offset = Vector2( 0, 170 )
+visible = false
+motion_scale = Vector2( 0.1, 0.1 )
+motion_offset = Vector2( 0, -1390 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 4 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 2192, 1393 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.7, 0.7 )
-motion_offset = Vector2( 500, 1100 )
+visible = false
+motion_scale = Vector2( 0.19, 0.19 )
+motion_offset = Vector2( 0, -1242 )
 
-[node name="Sprite2" type="Sprite" parent="ParallaxBackground/Layer3"]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 1 )
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 6 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 2700, 2048 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
-[node name="forestTilemap" parent="." instance=ExtResource( 6 )]
-scale = Vector2( 2, 2 )
+[node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
+motion_scale = Vector2( 0.5, 0.5 )
+motion_offset = Vector2( 0, -667 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 360 )
+
+[node name="Level" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 1 )
+
+[node name="TreeHouse1" type="Node2D" parent="."]
+position = Vector2( 1216, 824 )
+script = ExtResource( 7 )
+
+[node name="Sprite" type="Sprite" parent="TreeHouse1"]
+scale = Vector2( 4, 4 )
+z_index = 1
+texture = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="TreeHouse1"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TreeHouse1/Area2D"]
+visible = false
+polygon = PoolVector2Array( -80, 332, -80, 228, -120, 212, -116, 144, -112, 76, -112, 40, -116, -52, -92, -76, -92, -132, -84, -208, -28, -240, 28, -240, 80, -156, 116, 20, 128, 144, 124, 272, 108, 352, 4, 372 )
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2( 1585.88, -105.088 )
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 974.12, 2035.09 )
 shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1048, 2048, 1048, 2016, 1100, 2016, 1112, 1908, 1108, 1792, 1108, 1772, 1160, 1760, 1156, 1688, 1128, 1628, 1112, 1588, 1100, 1496, 1108, 1380, 1108, 1308, 1088, 1252, 1048, 1184, 1200, 1160, 1308, 1160, 1320, 1140, 1328, 1080, 1328, 928, 1320, 864, 1312, 808, 1272, 808, 1272, 796, 1312, 796, 1292, 700, 1256, 628, 1228, 600, 1184, 600, 1144, 624, 1104, 672, 1112, 640, 1120, 492, 1136, 444, 1144, 404, 1116, 340, 1116, 156, 1388, 76, 1372, 572, 1348.26, 705.465, 1352, 2048 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -440, 1936, -340, 1932, -272, 1944, -224, 1944, -100, 1924, -44, 1920, 12, 1936, 252, 1936, 348, 1928, 488, 1932, 540, 1928, 592, 1936, 604, 1960, 596, 2016, 584, 2040, -468, 2044, -480, 2016, -468, 1960 )
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -1352, 2048, -1032, 2048, -1040, 1920, -1032, 1868, -1040, 1792, -1040, 1708, -1036, 1668, -1040, 1584, -1052, 1496, -1048, 1360, -1036, 1264, -1032, 1244, -1084, 1244, -1084, 1188, -1044, 1152, -1052, 1092, -1048, 1036, -1060, 944, -1060, 856, -1104, 856, -1104, 812, -1076, 760, -1080, 652, -1264, 648 )
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 12, 48 )
+polygon = PoolVector2Array( 880, 1532, 928, 1532, 928, 1548, 880, 1548 )
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 448, 1376, 492, 1376, 492, 1392, 448, 1392 )
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 172, 1156, 216, 1156, 216, 1176, 172, 1176 )
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( -56, 0 )
+polygon = PoolVector2Array( -632, 1448, -576, 1448, -576, 1464, -632, 1464 )
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -828, 1128, -784, 1128, -784, 1140, -828, 1140 )
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 0, -72 )
+polygon = PoolVector2Array( -364, 928, -324, 928, -324, 944, -364, 944 )
+
+[node name="CollisionPolygon2D10" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 236, 792, 272, 792, 272, 808, 236, 808 )
+
+[node name="CollisionPolygon2D11" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 1088, 756, 1164, 756, 1164, 788, 1100, 788, 1112, 904, 1116, 928, 1120, 968, 1152, 968, 1152, 980, 1120, 980, 1112, 1008, 1112, 1036, 1044, 1008, 1096, 896, 1100, 864, 1096, 828 )
+
+[node name="CollisionPolygon2D12" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 840, 548, 872, 548, 872, 560, 840, 560 )
+[connection signal="body_entered" from="TreeHouse1/Area2D" to="TreeHouse1" method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="TreeHouse1/Area2D" to="TreeHouse1" method="_on_Area2D_body_exited"]
 [connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]

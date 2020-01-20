@@ -206,7 +206,7 @@ func _handle_physics(delta):
 	time += delta
 
 func update_state(delta):
-	if is_controlling_player() and Input.is_action_pressed("up"):
+	if OS.is_debug_build() and is_controlling_player() and Input.is_action_pressed("up"):
 		position = lerp(position, get_global_mouse_position(), 10.0 * delta)
 		velocity = Vector2.ZERO
 	else:

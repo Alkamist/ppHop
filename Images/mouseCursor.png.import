@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/forestBackground2.png-8b2ea6d77ce1a7cb5aad185d0933a86e.stex"
+path="res://.import/mouseCursor.png-e8094b298f904708cd080b59259488d9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Forest/forestBackground2.png"
-dest_files=[ "res://.import/forestBackground2.png-8b2ea6d77ce1a7cb5aad185d0933a86e.stex" ]
+source_file="res://Images/mouseCursor.png"
+dest_files=[ "res://.import/mouseCursor.png-e8094b298f904708cd080b59259488d9.stex" ]
 
 [params]
 
@@ -19,8 +19,8 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
-flags/filter=false
+flags/repeat=0
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

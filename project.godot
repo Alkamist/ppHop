@@ -27,6 +27,8 @@ Network="*res://Scripts/Network.gd"
 
 window/size/width=800
 window/size/height=500
+mouse_cursor/custom_image="res://Images/mouseCursor.png"
+mouse_cursor/custom_image_hotspot=Vector2( 10, 10 )
 
 [editor_plugins]
 

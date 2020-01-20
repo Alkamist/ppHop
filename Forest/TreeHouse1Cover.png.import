@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/forestBackground1.png-49a506dfa1fcc486130444e545f2fb9d.stex"
+path="res://.import/TreeHouse1Cover.png-53dcbe1ca08350540bdc1c99340fcf32.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Forest/forestBackground1.png"
-dest_files=[ "res://.import/forestBackground1.png-49a506dfa1fcc486130444e545f2fb9d.stex" ]
+source_file="res://Forest/TreeHouse1Cover.png"
+dest_files=[ "res://.import/TreeHouse1Cover.png-53dcbe1ca08350540bdc1c99340fcf32.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
