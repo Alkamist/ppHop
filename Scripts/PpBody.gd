@@ -1,5 +1,21 @@
 extends KinematicBody2D
 
+var jump_power := 3.6
+var jump_mouse_length := 260.0
+var bounciness := 0.98
+var gravity := 1500.0
+var maximum_fall_speed := 2000.0
+var normal_ground_friction := 9999999999999.9
+var ice_friction := 0.7
+var air_resistance := 0.0
+var jump_y_clamp := -0.2
+var maximum_jump_speed := 1400.0
+var maximum_walk_speed := 160.0
+var walk_control := 10.0
+var maximum_air_drift_speed := 160.0
+var air_drift_control := 4.0
+var minimum_bounce_angle := 0.8
+
 var velocity := Vector2.ZERO
 var target_transform := Transform2D()
 var controlling_player := -1
@@ -11,20 +27,14 @@ var was_on_ground := false
 var friction_is_suspended := false
 var is_jumping := false
 var should_jump := false
-var bounciness := 0.98
 var movement_direction := 0
-var gravity := 1200.0
-var ice_friction := 0.7
-var normal_ground_friction := 999999.0
-var ground_friction := 999999.0
-var air_resistance := 0.27
+var ground_friction := normal_ground_friction
 var time := 0.0
 var launch_time := 0.0
 var suspend_friction_time := 0.0
 var jump_direction := Vector2.ZERO
 var maximum_move_recursions := 4
 var current_move_recursions := 0
-var minimum_bounce_angle := 0.8
 var current_platform
 
 signal just_jumped
@@ -76,18 +86,22 @@ func _check_if_on_ground():
 
 func _handle_jumping():
 	if should_jump:
-		var jump_vector = jump_direction / 300.0
-		jump_vector = jump_vector.clamped(1.0)
+		var jump_vector = jump_direction / jump_mouse_length
 		var length = jump_vector.length()
 		if length > 0.0:
 			jump_vector *= 1.0 / pow(length, 0.5)
-			jump_vector.y = min(jump_vector.y, -0.20)
-			jump_vector *= 3.0 * 300.0
-		velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, 1400.0)
+			if jump_vector.clamped(1.0).y > jump_y_clamp:
+				var x_clamp := cos(-jump_y_clamp)
+				jump_vector.x = clamp(jump_vector.x, -x_clamp, x_clamp)
+				jump_vector.y = jump_y_clamp
+			else:
+				jump_vector = jump_vector.clamped(1.0)
+			jump_vector *= jump_power * jump_mouse_length
+		velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, maximum_jump_speed)
 		velocity.y = jump_vector.y
 		is_jumping = true
 		_unsnap_from_platform()
-		_suspend_friction()
+		#_suspend_friction()
 		emit_signal("just_jumped")
 		should_jump = false
 
@@ -105,25 +119,18 @@ func _apply_friction(delta, target_velocity, friction):
 	velocity = _dampen(delta, velocity, target_velocity, friction)
 
 func _apply_gravity(delta):
-	velocity.y += gravity * delta
+	velocity.y += _add_to_velocity_component(velocity.y, gravity * delta, maximum_fall_speed)
 
 func _apply_horizontal_movement(delta, friction, control, maximum_speed):
 	var control_scale = 1.0 - exp(-friction * delta * control)
-	
 	if movement_direction != 0 and not is_crouching:
 		velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
-		if sign(movement_direction) == sign(velocity.x) or velocity.x == 0.0:
-			velocity.x = _dampen(delta, velocity.x, sign(velocity.x) * maximum_speed, friction)
-		
-	elif is_crouching:
-		var acceleration_component = control_scale * maximum_speed
-		if abs(velocity.x) > acceleration_component:
-			velocity.x += -sign(velocity.x) * acceleration_component
-		else:
-			velocity.x = 0.0
-		
-	else:
-		_apply_friction(delta, Vector2.ZERO, friction)
+	#elif is_crouching:
+	#	var acceleration_component = control_scale * maximum_speed
+	#	if abs(velocity.x) > acceleration_component:
+	#		velocity.x += -sign(velocity.x) * acceleration_component
+	#	else:
+	#		velocity.x = 0.0
 
 func _handle_crouching():
 	was_crouching = is_crouching
@@ -189,10 +196,12 @@ func _handle_physics(delta):
 	_apply_gravity(delta)
 
 	if is_on_ground:
-		_apply_horizontal_movement(delta, ground_friction, 20.0, 200.0)
+		_apply_friction(delta, Vector2.ZERO, ground_friction)
+		_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
 	else:
 		_unsnap_from_platform()
-		_apply_horizontal_movement(delta, air_resistance, 10.0, 140.0)
+		_apply_friction(delta, Vector2.ZERO, air_resistance)
+		_apply_horizontal_movement(delta, 1.0, air_drift_control, maximum_air_drift_speed)
 
 	_handle_crouching()
 	_handle_jumping()
