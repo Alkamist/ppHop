@@ -11,7 +11,7 @@ var was_on_ground := false
 var friction_is_suspended := false
 var is_jumping := false
 var should_jump := false
-var bounciness := 0.8
+var bounciness := 0.98
 var movement_direction := 0
 var gravity := 1200.0
 var ice_friction := 0.7
@@ -24,6 +24,7 @@ var suspend_friction_time := 0.0
 var jump_direction := Vector2.ZERO
 var maximum_move_recursions := 4
 var current_move_recursions := 0
+var minimum_bounce_angle := 0.8
 var current_platform
 
 signal just_jumped
@@ -106,19 +107,23 @@ func _apply_friction(delta, target_velocity, friction):
 func _apply_gravity(delta):
 	velocity.y += gravity * delta
 
-func _apply_horizontal_movement(delta, friction, acceleration, maximum_speed):
+func _apply_horizontal_movement(delta, friction, control, maximum_speed):
+	var control_scale = 1.0 - exp(-friction * delta * control)
+	
 	if movement_direction != 0 and not is_crouching:
-		velocity.x += _add_to_velocity_component(velocity.x, movement_direction * acceleration * delta, maximum_speed)
+		velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
 		if sign(movement_direction) == sign(velocity.x) or velocity.x == 0.0:
-			friction_is_suspended = true
-			if not is_jumping and abs(velocity.x) > maximum_speed:
-				velocity.x = _dampen(delta, velocity.x, sign(velocity.x) * maximum_speed, friction)
+			velocity.x = _dampen(delta, velocity.x, sign(velocity.x) * maximum_speed, friction)
+		
 	elif is_crouching:
-		var acceleration_component = acceleration * delta
+		var acceleration_component = control_scale * maximum_speed
 		if abs(velocity.x) > acceleration_component:
-			velocity.x += -sign(velocity.x) * acceleration * delta
+			velocity.x += -sign(velocity.x) * acceleration_component
 		else:
 			velocity.x = 0.0
+		
+	else:
+		_apply_friction(delta, Vector2.ZERO, friction)
 
 func _handle_crouching():
 	was_crouching = is_crouching
@@ -145,7 +150,7 @@ func move(distance):
 		if current_move_recursions < maximum_move_recursions:
 			var collider = collision.collider
 			# Handle bouncing.
-			if abs(collision.normal.angle_to(Vector2.UP)) > 1.0:
+			if abs(collision.normal.angle_to(Vector2.UP)) > minimum_bounce_angle:
 				if collider.is_in_group("platform"):
 					emit_signal("just_bounced")
 					velocity = collider.velocity * bounciness
@@ -184,13 +189,10 @@ func _handle_physics(delta):
 	_apply_gravity(delta)
 
 	if is_on_ground:
-		_apply_horizontal_movement(delta, ground_friction, 2000.0, 200.0)
-		if not friction_is_suspended:
-			_apply_friction(delta, Vector2.ZERO, ground_friction)
+		_apply_horizontal_movement(delta, ground_friction, 20.0, 200.0)
 	else:
 		_unsnap_from_platform()
-		_apply_horizontal_movement(delta, 0.0, 300.0, 140.0)
-		_apply_friction(delta, Vector2.ZERO, air_resistance)
+		_apply_horizontal_movement(delta, air_resistance, 10.0, 140.0)
 
 	_handle_crouching()
 	_handle_jumping()

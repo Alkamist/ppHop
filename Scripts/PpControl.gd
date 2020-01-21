@@ -61,7 +61,7 @@ func _draw():
 		if length > 0.0:
 			jump_vector.y = min(jump_vector.y, -0.20)
 			jump_vector *= 300.0
-		jump_vector.x += body.velocity.x / 3.0
+		#jump_vector.x += body.velocity.x / 3.0
 		var end_position = smoothing.position + jump_vector - jump_vector.normalized() * 8.0
 		draw_line(smoothing.position, end_position, Color(0.6, 0.1, 0), 6)
 
