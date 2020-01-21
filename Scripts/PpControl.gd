@@ -53,7 +53,7 @@ func _process(delta):
 	time += delta
 
 func _draw():
-	if is_controlling_player() and body.is_on_ground and not Input.is_action_pressed("jump"):
+	if is_controlling_player() and body.can_jump and not Input.is_action_pressed("jump"):
 		var direction = get_global_mouse_position() - smoothing.position
 		var jump_vector = direction / body.jump_mouse_length
 		var length = jump_vector.length()
@@ -91,6 +91,7 @@ remotesync func _play_networked_sound(sound_name):
 
 remotesync func _land_visually():
 	if not body.should_crouch:
+		tween.stop_all()
 		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.start()
@@ -100,16 +101,20 @@ remotesync func _land_visually():
 		tween.start()
 
 remotesync func _jump_visually():
-	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.65), Vector2(visuals.scale.x, 1.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 6.0), Vector2(visuals.position.x, 0.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-	tween.start()
+	if not body.is_crouching:
+		tween.stop_all()
+		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.65), Vector2(visuals.scale.x, 1.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 6.0), Vector2(visuals.position.x, 0.0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+		tween.start()
 
 remotesync func _crouch_visually():
+	tween.stop_all()
 	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.65), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 6.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 	tween.start()
 
 remotesync func _uncrouch_visually():
+	tween.stop_all()
 	tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.65), Vector2(visuals.scale.x, 1.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 	tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 6.0), Vector2(visuals.position.x, 0.0), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
 	tween.start()

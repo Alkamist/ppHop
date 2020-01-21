@@ -1,23 +1,26 @@
 extends KinematicBody2D
 
-var jump_power := 3.6
+var jump_power := 3.8
 var jump_mouse_length := 260.0
-var bounciness := 0.98
-var gravity := 1500.0
-var maximum_fall_speed := 2000.0
-var ground_friction := 9999999999999.9
+var bounciness := 0.9
+var gravity := 1700.0
+var maximum_fall_speed := 1400.0
+var ground_friction := 99999999999.9
 var slide_friction := 2.0
-var air_resistance := 0.0
+var air_resistance := 0.1
 var jump_y_clamp := -0.2
 var maximum_jump_speed := 1400.0
 var maximum_walk_speed := 160.0
-var walk_control := 10.0
+var walk_control := 99999999999.9
+var slide_control := 10.0
 var maximum_air_drift_speed := 160.0
-var air_drift_control := 4.0
+var air_drift_control := 5.0
 var minimum_bounce_angle := 0.8
+var maximum_walk_angle := 0.7
 
 var velocity := Vector2.ZERO
 var target_transform := Transform2D()
+var current_ground_normal := Vector2.ZERO
 var controlling_player := -1
 var should_crouch := false
 var is_crouching := false
@@ -27,6 +30,8 @@ var was_on_ground := false
 var friction_is_suspended := false
 var is_jumping := false
 var should_jump := false
+var can_jump := false
+var time_of_becoming_airborne := 0.0
 var movement_direction := 0
 var time := 0.0
 var launch_time := 0.0
@@ -62,7 +67,7 @@ func _suspend_friction():
 	suspend_friction_time = time
 
 func jump(direction):
-	if is_on_ground:
+	if can_jump:
 		should_jump = true
 		jump_direction = direction
 
@@ -81,7 +86,11 @@ master func _launch_master(launch_vector):
 func _check_if_on_ground():
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
 	was_on_ground = is_on_ground
-	is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < 0.7
+	is_on_ground = collision and abs(collision.normal.angle_to(Vector2.UP)) < maximum_walk_angle
+	if is_on_ground:
+		can_jump = true
+	if collision:
+		current_ground_normal = collision.normal
 
 func _handle_jumping():
 	if should_jump:
@@ -103,6 +112,7 @@ func _handle_jumping():
 		#_suspend_friction()
 		emit_signal("just_jumped")
 		should_jump = false
+		can_jump = false
 
 func _add_to_velocity_component(velocity_component, adder, maximum):
 	if adder > 0.0:
@@ -121,19 +131,22 @@ func _apply_gravity(delta):
 	velocity.y += _add_to_velocity_component(velocity.y, gravity * delta, maximum_fall_speed)
 
 func _apply_horizontal_movement(delta, friction, control, maximum_speed):
-	var control_scale = 1.0 - exp(-friction * delta * control)
+	var control_scale = 1.0 - exp(-control * delta)
 	if movement_direction != 0:
-		velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
-	#elif is_crouching:
-	#	var acceleration_component = control_scale * maximum_speed
-	#	if abs(velocity.x) > acceleration_component:
-	#		velocity.x += -sign(velocity.x) * acceleration_component
-	#	else:
-	#		velocity.x = 0.0
+		if sign(movement_direction) != sign(velocity.x):
+			_apply_friction(delta, Vector2.ZERO, friction)
+		if is_on_ground:
+			velocity += -current_ground_normal.tangent() * _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
+		else:
+			velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
+		if abs(velocity.x) > maximum_speed:
+			velocity.x = _dampen(delta, velocity.x, sign(movement_direction) * maximum_speed, friction)
+	else:
+		_apply_friction(delta, Vector2.ZERO, friction)
 
 func _handle_crouching():
 	was_crouching = is_crouching
-	is_crouching = should_crouch and is_on_ground
+	is_crouching = should_crouch
 	if is_crouching and not was_crouching:
 		emit_signal("just_crouched")
 	if not is_crouching and was_crouching:
@@ -141,8 +154,10 @@ func _handle_crouching():
 
 func _handle_floor_signals():
 	if is_on_ground and not was_on_ground:
+		can_jump = true
 		emit_signal("just_landed")
 	if not is_on_ground and was_on_ground:
+		time_of_becoming_airborne = time
 		emit_signal("just_became_airborne")
 	was_on_ground = is_on_ground
 
@@ -169,9 +184,14 @@ func move(distance):
 					var impact_intensity := abs(velocity.dot(collision.normal))
 					# Prevent sticking to walls in the air.
 					if impact_intensity > 50.0:
-						emit_signal("just_bounced")
-						velocity = velocity.bounce(collision.normal) * bounciness
+						#var mouse_influence := Vector2.ZERO
+						#if is_crouching:
+						#	mouse_influence = 0.5 * (get_global_mouse_position() - global_position).normalized()
+						#var bounce_normal := (collision.normal + mouse_influence.slide(collision.normal)).normalized()
+						var bounce_normal := collision.normal
+						velocity = velocity.bounce(bounce_normal) * bounciness
 						move(collision.remainder.bounce(collision.normal) * bounciness)
+						emit_signal("just_bounced")
 					else:
 						velocity = velocity.slide(collision.normal)
 						move(collision.remainder.slide(collision.normal))
@@ -190,29 +210,28 @@ func _handle_physics(delta):
 	_check_if_on_ground()
 	_apply_gravity(delta)
 	_handle_crouching()
-	
+
 	if is_on_ground:
 		if is_crouching:
-			_apply_friction(delta, Vector2.ZERO, slide_friction)
-			_apply_horizontal_movement(delta, slide_friction, walk_control, maximum_walk_speed)
+			_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
 		else:
-			_apply_friction(delta, Vector2.ZERO, ground_friction)
 			_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
 	else:
 		_unsnap_from_platform()
-		_apply_friction(delta, Vector2.ZERO, air_resistance)
-		_apply_horizontal_movement(delta, 1.0, air_drift_control, maximum_air_drift_speed)
-	
+		_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
+
 	_handle_jumping()
 	move(velocity * delta)
 	if current_platform:
 		position += current_platform.velocity * delta
 	_handle_floor_signals()
-	
+
 	is_jumping = false
 	if time - suspend_friction_time > 0.2:
 		friction_is_suspended = false
-	
+	if time - time_of_becoming_airborne > 0.067 and not is_on_ground:
+		can_jump = false
+
 	time += delta
 
 func update_state(delta):
