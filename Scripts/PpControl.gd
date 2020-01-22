@@ -8,7 +8,9 @@ var jump_direction := Vector2.ZERO
 onready var smoothing := get_node("Smoothing2D")
 onready var camera := get_node("Smoothing2D/Camera2D")
 onready var body := get_node("Body")
-onready var sprite := get_node("Smoothing2D/Visuals/Jiggler/Sprite")
+onready var flip := get_node("Smoothing2D/Visuals/Jiggler/Flip")
+onready var scared_animation := get_node("Smoothing2D/Visuals/Jiggler/Flip/Scared")
+onready var idle_sprite := get_node("Smoothing2D/Visuals/Jiggler/Flip/Idle")
 onready var tween := get_node("Tween")
 onready var visuals := get_node("Smoothing2D/Visuals")
 onready var jiggler := get_node("Smoothing2D/Visuals/Jiggler")
@@ -37,9 +39,9 @@ func _process(delta):
 		var right = 1 if Input.is_action_pressed("right") else 0
 		body.movement_direction = left + right
 	
-		if body.movement_direction == -1 and sprite.scale.x >= 0.0:
+		if body.movement_direction == -1 and flip.scale.x >= 0.0:
 			rpc_unreliable("_set_sprite_facing_right", false)
-		elif body.movement_direction == 1 and sprite.scale.x < 0.0:
+		elif body.movement_direction == 1 and flip.scale.x < 0.0:
 			rpc_unreliable("_set_sprite_facing_right", true)
 	
 		if should_jump:
@@ -47,6 +49,11 @@ func _process(delta):
 	
 		if time - jump_input_time > 0.067:
 			should_jump = false
+		
+		if body.velocity.y >= 1300.0:
+			rpc_unreliable("_become_scared")
+		else:
+			rpc_unreliable("_become_idle")
 	
 	update()
 	
@@ -78,13 +85,21 @@ func _unhandled_input(event):
 	elif event.is_action_released("down"):
 		body.should_crouch = false
 
+remotesync func _become_scared():
+	idle_sprite.hide()
+	scared_animation.show()
+
+remotesync func _become_idle():
+	idle_sprite.show()
+	scared_animation.hide()
+
 remotesync func _set_sprite_facing_right(value):
 	if value:
-		if sprite.scale.x < 0.0:
-			sprite.scale.x *= -1.0
+		if flip.scale.x < 0.0:
+			flip.scale.x *= -1.0
 	else:
-		if sprite.scale.x >= 0.0:
-			sprite.scale.x *= -1.0
+		if flip.scale.x >= 0.0:
+			flip.scale.x *= -1.0
 
 remotesync func _play_networked_sound(sound_name):
 	SFX.play(sound_name, body)
@@ -96,6 +111,7 @@ remotesync func _land_visually():
 		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.start()
 		yield(tween, "tween_completed")
+		tween.stop_all()
 		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.9), Vector2(visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 2.0), Vector2(visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.start()
