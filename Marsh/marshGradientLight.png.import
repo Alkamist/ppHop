@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ppBones.png-fbdc5498c2171f074795491b74b5e704.stex"
+path="res://.import/marshGradientLight.png-20a0da884acb429216c86dc125f57fc8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/ppBones.png"
-dest_files=[ "res://.import/ppBones.png-fbdc5498c2171f074795491b74b5e704.stex" ]
+source_file="res://Marsh/marshGradientLight.png"
+dest_files=[ "res://.import/marshGradientLight.png-20a0da884acb429216c86dc125f57fc8.stex" ]
 
 [params]
 

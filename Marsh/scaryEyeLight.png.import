@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MEGALUL.png-689cfc76c6ce0ab8b81e71c430e84cce.stex"
+path="res://.import/scaryEyeLight.png-2029c32da9daa4630339d1a18c70b81c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/MEGALUL.png"
-dest_files=[ "res://.import/MEGALUL.png-689cfc76c6ce0ab8b81e71c430e84cce.stex" ]
+source_file="res://Marsh/scaryEyeLight.png"
+dest_files=[ "res://.import/scaryEyeLight.png-2029c32da9daa4630339d1a18c70b81c.stex" ]
 
 [params]
 

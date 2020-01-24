@@ -50,10 +50,10 @@ func _process(delta):
 		if time - jump_input_time > 0.067:
 			should_jump = false
 		
-		if body.velocity.y >= 1300.0:
-			rpc_unreliable("_become_scared")
-		else:
-			rpc_unreliable("_become_idle")
+		#if body.velocity.y >= 1300.0:
+		#	rpc_unreliable("_become_scared")
+		#else:
+		#	rpc_unreliable("_become_idle")
 	
 	update()
 	
@@ -105,16 +105,16 @@ remotesync func _play_networked_sound(sound_name):
 	SFX.play(sound_name, body)
 
 remotesync func _land_visually():
-	if not body.should_crouch:
+	if not body.is_crouching:
 		tween.stop_all()
 		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 1.0), Vector2(visuals.scale.x, 0.9), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 0.0), Vector2(visuals.position.x, 2.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
 		tween.start()
 		yield(tween, "tween_completed")
-		tween.stop_all()
-		tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.9), Vector2(visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 2.0), Vector2(visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
-		tween.start()
+		if not body.is_crouching:
+			tween.interpolate_property(visuals, "scale", Vector2(visuals.scale.x, 0.9), Vector2(visuals.scale.x, 1.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+			tween.interpolate_property(visuals, "position", Vector2(visuals.position.x, 2.0), Vector2(visuals.position.x, 0.0), 0.07, Tween.TRANS_SINE, Tween.EASE_OUT)
+			tween.start()
 
 remotesync func _jump_visually():
 	if not body.is_crouching:
