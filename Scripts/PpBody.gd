@@ -141,7 +141,7 @@ func _apply_horizontal_movement(delta, friction, control, maximum_speed):
 			velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
 		if abs(velocity.x) > maximum_speed:
 			velocity.x = _dampen(delta, velocity.x, sign(movement_direction) * maximum_speed, friction)
-	else:
+	elif not friction_is_suspended:
 		_apply_friction(delta, Vector2.ZERO, friction)
 
 func _handle_crouching():
@@ -184,10 +184,6 @@ func move(distance):
 					var impact_intensity := abs(velocity.dot(collision.normal))
 					# Prevent sticking to walls in the air.
 					if impact_intensity > 50.0:
-						#var mouse_influence := Vector2.ZERO
-						#if is_crouching:
-						#	mouse_influence = 0.5 * (get_global_mouse_position() - global_position).normalized()
-						#var bounce_normal := (collision.normal + mouse_influence.slide(collision.normal)).normalized()
 						var bounce_normal := collision.normal
 						velocity = velocity.bounce(bounce_normal) * bounciness
 						move(collision.remainder.bounce(collision.normal) * bounciness)

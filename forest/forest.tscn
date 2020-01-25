@@ -6,11 +6,9 @@
 [ext_resource path="res://Marsh/bogBackground4.png" type="Texture" id=4]
 [ext_resource path="res://Marsh/bogBackground2.png" type="Texture" id=5]
 [ext_resource path="res://Marsh/bogBackground3.png" type="Texture" id=6]
-[ext_resource path="res://Forest/FadeSprite.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/FadeSprite.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2048, 2548 )
+[ext_resource path="res://Scenes/ProximityAlphaFader.tscn" type="PackedScene" id=9]
 
 [node name="Node2D" type="Node2D"]
 
@@ -61,7 +59,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Level" type="Sprite" parent="."]
-scale = Vector2( 4, 4 )
+scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 
 [node name="TreeHouse1" type="Node2D" parent="."]
@@ -73,17 +71,14 @@ scale = Vector2( 4, 4 )
 z_index = 1
 texture = ExtResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="TreeHouse1"]
+[node name="ProximityAlphaFader" parent="TreeHouse1" instance=ExtResource( 9 )]
+enter_alpha = 0.0
+exit_alpha = 1.0
+fade_time = 0.2
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TreeHouse1/Area2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TreeHouse1/ProximityAlphaFader/Area2D" index="0"]
 visible = false
 polygon = PoolVector2Array( -80, 332, -80, 228, -120, 212, -116, 144, -112, 76, -112, 40, -116, -52, -92, -76, -92, -132, -84, -208, -28, -240, 28, -240, 80, -156, 116, 20, 128, 144, 124, 272, 108, 352, 4, 372 )
-
-[node name="Area2D" type="Area2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 visible = false
@@ -132,7 +127,6 @@ polygon = PoolVector2Array( 504, 172, 536, 172, 536, 184, 504, 184 )
 
 [node name="CollisionPolygon2D14" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 188, -92, 220, -92, 220, -80, 188, -80 )
-[connection signal="body_entered" from="TreeHouse1/Area2D" to="TreeHouse1" method="_on_Area2D_body_entered"]
-[connection signal="body_exited" from="TreeHouse1/Area2D" to="TreeHouse1" method="_on_Area2D_body_exited"]
-[connection signal="body_entered" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_entered"]
-[connection signal="body_exited" from="Area2D" to="ParallaxBackground" method="_on_Area2D_body_exited"]
+[connection signal="alpha_changed" from="TreeHouse1/ProximityAlphaFader" to="TreeHouse1" method="_on_ProximityAlphaFader_alpha_changed"]
+
+[editable path="TreeHouse1/ProximityAlphaFader"]

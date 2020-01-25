@@ -50,10 +50,10 @@ func _process(delta):
 		if time - jump_input_time > 0.067:
 			should_jump = false
 		
-		#if body.velocity.y >= 1300.0:
-		#	rpc_unreliable("_become_scared")
-		#else:
-		#	rpc_unreliable("_become_idle")
+		if body.velocity.y >= 1300.0:
+			rpc_unreliable("_become_scared")
+		else:
+			rpc_unreliable("_become_idle")
 	
 	update()
 	
