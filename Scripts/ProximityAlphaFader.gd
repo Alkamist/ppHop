@@ -21,9 +21,9 @@ func fade_alpha(value):
 	tween.start()
 
 func _on_Area2D_body_entered(body):
-	if body.has_method("is_controlling_player") and body.is_controlling_player():
+	if body.is_in_group("ppBody"):
 		fade_alpha(enter_alpha)
 
 func _on_Area2D_body_exited(body):
-	if body.has_method("is_controlling_player") and body.is_controlling_player():
+	if body.is_in_group("ppBody"):
 		fade_alpha(exit_alpha)

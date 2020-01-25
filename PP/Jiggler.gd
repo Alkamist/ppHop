@@ -7,13 +7,6 @@ var phase := 0.0
 
 const TWOPI := PI * 2.0
 
-func jiggle(intensity):
-	rpc("_jiggle", intensity)
-
-remotesync func _jiggle(intensity):
-	amplitude = intensity * 0.00025
-	phase = 0.0
-
 func _process(delta):
 	var jiggle_scale = clamp(1.0 - sin(phase) * amplitude, 0.93, 1.07)
 	if abs(1.0 - jiggle_scale) < 0.01:
@@ -26,3 +19,7 @@ func _process(delta):
 	phase += speed * delta
 	if phase >= TWOPI:
 		phase -= TWOPI
+
+func _on_Body_just_bounced(body, collision):
+	amplitude = body.velocity.length() * 0.00025
+	phase = 0.0

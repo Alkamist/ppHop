@@ -22,6 +22,7 @@ var maximum_jump_speed := 1400.0
 var time := 0.0
 var time_of_jump_input := 0.0
 var time_of_becoming_airborne := 0.0
+var time_of_last_bounce_sound := 0.0
 var jump_buffer_time := 0.067
 var jump_time_lenience := 0.067
 var movement_direction := 0
@@ -38,6 +39,8 @@ signal just_landed
 signal just_became_airborne
 signal just_jumped
 signal just_crouched
+signal just_uncrouched
+signal just_bounced
 
 func move(distance):
 	move_recursion_count = 0
@@ -46,11 +49,21 @@ func move(distance):
 func _handle_bounce(collision):
 	var normal = collision.normal
 	var remainder = collision.remainder
-	SFX.play("PPBounce", self)
+	if time - time_of_last_bounce_sound > 0.1:
+		SFX.play("PPBounce", self)
+		time_of_last_bounce_sound = time
 	velocity = velocity.bounce(normal) * bounciness
+	emit_signal("just_bounced", self, collision)
 	_move_recursion(remainder.bounce(normal) * bounciness)
 
-func _handle_slide(collision):
+func _handle_ground_slide(collision):
+	var normal = collision.normal
+	var remainder = collision.remainder
+	velocity = velocity.slide(normal)
+	if is_crouching or not is_on_ground or (movement_direction != 0 and sign(velocity.x) == sign(movement_direction)):
+		_move_recursion(remainder.slide(normal))
+
+func _handle_wall_slide(collision):
 	var normal = collision.normal
 	var remainder = collision.remainder
 	velocity = velocity.slide(normal)
@@ -86,9 +99,9 @@ func _move(distance):
 			if impact_intensity > minimum_bounce_velocity:
 				_handle_bounce(collision)
 			else:
-				_handle_slide(collision)
+				_handle_wall_slide(collision)
 		else:
-			_handle_slide(collision)
+			_handle_ground_slide(collision)
 	else:
 		position += distance
 	_check_if_on_ground()
@@ -151,11 +164,11 @@ func _process(delta):
 	is_crouching = Input.is_action_pressed("down")
 	if is_crouching and not was_crouching:
 		emit_signal("just_crouched")
+	elif not is_crouching and was_crouching:
+		emit_signal("just_uncrouched")
 	var left = -1 if Input.is_action_pressed("left") else 0
 	var right = 1 if Input.is_action_pressed("right") else 0
 	movement_direction = left + right
-	if time - time_of_jump_input > jump_buffer_time:
-		should_jump = false
 	if not is_on_ground and time - time_of_becoming_airborne > jump_time_lenience:
 		can_jump = false
 	time += delta
@@ -175,3 +188,5 @@ func _physics_process(delta):
 			_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
 		_handle_jumping()
 		move(velocity * delta)
+		if time - time_of_jump_input > jump_buffer_time:
+			should_jump = false
