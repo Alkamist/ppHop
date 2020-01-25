@@ -109,7 +109,6 @@ func _handle_jumping():
 		velocity.y = jump_vector.y
 		is_jumping = true
 		_unsnap_from_platform()
-		#_suspend_friction()
 		emit_signal("just_jumped")
 		should_jump = false
 		can_jump = false
