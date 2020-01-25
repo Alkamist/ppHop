@@ -31,6 +31,9 @@ var friction_is_suspended := false
 var is_jumping := false
 var should_jump := false
 var can_jump := false
+var current_friction := air_resistance
+var current_control := air_drift_control
+var current_maximum_speed := maximum_air_drift_speed
 var time_of_becoming_airborne := 0.0
 var movement_direction := 0
 var time := 0.0
@@ -123,25 +126,26 @@ func _add_to_velocity_component(velocity_component, adder, maximum):
 func _dampen(delta, value, target, dampening):
 	return lerp(value, target, 1.0 - exp(-dampening * delta))
 
-func _apply_friction(delta, target_velocity, friction):
-	velocity = _dampen(delta, velocity, target_velocity, friction)
+func _get_velocity_after_gravity(delta):
+	var output := velocity
+	output.y += _add_to_velocity_component(output.y, gravity * delta, maximum_fall_speed)
+	return output
 
-func _apply_gravity(delta):
-	velocity.y += _add_to_velocity_component(velocity.y, gravity * delta, maximum_fall_speed)
-
-func _apply_horizontal_movement(delta, friction, control, maximum_speed):
+func _get_velocity_after_horizontal_movement(delta, friction, control, maximum_speed):
+	var output := velocity
 	var control_scale = 1.0 - exp(-control * delta)
 	if movement_direction != 0:
-		if sign(movement_direction) != sign(velocity.x):
-			_apply_friction(delta, Vector2.ZERO, friction)
+		if sign(movement_direction) != sign(output.x):
+			output = _dampen(delta, output, Vector2.ZERO, friction)
 		if is_on_ground:
-			velocity += -current_ground_normal.tangent() * _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
+			output += -current_ground_normal.tangent() * _add_to_velocity_component(output.x, control_scale * movement_direction * maximum_speed, maximum_speed)
 		else:
-			velocity.x += _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
-		if abs(velocity.x) > maximum_speed:
-			velocity.x = _dampen(delta, velocity.x, sign(movement_direction) * maximum_speed, friction)
+			output.x += _add_to_velocity_component(output.x, control_scale * movement_direction * maximum_speed, maximum_speed)
+		if abs(output.x) > maximum_speed:
+			output.x = _dampen(delta, output.x, sign(movement_direction) * maximum_speed, friction)
 	elif not friction_is_suspended:
-		_apply_friction(delta, Vector2.ZERO, friction)
+		output = _dampen(delta, output, Vector2.ZERO, friction)
+	return output
 
 func _handle_crouching():
 	was_crouching = is_crouching
@@ -203,30 +207,37 @@ func move(distance):
 func _handle_physics(delta):
 	current_move_recursions = 0
 	_check_if_on_ground()
-	_apply_gravity(delta)
+	velocity = _get_velocity_after_gravity(delta)
 	_handle_crouching()
-
+	
 	if is_on_ground:
 		if is_crouching:
-			_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
+			current_friction = slide_friction
+			current_control = slide_control
+			current_maximum_speed = maximum_walk_speed
 		else:
-			_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
+			current_friction = ground_friction
+			current_control = walk_control
+			current_maximum_speed = maximum_walk_speed
 	else:
 		_unsnap_from_platform()
-		_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
-
+		current_friction = air_resistance
+		current_control = air_drift_control
+		current_maximum_speed = maximum_air_drift_speed
+		
+	velocity = _get_velocity_after_horizontal_movement(delta, current_friction, current_control, current_maximum_speed)
 	_handle_jumping()
 	move(velocity * delta)
 	if current_platform:
 		position += current_platform.velocity * delta
 	_handle_floor_signals()
-
+	
 	is_jumping = false
 	if time - suspend_friction_time > 0.2:
 		friction_is_suspended = false
 	if time - time_of_becoming_airborne > 0.067 and not is_on_ground:
 		can_jump = false
-
+	
 	time += delta
 
 func update_state(delta):
