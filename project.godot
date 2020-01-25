@@ -32,11 +32,11 @@ mouse_cursor/custom_image_hotspot=Vector2( 10, 10 )
 
 [editor_plugins]
 
-enabled=PoolStringArray( "smoothing", "vnen.tiled_importer" )
+enabled=PoolStringArray( "smoothing" )
 
 [gdnative]
 
-singletons=[ "res://webrtc/webrtc.tres" ]
+singletons=[  ]
 
 [input]
 

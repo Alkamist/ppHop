@@ -19,15 +19,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SinglePlayer" type="Button" parent="VBoxContainer"]
+[node name="Start" type="Button" parent="VBoxContainer"]
 margin_right = 160.0
 margin_bottom = 20.0
-text = "Single Player"
-
-[node name="MultiPlayer" type="Button" parent="VBoxContainer"]
-margin_top = 24.0
-margin_right = 160.0
-margin_bottom = 44.0
-text = "Multi Player"
-[connection signal="pressed" from="VBoxContainer/SinglePlayer" to="." method="_on_SinglePlayer_pressed"]
-[connection signal="pressed" from="VBoxContainer/MultiPlayer" to="." method="_on_MultiPlayer_pressed"]
+text = "Start"
+[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_SinglePlayer_pressed"]
