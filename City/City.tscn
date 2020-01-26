@@ -12,11 +12,11 @@
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 326, 56 )
+extents = Vector2( 326, 602 )
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 108, -30, 47.2414, 15.4756, -47.2414, -15.4756, 58, -206, 0, 0, 0, 0, -16, -180, -76.5636, 27.6932, 76.5636, -27.6932, 104, -332, 0, 0, 0, 0, 244, -274, -49.6849, 14.6611, 49.6849, -14.6611, 358, -476, 0, 0, 0, 0, 482, -408, 53.7574, 9.77407, -53.7574, -9.77407, 368, -662, 0, 0, 0, 0, 242, -566, 60.2735, 6.51605, -60.2735, -6.51605, 90, -760, 0, 0, 0, 0, -44, -694, -65.975, 6.51605, 65.975, -6.51605, 92, -932, 0, 0, 0, 0, 232, -824 )
+"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 108, -30, 47.2414, 15.4756, -47.2414, -15.4756, 58, -206, 0, 0, 0, 0, -18, -198, -76.5636, 27.6932, 76.5636, -27.6932, 100, -338, 0, 0, 0, 0, 242, -304, -49.6849, 14.6611, 49.6849, -14.6611, 360, -464, 0, 0, 0, 0, 480, -436, 53.7574, 9.77407, -53.7574, -9.77407, 368, -624, 0, 0, 0, 0, 238, -596, 60.2735, 6.51605, -60.2735, -6.51605, 86, -754, 0, 0, 0, 0, -48, -722, -65.975, 6.51605, 65.975, -6.51605, 102, -890, 0, 0, 0, 0, 232, -844 )
 }
 
 [node name="Node2D" type="Node2D"]
@@ -81,7 +81,7 @@ script = ExtResource( 7 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/ChaseTrigger"]
 visible = false
-polygon = PoolVector2Array( 224, -246, 224, -526, -88, -546, -84, -978, 518, -942, 522, -306, 258, -248 )
+polygon = PoolVector2Array( 224, -246, 224, -526, -88, -546, -86, -920, 516, -860, 522, -306, 258, -248 )
 
 [node name="AttackTrigger" type="Area2D" parent="Hobo"]
 position = Vector2( 214, 0 )
@@ -89,7 +89,7 @@ scale = Vector2( 1, 1 )
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hobo/AttackTrigger"]
-position = Vector2( 0, 30 )
+position = Vector2( 0, 564 )
 shape = SubResource( 2 )
 
 [node name="Path2D" type="Path2D" parent="Hobo"]
@@ -98,6 +98,7 @@ curve = SubResource( 1 )
 [node name="PathFollow2D" type="PathFollow2D" parent="Hobo/Path2D"]
 position = Vector2( -22, -8 )
 rotate = false
+loop = false
 
 [node name="Sprite" type="Sprite" parent="Hobo/Path2D/PathFollow2D"]
 scale = Vector2( 2, 2 )
@@ -122,7 +123,7 @@ polygon = PoolVector2Array( 1008, 2048, 1008, 1936, 1080, 1936, 1080, -2048, 204
 polygon = PoolVector2Array( -818, 2048, -818, 1976, -1034, 1976, -1034, 1820, -930, 1820, -930, 1786, -1034, 1786, -1034, 1284, -1006, 1284, -1006, 1262, -1034, 1262, -1034, -2048, -2048, -2048, -2048, 2048 )
 
 [node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PoolVector2Array( -494, 1550, -466, 1550, -466, 1060, -494, 1060, -494, 1038, -466, 1038, -466, 1008, -260, 1008, -260, 1634, -466, 1634, -466, 1572, -494, 1572 )
+polygon = PoolVector2Array( -494, 1550, -466, 1550, -466, 1060, -494, 1060, -494, 1038, -466, 1038, -466, 766, -260, 766, -260, 1634, -466, 1634, -466, 1572, -494, 1572 )
 
 [node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( -744, 1678, -706, 1678, -706, 1698, -744, 1698 )
@@ -133,4 +134,5 @@ polygon = PoolVector2Array( -750, 1392, -712, 1392, -712, 1412, -750, 1412 )
 [node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( -752, 1144, -714, 1144, -714, 1164, -752, 1164 )
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
+[connection signal="body_exited" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
