@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bogTilemap1 - Copy.png-049f32aee6d120ba1178e2165f8ec62b.stex"
+path="res://.import/hobo.png-0ce43b502304e0fcbb86547bb97c7429.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marsh/bogTilemap1 - Copy.png"
-dest_files=[ "res://.import/bogTilemap1 - Copy.png-049f32aee6d120ba1178e2165f8ec62b.stex" ]
+source_file="res://City/hobo.png"
+dest_files=[ "res://.import/hobo.png-0ce43b502304e0fcbb86547bb97c7429.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

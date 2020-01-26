@@ -19,7 +19,7 @@ extents = Vector2( 2048, 2548 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 9 )
-shader_param/color = Vector3( 0.1, 0.17, 0.1 )
+shader_param/color = Vector3( 0.12, 0.14, 0.12 )
 shader_param/OCTAVES = 1
 
 [node name="Node2D" type="Node2D"]
@@ -426,6 +426,7 @@ light_mask = 2
 material = SubResource( 2 )
 position = Vector2( 0, -66 )
 scale = Vector2( 250, 280 )
+z_index = 2
 texture = ExtResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -511,7 +512,7 @@ polygon = PoolVector2Array( 644, -2032, 672, -2032, 672, -2020, 644, -2016 )
 
 [node name="CollisionPolygon2D27" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 800, -2256, 832, -2256, 832, -2236, 800, -2236 )
-[connection signal="alpha_changed" from="ProximityAlphaFader" to="ParallaxBackground" method="_on_ProximityAlphaFader_alpha_changed"]
 [connection signal="alpha_changed" from="ProximityAlphaFader" to="TopLight" method="_on_ProximityAlphaFader_alpha_changed"]
+[connection signal="alpha_changed" from="ProximityAlphaFader" to="ParallaxBackground" method="_on_ProximityAlphaFader_alpha_changed"]
 
 [editable path="ProximityAlphaFader"]

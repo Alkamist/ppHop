@@ -8,68 +8,11 @@
 [ext_resource path="res://PP/JumpLine.gd" type="Script" id=6]
 [ext_resource path="res://PP/ppNervousSpriteSheetNormalMap.png" type="Texture" id=7]
 [ext_resource path="res://PP/ppNervousSpriteSheet.png" type="Texture" id=8]
-[ext_resource path="res://PP/PPAnimation.gd" type="Script" id=9]
+[ext_resource path="res://PP/ScaredAnimation.gd" type="Script" id=9]
 [ext_resource path="res://PP/Jiggler.gd" type="Script" id=10]
+[ext_resource path="res://PP/OtherAnimations.gd" type="Script" id=11]
 
-[sub_resource type="Animation" id=5]
-resource_name = "Crouch"
-length = 0.0416667
-step = 0.0416667
-tracks/0/type = "value"
-tracks/0/path = NodePath("Smoothing2D/Visuals:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.0416667 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1, 0.5 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Smoothing2D/Visuals:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.0416667 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ) ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "Jump"
-length = 0.208333
-step = 0.0416667
-tracks/0/type = "value"
-tracks/0/path = NodePath("Smoothing2D/Visuals:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.0416667, 0.0833333, 0.208333 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1, 0.5 ), Vector2( 1, 1.25 ), Vector2( 1, 1 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Smoothing2D/Visuals:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.0416667, 0.0833333, 0.208333 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ), Vector2( 0, -3 ), Vector2( 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "Scared"
 length = 0.333333
 loop = true
@@ -87,13 +30,71 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=2]
+resource_name = "Crouch"
+length = 0.0416667
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/path = NodePath("Smoothing2D/Visuals:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0416667 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 0.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Smoothing2D/Visuals:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.0416667 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Jump"
+length = 0.208333
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/path = NodePath("Smoothing2D/Visuals:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0416667, 0.0833333, 0.208333 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 0.5 ), Vector2( 1, 1.25 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Smoothing2D/Visuals:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.0416667, 0.0833333, 0.208333 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ), Vector2( 0, -3 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
 resource_name = "Uncrouch"
 length = 0.0416667
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Smoothing2D/Visuals:scale")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -105,7 +106,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Smoothing2D/Visuals:position")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -116,22 +117,23 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 6 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=1]
+[sub_resource type="OccluderPolygon2D" id=5]
 cull_mode = 2
 polygon = PoolVector2Array( -16, 10, 8, 10, 8, 4, 12, 2, 13, -4, 16, -6, 16, -10, 12, -13, -2, -13, -8, -10, -16, 2 )
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 8 )
 
 [node name="Pp" type="Node2D"]
 z_index = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Crouch = SubResource( 5 )
-anims/Jump = SubResource( 4 )
-anims/Scared = SubResource( 3 )
-anims/Uncrouch = SubResource( 6 )
+[node name="ScaredAnimation" type="AnimationPlayer" parent="."]
+autoplay = "Scared"
+anims/Scared = SubResource( 1 )
 script = ExtResource( 9 )
+
+[node name="OtherAnimations" type="AnimationPlayer" parent="."]
+anims/Crouch = SubResource( 2 )
+anims/Jump = SubResource( 3 )
+anims/Uncrouch = SubResource( 4 )
+script = ExtResource( 11 )
 
 [node name="Smoothing2D" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -152,7 +154,7 @@ script = ExtResource( 10 )
 script = ExtResource( 5 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
-occluder = SubResource( 1 )
+occluder = SubResource( 5 )
 
 [node name="Scared" type="Sprite" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
 visible = false
@@ -176,11 +178,10 @@ normal_map = ExtResource( 1 )
 ]]
 script = ExtResource( 4 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Body"]
-position = Vector2( 0, 2 )
-shape = SubResource( 2 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Body"]
+polygon = PoolVector2Array( -10, 11, -7, 0, -4, -6, -2, -8, 0, -9, 2, -8, 4, -6, 7, 0, 10, 11 )
 [connection signal="just_bounced" from="Body" to="Smoothing2D/Visuals/Jiggler" method="_on_Body_just_bounced"]
-[connection signal="just_crouched" from="Body" to="AnimationPlayer" method="_on_Body_just_crouched"]
+[connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
 [connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
-[connection signal="just_jumped" from="Body" to="AnimationPlayer" method="_on_Body_just_jumped"]
-[connection signal="just_uncrouched" from="Body" to="AnimationPlayer" method="_on_Body_just_uncrouched"]
+[connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
+[connection signal="just_uncrouched" from="Body" to="OtherAnimations" method="_on_Body_just_uncrouched"]

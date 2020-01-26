@@ -33,6 +33,9 @@ var can_jump := false
 var is_on_ground := false
 var is_crouching := false
 var current_ground_normal
+var is_launching := false
+var time_of_launch := 0.0
+var launch_helpless_time := 0.5
 var move_recursion_count := 0
 
 signal just_landed
@@ -41,6 +44,11 @@ signal just_jumped
 signal just_crouched
 signal just_uncrouched
 signal just_bounced
+
+func launch(launch_vector):
+	is_launching = true
+	time_of_launch = time
+	velocity += launch_vector
 
 func move(distance):
 	move_recursion_count = 0
@@ -60,7 +68,7 @@ func _handle_ground_slide(collision):
 	var normal = collision.normal
 	var remainder = collision.remainder
 	velocity = velocity.slide(normal)
-	if is_crouching or not is_on_ground or (movement_direction != 0 and sign(velocity.x) == sign(movement_direction)):
+	if is_launching or is_crouching or not is_on_ground or (movement_direction != 0 and sign(velocity.x) == sign(movement_direction)):
 		_move_recursion(remainder.slide(normal))
 
 func _handle_wall_slide(collision):
@@ -179,14 +187,22 @@ func _physics_process(delta):
 		velocity = Vector2.ZERO
 	else:
 		_apply_gravity(delta)
-		if is_on_ground:
-			if is_crouching:
-				_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
+		if not is_launching:
+			if is_on_ground:
+				if is_crouching:
+					_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
+				else:
+					_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
 			else:
-				_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
+				_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
 		else:
-			_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
+			if is_on_ground:
+				velocity = _dampen(delta, velocity, Vector2.ZERO, slide_friction)
+			else:
+				velocity = _dampen(delta, velocity, Vector2.ZERO, air_resistance)
 		_handle_jumping()
 		move(velocity * delta)
 		if time - time_of_jump_input > jump_buffer_time:
 			should_jump = false
+		if time - time_of_launch > launch_helpless_time:
+			is_launching = false
