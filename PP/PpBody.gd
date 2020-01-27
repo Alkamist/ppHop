@@ -182,7 +182,8 @@ func _process(delta):
 	time += delta
 
 func _physics_process(delta):
-	if OS.is_debug_build() and Input.is_action_pressed("up"):
+	#if OS.is_debug_build() and Input.is_action_pressed("up"):
+	if Input.is_action_pressed("up"):
 		position = lerp(position, get_global_mouse_position(), 10.0 * delta)
 		velocity = Vector2.ZERO
 	else:

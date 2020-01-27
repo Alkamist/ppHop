@@ -4,9 +4,10 @@ onready var tween := get_node("Tween")
 onready var path_follow := get_node("Path2D/PathFollow2D")
 onready var path := get_node("Path2D")
 onready var sprite := get_node("Path2D/PathFollow2D/Sprite")
+onready var attack_trigger := get_node("AttackTrigger")
 
 onready var previous_position = path_follow.position
-var movement_speed := 550.0
+var movement_speed := 490.0
 var time := 0.0
 var attack_cooldown := 1.0
 var time_of_attack := 0.0
@@ -38,11 +39,16 @@ func _process(delta):
 func _on_ChaseTrigger_body_entered(body):
 	if body.is_in_group("ppBody") and not is_chasing and not attack_target:
 		is_chasing = true
+		for body_in_trigger in attack_trigger.get_overlapping_bodies():
+			if body_in_trigger.is_in_group("ppBody"):
+				_on_AttackTrigger_body_entered(body_in_trigger)
+				return
 		tween.stop_all()
-		var rate = path.curve.get_baked_length() / movement_speed
-		tween.interpolate_property(path_follow, "unit_offset", 0.0, 1.0, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		tween.start()
-		yield(tween, "tween_completed")
+		var rate = (1.0 - path_follow.unit_offset) * path.curve.get_baked_length() / movement_speed
+		if rate > 0.0:
+			tween.interpolate_property(path_follow, "unit_offset", path_follow.unit_offset, 1.0, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween, "tween_completed")
 		is_chasing = false
 
 func _on_AttackTrigger_body_entered(body):
@@ -59,10 +65,12 @@ func _on_ChaseTrigger_body_exited(body):
 		var rate = 0.1
 		if attack_target:
 			rate = path_follow.global_position.distance_to(attack_starting_point) / movement_speed
-			tween.interpolate_property(path_follow, "global_position", path_follow.global_position, attack_starting_point, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
-			yield(tween, "tween_completed")
+			if rate > 0.0:
+				tween.interpolate_property(path_follow, "global_position", path_follow.global_position, attack_starting_point, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween.start()
+				yield(tween, "tween_completed")
 		attack_target = null
 		rate = path.curve.get_baked_length() * path_follow.unit_offset / movement_speed
-		tween.interpolate_property(path_follow, "unit_offset", path_follow.unit_offset, 0.0, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		tween.start()
+		if rate > 0.0:
+			tween.interpolate_property(path_follow, "unit_offset", path_follow.unit_offset, 0.0, rate, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
