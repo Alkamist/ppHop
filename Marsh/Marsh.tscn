@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Marsh/bogTilemap1.png" type="Texture" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
@@ -6,13 +6,9 @@
 [ext_resource path="res://Marsh/bogBackground4.png" type="Texture" id=4]
 [ext_resource path="res://Marsh/bogBackground2.png" type="Texture" id=5]
 [ext_resource path="res://Marsh/bogBackground3.png" type="Texture" id=6]
-[ext_resource path="res://Images/lightTest1.png" type="Texture" id=7]
 [ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
-[ext_resource path="res://Marsh/scaryEyeLight.png" type="Texture" id=10]
-[ext_resource path="res://Marsh/marshGradientLight.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/ProximityAlphaFader.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Scripts/LightFader.gd" type="Script" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2048, 2548 )
@@ -20,12 +16,12 @@ extents = Vector2( 2048, 2548 )
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 9 )
 shader_param/color = Vector3( 0.12, 0.14, 0.12 )
-shader_param/OCTAVES = 1
+shader_param/OCTAVES = 2
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Level" type="Sprite" parent="."]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 
 [node name="ProximityAlphaFader" parent="." instance=ExtResource( 12 )]
@@ -46,380 +42,38 @@ motion_scale = Vector2( 0, 0 )
 motion_offset = Vector2( 0, -1586 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
 
 [node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.1, 0.1 )
-motion_offset = Vector2( 0, -1360 )
+motion_offset = Vector2( 0, -1410 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 720 )
+region_rect = Rect2( 0, 0, 3000, 360 )
 
 [node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.19, 0.19 )
-motion_offset = Vector2( 0, -1221 )
+motion_offset = Vector2( 0, -1303 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 6 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 720 )
+region_rect = Rect2( 0, 0, 598, 612 )
 
 [node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.5, 0.5 )
-motion_offset = Vector2( 0, -679 )
+motion_offset = Vector2( 0, -932 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 4 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 720 )
-
-[node name="TopLight" type="Light2D" parent="."]
-position = Vector2( 0, -3536 )
-texture = ExtResource( 11 )
-offset = Vector2( 0, 2300 )
-texture_scale = 2.0
-color = Color( 0.94902, 1, 0.701961, 1 )
-range_item_cull_mask = 2
-shadow_enabled = true
-shadow_gradient_length = 32.0
-script = ExtResource( 13 )
-
-[node name="LightScaryEyes" type="Light2D" parent="."]
-position = Vector2( -692, 1216 )
-texture = ExtResource( 10 )
-offset = Vector2( 1, 51 )
-texture_scale = 2.0
-energy = 3.4
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="FungusLights" type="Node2D" parent="."]
-
-[node name="LightFungus1" type="Light2D" parent="FungusLights"]
-position = Vector2( -436, 1164 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus2" type="Light2D" parent="FungusLights"]
-position = Vector2( -76, 1096 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus3" type="Light2D" parent="FungusLights"]
-position = Vector2( 200, 900 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus4" type="Light2D" parent="FungusLights"]
-position = Vector2( -180, 776 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus5" type="Light2D" parent="FungusLights"]
-position = Vector2( -496, 788 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus6" type="Light2D" parent="FungusLights"]
-position = Vector2( -634.31, 363.33 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus7" type="Light2D" parent="FungusLights"]
-position = Vector2( -192.108, 392.55 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus8" type="Light2D" parent="FungusLights"]
-position = Vector2( -38.2134, 593.197 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus9" type="Light2D" parent="FungusLights"]
-position = Vector2( 216.978, 275.669 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus10" type="Light2D" parent="FungusLights"]
-position = Vector2( 577.363, 135.411 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus11" type="Light2D" parent="FungusLights"]
-position = Vector2( 581.259, 341.902 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus12" type="Light2D" parent="FungusLights"]
-position = Vector2( 431.261, -88.6122 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus13" type="Light2D" parent="FungusLights"]
-position = Vector2( 107.888, -203.546 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus14" type="Light2D" parent="FungusLights"]
-position = Vector2( -351.846, -34.0674 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus15" type="Light2D" parent="FungusLights"]
-position = Vector2( -669.374, -244.454 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus16" type="Light2D" parent="FungusLights"]
-position = Vector2( -803.788, -821.07 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus17" type="Light2D" parent="FungusLights"]
-position = Vector2( -809.632, -659.384 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus18" type="Light2D" parent="FungusLights"]
-position = Vector2( -190.159, -651.592 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus19" type="Light2D" parent="FungusLights"]
-position = Vector2( 94.2525, -873.667 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus20" type="Light2D" parent="FungusLights"]
-position = Vector2( 250.095, -1251.58 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus21" type="Light2D" parent="FungusLights"]
-position = Vector2( -112.238, -1121.07 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus22" type="Light2D" parent="FungusLights"]
-position = Vector2( 51.3958, -1463.92 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus23" type="Light2D" parent="FungusLights"]
-position = Vector2( -131.719, -1399.63 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus24" type="Light2D" parent="FungusLights"]
-position = Vector2( -297.301, -1185.35 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus25" type="Light2D" parent="FungusLights"]
-position = Vector2( -564.181, -1163.92 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus26" type="Light2D" parent="FungusLights"]
-position = Vector2( -786.256, -1487.3 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus27" type="Light2D" parent="FungusLights"]
-position = Vector2( -507.688, -1721.06 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus28" type="Light2D" parent="FungusLights"]
-position = Vector2( -480.416, -1526.26 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus29" type="Light2D" parent="FungusLights"]
-position = Vector2( -244.705, -2054.17 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus30" type="Light2D" parent="FungusLights"]
-position = Vector2( 109.836, -2147.68 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus31" type="Light2D" parent="FungusLights"]
-position = Vector2( 655.284, -1995.73 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
-
-[node name="LightFungus32" type="Light2D" parent="FungusLights"]
-position = Vector2( 815.022, -2223.65 )
-rotation = -1.5708
-texture = ExtResource( 7 )
-texture_scale = 2.0
-color = Color( 0, 0.6, 1, 1 )
-energy = 1.5
-range_item_cull_mask = 2
-shadow_enabled = true
+region_rect = Rect2( 0, 0, 968, 1110 )
 
 [node name="Fog" type="Sprite" parent="."]
 light_mask = 2
@@ -512,7 +166,6 @@ polygon = PoolVector2Array( 644, -2032, 672, -2032, 672, -2020, 644, -2016 )
 
 [node name="CollisionPolygon2D27" type="CollisionPolygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 800, -2256, 832, -2256, 832, -2236, 800, -2236 )
-[connection signal="alpha_changed" from="ProximityAlphaFader" to="TopLight" method="_on_ProximityAlphaFader_alpha_changed"]
 [connection signal="alpha_changed" from="ProximityAlphaFader" to="ParallaxBackground" method="_on_ProximityAlphaFader_alpha_changed"]
 
 [editable path="ProximityAlphaFader"]

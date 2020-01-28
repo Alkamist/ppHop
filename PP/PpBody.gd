@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var bounciness := 0.9
-var gravity := 1700.0
+var gravity := 2000.0
 var maximum_fall_speed := 1400.0
 var ground_friction := 99999999999.9
 var slide_friction := 2.0
@@ -14,7 +14,7 @@ var air_drift_control := 5.0
 var maximum_ground_angle := 0.7
 var minimum_bounce_angle := 0.8
 var minimum_bounce_velocity := 50.0
-var jump_power := 3.8
+var jump_power := 4.1
 var jump_mouse_length := 260.0
 var jump_y_clamp := -0.2
 var maximum_jump_speed := 1400.0
@@ -85,9 +85,10 @@ func _check_if_on_ground():
 		current_ground_normal = collision.normal
 	else:
 		current_ground_normal = null
-	if is_on_ground and not was_on_ground:
-		emit_signal("just_landed")
+	if is_on_ground:
 		can_jump = true
+		if not was_on_ground:
+			emit_signal("just_landed")
 	elif not is_on_ground and was_on_ground:
 		emit_signal("just_became_airborne")
 		time_of_becoming_airborne = time
