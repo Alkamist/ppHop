@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/marshTileMap.tmx-21f8c8410903bdbaf31b1b5009630b00.scn"
+
+[deps]
+
+source_file="res://Marsh/marshTileMap.tmx"
+dest_files=[ "res://.import/marshTileMap.tmx-21f8c8410903bdbaf31b1b5009630b00.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=7
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script=""
