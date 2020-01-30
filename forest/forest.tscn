@@ -1,59 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Forest/forestTileMap.tmx" type="PackedScene" id=1]
-[ext_resource path="res://Marsh/bogBackground1.png" type="Texture" id=3]
-[ext_resource path="res://Marsh/bogBackground4.png" type="Texture" id=4]
-[ext_resource path="res://Marsh/bogBackground2.png" type="Texture" id=5]
-[ext_resource path="res://Marsh/bogBackground3.png" type="Texture" id=6]
-[ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-offset = Vector2( 0, 1607 )
-transform = Transform2D( 1, 0, 0, 1, 0, 1607 )
-script = ExtResource( 8 )
-
-[node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0, 0 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-scale = Vector2( 4, 4 )
-texture = ExtResource( 3 )
-
-[node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.1, 0.1 )
-motion_offset = Vector2( 0, -1390 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-scale = Vector2( 4, 4 )
-texture = ExtResource( 5 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 360 )
-
-[node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.19, 0.19 )
-motion_offset = Vector2( 0, -1242 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
-scale = Vector2( 4, 4 )
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 360 )
-
-[node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.5, 0.5 )
-motion_offset = Vector2( 0, -667 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
-scale = Vector2( 4, 4 )
-texture = ExtResource( 4 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 3000, 360 )
-
 [node name="forestTileMap" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 4, 4 )
+position = Vector2( -2490, -3872 )
+scale = Vector2( 2, 2 )
