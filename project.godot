@@ -23,16 +23,13 @@ run/main_scene="res://MainMenu/MainMenu.tscn"
 SFX="*res://Scenes/SFX.tscn"
 Network="*res://Scripts/Network.gd"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
-window/size/width=800
-window/size/height=500
+window/size/width=960
+window/size/height=540
 mouse_cursor/custom_image="res://Images/mouseCursor.png"
 mouse_cursor/custom_image_hotspot=Vector2( 10, 10 )
+window/stretch/shrink=3.0
 
 [editor_plugins]
 

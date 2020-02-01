@@ -3,6 +3,9 @@ extends Node2D
 onready var body := get_node("../../Body")
 onready var smoothing := get_node("../")
 
+var line_mouse_offset := 3.0
+var line_thickness := 2
+
 func _draw():
 	if body.can_jump and not Input.is_action_pressed("jump"):
 		var direction = get_global_mouse_position() - global_position
@@ -16,8 +19,8 @@ func _draw():
 			else:
 				jump_vector = jump_vector.clamped(1.0)
 			jump_vector *= body.jump_mouse_length
-		var end_position = jump_vector - jump_vector.normalized() * 8.0
-		draw_line(Vector2.ZERO, end_position, Color(0.6, 0.1, 0), 6)
+		var end_position = jump_vector - jump_vector.normalized() * line_mouse_offset
+		draw_line(Vector2.ZERO, end_position, Color(0.6, 0.1, 0), line_thickness)
 
 func _process(delta):
 	update()

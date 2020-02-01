@@ -1,23 +1,24 @@
 extends KinematicBody2D
 
 var bounciness := 0.8
-var gravity := 2000.0
-var maximum_fall_speed := 1400.0
+var gravity := 600.0
+var maximum_fall_speed := 480.0
 var ground_friction := 99999999999.9
+var minimum_y_velocity_on_slope := 20.0
 var slide_friction := 2.0
 var air_resistance := 0.1
-var maximum_walk_speed := 160.0
-var maximum_air_drift_speed := 160.0
+var maximum_walk_speed := 50.0
+var maximum_air_drift_speed := 50.0
 var walk_control := 99999999999.9
 var slide_control := 10.0
 var air_drift_control := 5.0
 var maximum_ground_angle := 0.7
 var minimum_bounce_angle := 0.8
-var minimum_bounce_velocity := 50.0
-var jump_power := 4.1
-var jump_mouse_length := 260.0
-var jump_y_clamp := -0.2
-var maximum_jump_speed := 1400.0
+var minimum_bounce_velocity := 15.0
+var jump_power := 4.0
+var jump_mouse_length := 70.0
+var jump_y_clamp := -0.3
+var maximum_jump_speed := 480.0
 
 var time := 0.0
 var time_of_jump_input := 0.0
@@ -68,8 +69,7 @@ func _handle_ground_slide(collision):
 	var normal = collision.normal
 	var remainder = collision.remainder
 	velocity = velocity.slide(normal)
-	if is_launching or is_crouching or not is_on_ground or (movement_direction != 0 and sign(velocity.x) == sign(movement_direction)):
-		_move_recursion(remainder.slide(normal))
+	_move_recursion(remainder.slide(normal))
 
 func _handle_wall_slide(collision):
 	var normal = collision.normal
@@ -132,7 +132,7 @@ func _apply_horizontal_movement(delta, friction, control, maximum_speed):
 	var control_scale = 1.0 - exp(-control * delta)
 	if movement_direction != 0:
 		if sign(movement_direction) != sign(velocity.x):
-			velocity = _dampen(delta, velocity, Vector2.ZERO, friction)
+			velocity.x = _dampen(delta, velocity.x, 0.0, friction)
 		if current_ground_normal:
 			velocity += -current_ground_normal.tangent() * _add_to_velocity_component(velocity.x, control_scale * movement_direction * maximum_speed, maximum_speed)
 		else:
@@ -140,7 +140,7 @@ func _apply_horizontal_movement(delta, friction, control, maximum_speed):
 		if abs(velocity.x) > maximum_speed:
 			velocity.x = _dampen(delta, velocity.x, sign(movement_direction) * maximum_speed, friction)
 	else:
-		velocity = _dampen(delta, velocity, Vector2.ZERO, friction)
+		velocity.x = _dampen(delta, velocity.x, 0.0, friction)
 
 func _handle_jumping():
 	if should_jump and can_jump:
@@ -195,11 +195,14 @@ func _physics_process(delta):
 					_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
 				else:
 					_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
+					if movement_direction == 0 and velocity.y < minimum_y_velocity_on_slope:
+						velocity.y = 0.0
 			else:
+				velocity.y = _dampen(delta, velocity.y, 0.0, air_resistance)
 				_apply_horizontal_movement(delta, air_resistance, air_drift_control, maximum_air_drift_speed)
 		else:
 			if is_on_ground:
-				velocity = _dampen(delta, velocity, Vector2.ZERO, slide_friction)
+				velocity.x = _dampen(delta, velocity.x, 0.0, slide_friction)
 			else:
 				velocity = _dampen(delta, velocity, Vector2.ZERO, air_resistance)
 		_handle_jumping()

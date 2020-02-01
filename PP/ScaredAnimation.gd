@@ -13,7 +13,7 @@ func become_idle():
 	idle.show()
 
 func _process(delta):
-	if body.velocity.y >= 1300.0:
+	if body.velocity.y >= 400.0:
 		become_scared()
 	else:
 		become_idle()

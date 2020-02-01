@@ -6,12 +6,12 @@
 [ext_resource path="res://Marsh/marshBackground3.png" type="Texture" id=4]
 [ext_resource path="res://Marsh/marshBackground4.png" type="Texture" id=5]
 [ext_resource path="res://Marsh/marshBackground6.png" type="Texture" id=6]
-[ext_resource path="res://Marsh/marshTileMap.tmx" type="PackedScene" id=7]
+[ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
 [ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
+[ext_resource path="res://City/hobo.png" type="Texture" id=10]
 [ext_resource path="res://Marsh/marshBackground5.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/ProximityAlphaFader.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Images/lightTest1.png" type="Texture" id=13]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 9 )
@@ -22,75 +22,59 @@ shader_param/OCTAVES = 2
 extents = Vector2( 2048, 2548 )
 
 [node name="Node2D" type="Node2D"]
-position = Vector2( 5.41504, 9.92755 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-offset = Vector2( 0, -200 )
-transform = Transform2D( 1, 0, 0, 1, 0, -200 )
+offset = Vector2( 0, -112 )
+transform = Transform2D( 1, 0, 0, 1, 0, -112 )
 script = ExtResource( 8 )
 
 [node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.02, 0.02 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1706, 768 )
+region_rect = Rect2( 0, 0, 1706, 348 )
 
 [node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.12, 0.12 )
+motion_scale = Vector2( 0.05, 0.05 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1704, 384 )
+region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.15, 0.15 )
+motion_scale = Vector2( 0.1, 0.1 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
-position = Vector2( 0, 240 )
-scale = Vector2( 2, 2 )
 texture = ExtResource( 4 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1704, 768 )
+region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.21, 0.21 )
+motion_scale = Vector2( 0.18, 0.18 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
-position = Vector2( 0, 50 )
-scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1704, 768 )
+region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer5" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.3, 0.3 )
+motion_scale = Vector2( 0.25, 0.25 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer5"]
-position = Vector2( 0, -400 )
-scale = Vector2( 2, 2 )
 texture = ExtResource( 11 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1704, 1438 )
+region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer6" type="ParallaxLayer" parent="ParallaxBackground"]
-visible = false
-motion_scale = Vector2( 0.12, 0.12 )
+motion_scale = Vector2( 0.3, 0.3 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer6"]
-position = Vector2( 0, 200 )
-scale = Vector2( 2, 2 )
 texture = ExtResource( 6 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1704, 768 )
+region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Fog" type="Sprite" parent="ParallaxBackground/Layer6"]
 visible = false
@@ -100,17 +84,13 @@ position = Vector2( 464, -1200 )
 scale = Vector2( 250, 280 )
 texture = ExtResource( 2 )
 
-[node name="marshTileMap" parent="." instance=ExtResource( 7 )]
-position = Vector2( -1984, -3808 )
-scale = Vector2( 4, 4 )
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( -176, 0 )
+texture = ExtResource( 10 )
 
-[node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -267.013, -1.74149 )
-texture = ExtResource( 13 )
-texture_scale = 39.16
-color = Color( 1, 0.72549, 0, 1 )
-energy = 3.93
-shadow_enabled = true
+[node name="marshTilemap" parent="." instance=ExtResource( 7 )]
+position = Vector2( -552, -1000 )
 
 [node name="ProximityAlphaFader" parent="." instance=ExtResource( 12 )]
 visible = false
