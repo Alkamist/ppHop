@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/marshTileset1Big.png-92e5215289b4e27daab0996621d35f9a.stex"
+path="res://.import/ppLNormalDown.png-1bb85deb03072c04a4164bbb65b70be8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marsh/marshTileset1Big.png"
-dest_files=[ "res://.import/marshTileset1Big.png-92e5215289b4e27daab0996621d35f9a.stex" ]
+source_file="res://PP/ppLNormalDown.png"
+dest_files=[ "res://.import/ppLNormalDown.png-1bb85deb03072c04a4164bbb65b70be8.stex" ]
 
 [params]
 

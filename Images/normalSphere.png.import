@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ppNervousSpriteSheetNormalMap.png-4a8600d44252df1a9cb7e9393ce3a562.stex"
+path="res://.import/normalSphere.png-7c68ac1d57d17495f958bb08ab096d41.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PP/ppNervousSpriteSheetNormalMap.png"
-dest_files=[ "res://.import/ppNervousSpriteSheetNormalMap.png-4a8600d44252df1a9cb7e9393ce3a562.stex" ]
+source_file="res://Images/normalSphere.png"
+dest_files=[ "res://.import/normalSphere.png-7c68ac1d57d17495f958bb08ab096d41.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
