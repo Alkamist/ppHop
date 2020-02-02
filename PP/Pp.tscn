@@ -166,8 +166,10 @@ script = ExtResource( 4 )
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Body"]
 position = Vector2( 0, 2 )
 polygon = PoolVector2Array( -3, 1, -3, -4, 3, -4, 3, 1 )
+[connection signal="just_became_airborne" from="Body" to="ScaredAnimation" method="_on_Body_just_became_airborne"]
 [connection signal="just_bounced" from="Body" to="Smoothing2D/Visuals/Jiggler" method="_on_Body_just_bounced"]
 [connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
 [connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
 [connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
+[connection signal="just_landed" from="Body" to="ScaredAnimation" method="_on_Body_just_landed"]
 [connection signal="just_uncrouched" from="Body" to="OtherAnimations" method="_on_Body_just_uncrouched"]

@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/forestTilemap.tmx-d50fddfa6e42d416f33b19b3a06735ef.scn"
+path="res://.import/cityTilemap.tmx-a7eaa241fab8f01d0d13b85fa98ccf8e.scn"
 
 [deps]
 
-source_file="res://Forest/forestTilemap.tmx"
-dest_files=[ "res://.import/forestTilemap.tmx-d50fddfa6e42d416f33b19b3a06735ef.scn" ]
+source_file="res://City/cityTilemap.tmx"
+dest_files=[ "res://.import/cityTilemap.tmx-a7eaa241fab8f01d0d13b85fa98ccf8e.scn" ]
 
 [params]
 

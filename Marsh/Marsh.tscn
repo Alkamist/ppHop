@@ -19,7 +19,7 @@ shader_param/color = Vector3( 0.3, 0.18, 0.18 )
 shader_param/OCTAVES = 2
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 2048, 2548 )
+extents = Vector2( 1000, 1000 )
 
 [node name="Node2D" type="Node2D"]
 
@@ -29,6 +29,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, -112 )
 script = ExtResource( 8 )
 
 [node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.02, 0.02 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
@@ -37,6 +38,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1706, 348 )
 
 [node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.05, 0.05 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
@@ -45,6 +47,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer3" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.1, 0.1 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer3"]
@@ -53,6 +56,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer4" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.18, 0.18 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer4"]
@@ -61,6 +65,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer5" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.25, 0.25 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer5"]
@@ -69,6 +74,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1704, 348 )
 
 [node name="Layer6" type="ParallaxLayer" parent="ParallaxBackground"]
+visible = false
 motion_scale = Vector2( 0.3, 0.3 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer6"]
@@ -94,7 +100,7 @@ position = Vector2( -552, -1000 )
 
 [node name="ProximityAlphaFader" parent="." instance=ExtResource( 12 )]
 visible = false
-position = Vector2( 496, -1712 )
+position = Vector2( 80, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ProximityAlphaFader/Area2D" index="0"]
 shape = SubResource( 2 )

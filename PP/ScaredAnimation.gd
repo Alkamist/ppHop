@@ -4,6 +4,11 @@ onready var body := get_node("../Body")
 onready var idle := get_node("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Idle")
 onready var scared := get_node("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Scared")
 
+var time := 0.0
+var time_of_becoming_airborne := 0.0
+var time_until_scared := 1.0
+var scared_y_velocity := 400.0
+
 func become_scared():
 	scared.show()
 	idle.hide()
@@ -13,7 +18,12 @@ func become_idle():
 	idle.show()
 
 func _process(delta):
-	if body.velocity.y >= 400.0:
+	if not body.is_on_ground and (body.velocity.y >= scared_y_velocity or time - time_of_becoming_airborne > time_until_scared):
 		become_scared()
-	else:
-		become_idle()
+	time += delta
+
+func _on_Body_just_landed():
+	become_idle()
+
+func _on_Body_just_became_airborne():
+	time_of_becoming_airborne = time
