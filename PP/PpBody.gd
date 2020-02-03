@@ -1,24 +1,24 @@
 extends KinematicBody2D
 
 var bounciness := 0.8
-var gravity := 600.0
-var maximum_fall_speed := 480.0
+var gravity := 1800.0
+var maximum_fall_speed := 1440.0
 var ground_friction := 99999999999.9
-var minimum_y_velocity_on_slope := 20.0
+var minimum_y_velocity_on_slope := 60.0
 var slide_friction := 2.0
 var air_resistance := 0.1
-var maximum_walk_speed := 50.0
-var maximum_air_drift_speed := 50.0
+var maximum_walk_speed := 150.0
+var maximum_air_drift_speed := 150.0
 var walk_control := 99999999999.9
 var slide_control := 10.0
 var air_drift_control := 5.0
 var maximum_ground_angle := 0.7
 var minimum_bounce_angle := 0.8
-var minimum_bounce_velocity := 15.0
+var minimum_bounce_velocity := 50.0
 var jump_power := 4.0
-var jump_mouse_length := 70.0
+var jump_mouse_length := 210.0
 var jump_y_clamp := -0.3
-var maximum_jump_speed := 480.0
+var maximum_jump_speed := 1440.0
 
 var time := 0.0
 var time_of_jump_input := 0.0

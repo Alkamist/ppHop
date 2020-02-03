@@ -3,8 +3,8 @@ extends Node2D
 export var body_path : NodePath
 onready var body := get_node(body_path)
 
-var line_mouse_offset := 3.0
-var line_thickness := 2
+var line_mouse_offset := 10.0
+var line_thickness := 6
 
 func _draw():
 	if body.can_jump and not Input.is_action_pressed("jump"):

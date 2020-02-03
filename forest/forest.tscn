@@ -90,7 +90,8 @@ scale = Vector2( 250, 280 )
 texture = ExtResource( 2 )
 
 [node name="forestTilemap" parent="." instance=ExtResource( 7 )]
-position = Vector2( -616, -998 )
+position = Vector2( -1828, -2966 )
+scale = Vector2( 3, 3 )
 
 [node name="ProximityAlphaFader" parent="." instance=ExtResource( 12 )]
 visible = false

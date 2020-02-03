@@ -8,25 +8,26 @@
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 114, 106 )
+extents = Vector2( 356, 322 )
 
 [sub_resource type="Curve2D" id=2]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 24, -8, 7.78515, 2.52841, -7.78515, -2.52841, 12, -70, 0, 0, 0, 0, -10, -54, -11.6189, 4.69226, 11.6189, -4.69226, 12, -104, 0, 0, 0, 0, 40, -94, -11.6189, 3.12817, 11.6189, -3.12817, 66, -142, 0, 0, 0, 0, 88, -134, 10.2783, 3.35161, -10.2783, -3.35161, 62, -186, 0, 0, 0, 0, 40, -174, 5.58602, 5.58602, -5.58602, -5.58602, 8, -226, 0, 0, 0, 0, -8, -214, -11.172, 4.9157, 11.172, -4.9157, 14, -268, 0, 0, 0, 0, 38, -254, -10.9486, 2.45785, 10.9486, -2.45785, 66, -302, 0, 0, 0, 0, 88, -294 )
+"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 106, -8, 17.7212, 21.7488, -17.7212, -21.7488, 84, -162, 0, 0, 0, 0, 20, -148, -32.2204, 8.8606, 32.2204, -8.8606, 108, -290, 0, 0, 0, 0, 162, -270, -29.8038, 8.8606, 29.8038, -8.8606, 256, -404, 0, 0, 0, 0, 306, -390, 28.9983, 13.6937, -28.9983, -13.6937, 216, -528, 0, 0, 0, 0, 164, -510, 28.9983, 15.3047, -28.9983, -15.3047, 76, -644, 0, 0, 0, 0, 24, -630, -31.4149, 8.05509, 31.4149, -8.05509, 116, -762, 0, 0, 0, 0, 164, -748, -37.0534, 11.2771, 37.0534, -11.2771, 250, -886, 0, 0, 0, 0, 306, -872 )
 }
 
 [sub_resource type="Curve2D" id=3]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 58.8391, 26.5258, -58.8391, -26.5258, -158, -20, 0, 0, 0, 0, -228, -112 )
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 133.895, 64.762, -133.895, -64.762, -522, 8, 0, 0, 0, 0, -794, -290 )
 }
 
 [node name="Node2D" type="Node2D"]
 
 [node name="cityTilemap" parent="." instance=ExtResource( 1 )]
-position = Vector2( -606, -992 )
+position = Vector2( -1848, -3000 )
+scale = Vector2( 3, 3 )
 
 [node name="Hobo" type="Node2D" parent="."]
-position = Vector2( -206, 20 )
+position = Vector2( -692, 18 )
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="Hobo"]
@@ -35,13 +36,13 @@ script = ExtResource( 7 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/ChaseTrigger"]
 position = Vector2( 16, 0 )
-polygon = PoolVector2Array( -52, -310, -11.8243, -310.558, 142, -366, 146, -118, -52, -118 )
+polygon = PoolVector2Array( -60, -340, 514, -342, 502, -1108, 16, -914, -56, -912 )
 
 [node name="AttackTrigger" type="Area2D" parent="Hobo"]
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hobo/AttackTrigger"]
-position = Vector2( 64, 96 )
+position = Vector2( 224, 310 )
 shape = SubResource( 1 )
 
 [node name="Path2D" type="Path2D" parent="Hobo"]
@@ -53,15 +54,17 @@ rotate = false
 loop = false
 
 [node name="Sprite" type="Sprite" parent="Hobo/Path2D/PathFollow2D"]
+scale = Vector2( 3, 3 )
 texture = ExtResource( 2 )
 
 [node name="Garbage" type="Sprite" parent="."]
-position = Vector2( -224, 16 )
+position = Vector2( -706, 24 )
+scale = Vector2( 3, 3 )
 z_index = 2
 texture = ExtResource( 10 )
 
 [node name="MovingPlatform" parent="." instance=ExtResource( 3 )]
-position = Vector2( 46, -882 )
+position = Vector2( 196, -2722 )
 duration = 3.0
 
 [node name="Path2D" parent="MovingPlatform" index="3"]

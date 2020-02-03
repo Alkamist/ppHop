@@ -1,10 +1,10 @@
 extends Node2D
 
-var launch_x_speed := 800.0
-var launch_y_speed := 200.0
-var movement_speed := 195.0
+var launch_x_speed := 2400.0
+var launch_y_speed := 600.0
+var movement_speed := 515.0
 var attack_cooldown := 1.0
-var attack_speed := 1000.0
+var attack_speed := 3000.0
 
 onready var tween := get_node("Tween")
 onready var path_follow := get_node("Path2D/PathFollow2D")

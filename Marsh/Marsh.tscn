@@ -9,7 +9,7 @@
 [ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
 [ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
-[ext_resource path="res://City/hobo.png" type="Texture" id=10]
+[ext_resource path="res://Images/MEGALUL.png" type="Texture" id=10]
 [ext_resource path="res://Marsh/marshBackground5.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/ProximityAlphaFader.tscn" type="PackedScene" id=12]
 
@@ -90,13 +90,15 @@ position = Vector2( 464, -1200 )
 scale = Vector2( 250, 280 )
 texture = ExtResource( 2 )
 
+[node name="marshTilemap" parent="." instance=ExtResource( 7 )]
+position = Vector2( -1640, -2968 )
+scale = Vector2( 3, 3 )
+
 [node name="Sprite" type="Sprite" parent="."]
 visible = false
-position = Vector2( -176, 0 )
+position = Vector2( -424, -80 )
+scale = Vector2( 3, 3 )
 texture = ExtResource( 10 )
-
-[node name="marshTilemap" parent="." instance=ExtResource( 7 )]
-position = Vector2( -552, -1000 )
 
 [node name="ProximityAlphaFader" parent="." instance=ExtResource( 12 )]
 visible = false
