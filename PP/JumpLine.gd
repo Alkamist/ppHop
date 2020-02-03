@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var body := get_node("../../Body")
-onready var smoothing := get_node("../")
+export var body_path : NodePath
+onready var body := get_node(body_path)
 
 var line_mouse_offset := 3.0
 var line_thickness := 2

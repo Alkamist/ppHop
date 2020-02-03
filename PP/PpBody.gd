@@ -22,8 +22,10 @@ var maximum_jump_speed := 480.0
 
 var time := 0.0
 var time_of_jump_input := 0.0
+var time_of_jump := 0.0
 var time_of_becoming_airborne := 0.0
 var time_of_last_bounce_sound := 0.0
+var jump_no_friction_time := 0.017
 var jump_buffer_time := 0.067
 var jump_time_lenience := 0.067
 var movement_direction := 0
@@ -38,6 +40,7 @@ var is_launching := false
 var time_of_launch := 0.0
 var launch_helpless_time := 0.5
 var move_recursion_count := 0
+var current_platform
 
 signal just_landed
 signal just_became_airborne
@@ -77,6 +80,9 @@ func _handle_wall_slide(collision):
 	velocity = velocity.slide(normal)
 	_move_recursion(remainder.slide(normal))
 
+func _on_platform_moved(movement):
+	position += movement
+
 func _check_if_on_ground():
 	var collision = move_and_collide(Vector2.DOWN, true, true, true)
 	var was_on_ground := is_on_ground
@@ -88,8 +94,14 @@ func _check_if_on_ground():
 	if is_on_ground:
 		can_jump = true
 		if not was_on_ground:
+			if collision.collider.is_in_group("platform"):
+				current_platform = collision.collider
+				current_platform.connect("just_moved", self, "_on_platform_moved")
 			emit_signal("just_landed")
 	elif not is_on_ground and was_on_ground:
+		if current_platform:
+			current_platform.disconnect("just_moved", self, "_on_platform_moved")
+		current_platform = null
 		emit_signal("just_became_airborne")
 		time_of_becoming_airborne = time
 
@@ -157,6 +169,7 @@ func _handle_jumping():
 			jump_vector *= jump_power * jump_mouse_length
 		velocity.x += _add_to_velocity_component(velocity.x, jump_vector.x, maximum_jump_speed)
 		velocity.y = jump_vector.y
+		time_of_jump = time
 		should_jump = false
 		can_jump = false
 		SFX.play("PPJump", self)
@@ -194,8 +207,9 @@ func _physics_process(delta):
 				if is_crouching:
 					_apply_horizontal_movement(delta, slide_friction, slide_control, maximum_walk_speed)
 				else:
-					_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
-					if movement_direction == 0 and velocity.y < minimum_y_velocity_on_slope:
+					if time - time_of_jump > jump_no_friction_time:
+						_apply_horizontal_movement(delta, ground_friction, walk_control, maximum_walk_speed)
+					if movement_direction == 0 and abs(velocity.y) < minimum_y_velocity_on_slope:
 						velocity.y = 0.0
 			else:
 				velocity.y = _dampen(delta, velocity.y, 0.0, air_resistance)

@@ -1,6 +1,7 @@
 extends AnimationPlayer
 
-onready var body := get_node("../Body")
+export var body_path : NodePath
+onready var body := get_node(body_path)
 
 func _on_Body_just_jumped():
 	play("Jump")

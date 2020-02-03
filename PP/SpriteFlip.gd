@@ -1,6 +1,7 @@
 extends Node2D
 
-onready var body := get_node("../../../../Body")
+export var body_path : NodePath
+onready var body := get_node(body_path)
 
 func _process(delta):
 	var movement_direction = body.movement_direction

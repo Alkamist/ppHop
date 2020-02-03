@@ -1,8 +1,11 @@
 extends AnimationPlayer
 
-onready var body := get_node("../Body")
-onready var idle := get_node("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Idle")
-onready var scared := get_node("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Scared")
+export var body_path : NodePath
+export var idle_path : NodePath
+export var scared_path : NodePath
+onready var body := get_node(body_path)
+onready var idle := get_node(idle_path)
+onready var scared := get_node(scared_path)
 
 var time := 0.0
 var time_of_becoming_airborne := 0.0

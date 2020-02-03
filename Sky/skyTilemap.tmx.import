@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/skyTilemap.tmx-81c287606ceac592f07c575d3d786dd5.scn"
+
+[deps]
+
+source_file="res://Sky/skyTilemap.tmx"
+dest_files=[ "res://.import/skyTilemap.tmx-81c287606ceac592f07c575d3d786dd5.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=7
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script=""

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
+[ext_resource path="res://MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=3]
 [ext_resource path="res://City/Hobo.gd" type="Script" id=7]
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
@@ -12,6 +13,11 @@ extents = Vector2( 114, 106 )
 [sub_resource type="Curve2D" id=2]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 24, -8, 7.78515, 2.52841, -7.78515, -2.52841, 12, -70, 0, 0, 0, 0, -10, -54, -11.6189, 4.69226, 11.6189, -4.69226, 12, -104, 0, 0, 0, 0, 40, -94, -11.6189, 3.12817, 11.6189, -3.12817, 66, -142, 0, 0, 0, 0, 88, -134, 10.2783, 3.35161, -10.2783, -3.35161, 62, -186, 0, 0, 0, 0, 40, -174, 5.58602, 5.58602, -5.58602, -5.58602, 8, -226, 0, 0, 0, 0, -8, -214, -11.172, 4.9157, 11.172, -4.9157, 14, -268, 0, 0, 0, 0, 38, -254, -10.9486, 2.45785, 10.9486, -2.45785, 66, -302, 0, 0, 0, 0, 88, -294 )
+}
+
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 58.8391, 26.5258, -58.8391, -26.5258, -158, -20, 0, 0, 0, 0, -228, -112 )
 }
 
 [node name="Node2D" type="Node2D"]
@@ -53,6 +59,15 @@ texture = ExtResource( 2 )
 position = Vector2( -224, 16 )
 z_index = 2
 texture = ExtResource( 10 )
+
+[node name="MovingPlatform" parent="." instance=ExtResource( 3 )]
+position = Vector2( 46, -882 )
+duration = 3.0
+
+[node name="Path2D" parent="MovingPlatform" index="3"]
+curve = SubResource( 3 )
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
+
+[editable path="MovingPlatform"]
