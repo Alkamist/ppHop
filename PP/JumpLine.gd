@@ -4,7 +4,7 @@ export var body_path : NodePath
 onready var body := get_node(body_path)
 
 var line_mouse_offset := 10.0
-var line_thickness := 6
+var line_thickness := 7
 
 func _draw():
 	if body.can_jump and not Input.is_action_pressed("jump"):

@@ -1,27 +1,37 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
 [ext_resource path="res://City/Hobo.gd" type="Script" id=7]
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 356, 322 )
+extents = Vector2( 432, 322 )
 
 [sub_resource type="Curve2D" id=2]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 106, -8, 17.7212, 21.7488, -17.7212, -21.7488, 84, -162, 0, 0, 0, 0, 20, -148, -32.2204, 8.8606, 32.2204, -8.8606, 108, -290, 0, 0, 0, 0, 162, -270, -29.8038, 8.8606, 29.8038, -8.8606, 256, -404, 0, 0, 0, 0, 306, -390, 28.9983, 13.6937, -28.9983, -13.6937, 216, -528, 0, 0, 0, 0, 164, -510, 28.9983, 15.3047, -28.9983, -15.3047, 76, -644, 0, 0, 0, 0, 24, -630, -31.4149, 8.05509, 31.4149, -8.05509, 116, -762, 0, 0, 0, 0, 164, -748, -37.0534, 11.2771, 37.0534, -11.2771, 250, -886, 0, 0, 0, 0, 306, -872 )
+"points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 158, -8, 33.6535, 23.342, -33.6535, -23.342, 116, -212, 0, 0, 0, 0, 32, -198, -32.2204, 8.8606, 32.2204, -8.8606, 168, -374, 0, 0, 0, 0, 224, -358, -29.8038, 8.8606, 29.8038, -8.8606, 352, -536, 0, 0, 0, 0, 416, -518, 28.9983, 13.6937, -28.9983, -13.6937, 304, -698, 0, 0, 0, 0, 224, -678, 28.9983, 15.3047, -28.9983, -15.3047, 94, -856, 0, 0, 0, 0, 32, -838, -31.4149, 8.05509, 31.4149, -8.05509, 160, -1018, 0, 0, 0, 0, 224, -998, -37.0534, 11.2771, 37.0534, -11.2771, 356, -1182, 0, 0, 0, 0, 416, -1158 )
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="City" type="Node2D"]
+visible = false
+script = ExtResource( 3 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+position = Vector2( -2450.92, -4063.74 )
+scale = Vector2( 1.308, 1.4265 )
+rect = Rect2( -10, -10, 4000, 4000 )
+process_parent = true
+physics_process_parent = true
 
 [node name="cityTilemap" parent="." instance=ExtResource( 1 )]
-position = Vector2( -1848, -3000 )
-scale = Vector2( 3, 3 )
+position = Vector2( -2398, -4016 )
+scale = Vector2( 4, 4 )
 
 [node name="Hobo" type="Node2D" parent="."]
-position = Vector2( -692, 18 )
+position = Vector2( -864, 4 )
 script = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="Hobo"]
@@ -30,13 +40,13 @@ script = ExtResource( 7 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/ChaseTrigger"]
 position = Vector2( 16, 0 )
-polygon = PoolVector2Array( -60, -340, 514, -342, 502, -1108, 16, -914, -56, -912 )
+polygon = PoolVector2Array( -100, -448, 692, -448, 682, -1382, 172, -1380, 48, -1222, -86, -1220 )
 
 [node name="AttackTrigger" type="Area2D" parent="Hobo"]
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hobo/AttackTrigger"]
-position = Vector2( 224, 310 )
+position = Vector2( 308, 298 )
 shape = SubResource( 1 )
 
 [node name="Path2D" type="Path2D" parent="Hobo"]
@@ -48,14 +58,16 @@ rotate = false
 loop = false
 
 [node name="Sprite" type="Sprite" parent="Hobo/Path2D/PathFollow2D"]
-scale = Vector2( 3, 3 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 
 [node name="Garbage" type="Sprite" parent="."]
-position = Vector2( -706, 24 )
-scale = Vector2( 3, 3 )
+position = Vector2( -876, 14 )
+scale = Vector2( 4, 4 )
 z_index = 2
 texture = ExtResource( 10 )
+[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]

@@ -54,7 +54,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.0416667 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 4.5 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -83,7 +83,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.0416667, 0.0833333, 0.208333 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 4.5 ), Vector2( 0, -4 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ), Vector2( 0, -6 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -112,7 +112,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.0416667 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 4.5 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 6 ), Vector2( 0, 0 ) ]
 }
 
 [node name="Pp" type="Node2D"]
@@ -153,14 +153,14 @@ body_path = NodePath("../../../Body")
 
 [node name="Scared" type="Sprite" parent="Smoothing2D/Visuals/SpriteFlip"]
 visible = false
-position = Vector2( 3, -9 )
-scale = Vector2( 3, 3 )
+position = Vector2( 4, -12 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
 hframes = 8
 
 [node name="Idle" type="Sprite" parent="Smoothing2D/Visuals/SpriteFlip"]
-position = Vector2( 3, 0 )
-scale = Vector2( 3, 3 )
+position = Vector2( 4, 0 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 
 [node name="Body" type="KinematicBody2D" parent="." groups=[
@@ -170,7 +170,7 @@ script = ExtResource( 4 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Body"]
 position = Vector2( 0, 2 )
-polygon = PoolVector2Array( -8, 6, -8, -7, 8, -7, 8, 6 )
+polygon = PoolVector2Array( -11, 9, -11, -9, 11, -9, 11, 9 )
 [connection signal="just_became_airborne" from="Body" to="ScaredAnimation" method="_on_Body_just_became_airborne"]
 [connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
 [connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/SpriteFlip" method="_on_Body_just_jumped"]

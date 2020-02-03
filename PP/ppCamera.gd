@@ -1,22 +1,14 @@
 extends Camera2D
 
-#var look_ahead_speed := 100.0
-#var x_maximum := 7.0
-#var y_maximum := 7.0
-
-#export var body_path : NodePath
-#onready var body := get_node(body_path)
+var look_speed := 10.0
+var maximum_look_distance := 400.0
 
 func _process(delta):
-	#var destination = body.velocity * 0.02
-	#var direction_to_destination = offset.direction_to(destination)
-	#var distance_to_destination = offset.distance_to(destination)
-	#var look_ahead_distance = look_ahead_speed * delta
-	#var new_offset = offset
-	#if distance_to_destination < look_ahead_distance:
-	#	new_offset += direction_to_destination * distance_to_destination
-	#else:
-	#	new_offset += direction_to_destination * look_ahead_distance
-	#new_offset.x = clamp(new_offset.x, -x_maximum, x_maximum)
-	#new_offset.y = clamp(new_offset.y, -y_maximum, y_maximum)
 	offset = offset
+	if Input.is_action_pressed("look_around"):
+		offset = lerp(offset, get_local_mouse_position() - offset, 1.0 - exp(-look_speed * delta)).clamped(maximum_look_distance)
+	else:
+		if offset.length() < 1.0:
+			offset = Vector2.ZERO
+		else:
+			offset = lerp(offset, Vector2.ZERO, 1.0 - exp(-look_speed * delta))
