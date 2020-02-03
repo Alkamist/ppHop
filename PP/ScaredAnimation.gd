@@ -10,7 +10,7 @@ onready var scared := get_node(scared_path)
 var time := 0.0
 var time_of_becoming_airborne := 0.0
 var time_until_scared := 1.0
-var scared_y_velocity := 400.0
+var scared_y_velocity := 1200.0
 
 func become_scared():
 	scared.show()
