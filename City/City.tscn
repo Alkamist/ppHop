@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
 [ext_resource path="res://Sounds/HoboChase.wav" type="AudioStream" id=4]
 [ext_resource path="res://City/HoboChaseSound.gd" type="Script" id=5]
+[ext_resource path="res://MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=6]
 [ext_resource path="res://City/Hobo.gd" type="Script" id=7]
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
@@ -15,6 +16,11 @@ extents = Vector2( 432, 322 )
 [sub_resource type="Curve2D" id=2]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -22, -8, 0, 0, 0, 0, 158, -8, 33.6535, 23.342, -33.6535, -23.342, 116, -212, 0, 0, 0, 0, 32, -198, -32.2204, 8.8606, 32.2204, -8.8606, 168, -374, 0, 0, 0, 0, 224, -358, -29.8038, 8.8606, 29.8038, -8.8606, 352, -536, 0, 0, 0, 0, 416, -518, 28.9983, 13.6937, -28.9983, -13.6937, 304, -698, 0, 0, 0, 0, 224, -678, 28.9983, 15.3047, -28.9983, -15.3047, 94, -856, 0, 0, 0, 0, 32, -838, -31.4149, 8.05509, 31.4149, -8.05509, 160, -1018, 0, 0, 0, 0, 224, -998, -37.0534, 11.2771, 37.0534, -11.2771, 356, -1182, 0, 0, 0, 0, 416, -1158 )
+}
+
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -812, 0 )
 }
 
 [node name="City" type="Node2D"]
@@ -81,6 +87,13 @@ position = Vector2( -876, 14 )
 scale = Vector2( 4, 4 )
 z_index = 2
 texture = ExtResource( 10 )
+
+[node name="MovingPlatform" parent="." instance=ExtResource( 6 )]
+position = Vector2( 354, -3654 )
+duration = 5.0
+
+[node name="Path2D" parent="MovingPlatform" index="3"]
+curve = SubResource( 3 )
 [connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
@@ -88,3 +101,5 @@ texture = ExtResource( 10 )
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
+
+[editable path="MovingPlatform"]

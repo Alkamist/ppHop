@@ -27,10 +27,11 @@ visible = false
 position = Vector2( 234, -15476 )
 
 [node name="Space" parent="." instance=ExtResource( 6 )]
+visible = false
 position = Vector2( 218, -21136 )
 
 [node name="CosmicHorror" parent="." instance=ExtResource( 7 )]
+visible = false
 position = Vector2( 216, -26762 )
 
 [node name="Spawn" type="Position2D" parent="."]
-position = Vector2( 141, -26403 )

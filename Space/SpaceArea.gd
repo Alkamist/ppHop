@@ -13,7 +13,7 @@ func _on_body_entered(body):
 		body.jump_power *= space_modifier * 2.3
 		body.gravity *= space_modifier
 		body.maximum_fall_speed *= space_modifier
-		body.air_drift_control *= space_modifier * 0.6
+		body.air_drift_control *= space_modifier * 1.0
 
 func _on_body_exited(body):
 	if body.is_in_group("ppBody") and applied_space_modifier:
@@ -21,4 +21,4 @@ func _on_body_exited(body):
 		body.jump_power /= space_modifier * 2.3
 		body.gravity /= space_modifier
 		body.maximum_fall_speed /= space_modifier
-		body.air_drift_control /= space_modifier * 0.6
+		body.air_drift_control /= space_modifier * 1.0
