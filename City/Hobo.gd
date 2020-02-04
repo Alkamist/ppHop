@@ -2,7 +2,7 @@ extends Node2D
 
 var launch_x_speed := 3200.0
 var launch_y_speed := 800.0
-var movement_speed := 680.0
+var movement_speed := 760.0
 var attack_cooldown := 1.0
 var attack_speed := 4000.0
 
@@ -76,16 +76,16 @@ func _on_ChaseTrigger_body_entered(body):
 		else:
 			_follow_the_path()
 
-func _on_ChaseTrigger_body_exited(body):
-	if body.is_in_group("ppBody"):
-		if attack_target:
-			_go_back_to_where_attack_started()
-			yield(tween, "tween_completed")
-		_go_back_to_start()
-		attack_target = null
-
 func _on_AttackTrigger_body_entered(body):
 	if body.is_in_group("ppBody") and chase_trigger.overlaps_body(body):
 		tween.stop_all()
 		attack_starting_point = path_follow.global_position
 		attack_target = body
+
+func _on_StopChaseTrigger_body_exited(body):
+		if body.is_in_group("ppBody"):
+			if attack_target:
+				_go_back_to_where_attack_started()
+				yield(tween, "tween_completed")
+			_go_back_to_start()
+			attack_target = null
