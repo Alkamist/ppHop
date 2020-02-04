@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
+[ext_resource path="res://Sounds/HoboChase.wav" type="AudioStream" id=4]
+[ext_resource path="res://City/HoboChaseSound.gd" type="Script" id=5]
 [ext_resource path="res://City/Hobo.gd" type="Script" id=7]
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
@@ -16,10 +18,17 @@ _data = {
 }
 
 [node name="City" type="Node2D"]
-visible = false
 script = ExtResource( 3 )
 
+[node name="AudioFade" type="Tween" parent="."]
+
+[node name="HoboChaseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+script = ExtResource( 5 )
+fade_tween_path = NodePath("../AudioFade")
+
 [node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+visible = false
 position = Vector2( -2450.92, -4063.74 )
 scale = Vector2( 1.308, 1.4265 )
 rect = Rect2( -10, -10, 4000, 4000 )
@@ -40,7 +49,7 @@ script = ExtResource( 7 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/ChaseTrigger"]
 position = Vector2( 16, 0 )
-polygon = PoolVector2Array( -100, -448, 692, -448, 682, -1382, 172, -1380, 48, -1222, -86, -1220 )
+polygon = PoolVector2Array( -100, -448, 692, -448, 682, -1382, 172, -1380, 88, -1220, -84, -1218 )
 
 [node name="AttackTrigger" type="Area2D" parent="Hobo"]
 script = ExtResource( 9 )
@@ -68,6 +77,8 @@ z_index = 2
 texture = ExtResource( 10 )
 [connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
+[connection signal="body_exited" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_exited"]
 [connection signal="body_exited" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]

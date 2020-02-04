@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/PpScream.wav-3c04b56845e0085d09c8ca60a6b4a9ad.sample"
+
+[deps]
+
+source_file="res://Sounds/PpScream.wav"
+dest_files=[ "res://.import/PpScream.wav-3c04b56845e0085d09c8ca60a6b4a9ad.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

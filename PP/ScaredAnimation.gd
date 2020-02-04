@@ -11,17 +11,21 @@ var time := 0.0
 var time_of_becoming_airborne := 0.0
 var time_until_scared := 1.0
 var scared_y_velocity := 1600.0
+var is_scared := false
 
 func become_scared():
+	is_scared = true
+	SFX.play("PPScream", body)
 	scared.show()
 	idle.hide()
 
 func become_idle():
+	is_scared = false
 	scared.hide()
 	idle.show()
 
 func _process(delta):
-	if not body.is_on_ground and (body.velocity.y >= scared_y_velocity or time - time_of_becoming_airborne > time_until_scared):
+	if not is_scared and not body.is_on_ground and (body.velocity.y >= scared_y_velocity or time - time_of_becoming_airborne > time_until_scared):
 		become_scared()
 	time += delta
 

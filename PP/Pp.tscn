@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://PP/ppCamera.gd" type="Script" id=1]
 [ext_resource path="res://PP/ppL.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://PP/PpBody.gd" type="Script" id=4]
 [ext_resource path="res://PP/SpriteFlip.gd" type="Script" id=5]
 [ext_resource path="res://PP/JumpLine.gd" type="Script" id=6]
+[ext_resource path="res://PP/Jiggler.gd" type="Script" id=7]
 [ext_resource path="res://PP/ppNervousSpriteSheet.png" type="Texture" id=8]
 [ext_resource path="res://PP/ScaredAnimation.gd" type="Script" id=9]
 [ext_resource path="res://PP/OtherAnimations.gd" type="Script" id=11]
@@ -16,7 +17,7 @@ length = 0.333334
 loop = true
 step = 0.0416667
 tracks/0/type = "value"
-tracks/0/path = NodePath("Smoothing2D/Visuals/SpriteFlip/Scared:frame")
+tracks/0/path = NodePath("Smoothing2D/Visuals/Jiggler/SpriteFlip/Scared:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -123,8 +124,8 @@ autoplay = "Scared"
 anims/Scared = SubResource( 1 )
 script = ExtResource( 9 )
 body_path = NodePath("../Body")
-idle_path = NodePath("../Smoothing2D/Visuals/SpriteFlip/Idle")
-scared_path = NodePath("../Smoothing2D/Visuals/SpriteFlip/Scared")
+idle_path = NodePath("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Idle")
+scared_path = NodePath("../Smoothing2D/Visuals/Jiggler/SpriteFlip/Scared")
 
 [node name="OtherAnimations" type="AnimationPlayer" parent="."]
 anims/Crouch = SubResource( 2 )
@@ -147,18 +148,21 @@ body_path = NodePath("../../Body")
 
 [node name="Visuals" type="Node2D" parent="Smoothing2D"]
 
-[node name="SpriteFlip" type="Node2D" parent="Smoothing2D/Visuals"]
-script = ExtResource( 5 )
-body_path = NodePath("../../../Body")
+[node name="Jiggler" type="Node2D" parent="Smoothing2D/Visuals"]
+script = ExtResource( 7 )
 
-[node name="Scared" type="Sprite" parent="Smoothing2D/Visuals/SpriteFlip"]
+[node name="SpriteFlip" type="Node2D" parent="Smoothing2D/Visuals/Jiggler"]
+script = ExtResource( 5 )
+body_path = NodePath("../../../../Body")
+
+[node name="Scared" type="Sprite" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
 visible = false
 position = Vector2( 4, -12 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
 hframes = 8
 
-[node name="Idle" type="Sprite" parent="Smoothing2D/Visuals/SpriteFlip"]
+[node name="Idle" type="Sprite" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
 position = Vector2( 4, 0 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
@@ -172,8 +176,9 @@ script = ExtResource( 4 )
 position = Vector2( 0, 2 )
 polygon = PoolVector2Array( -11, 9, -11, -9, 11, -9, 11, 9 )
 [connection signal="just_became_airborne" from="Body" to="ScaredAnimation" method="_on_Body_just_became_airborne"]
+[connection signal="just_bounced" from="Body" to="Smoothing2D/Visuals/Jiggler" method="_on_Body_just_bounced"]
 [connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
-[connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/SpriteFlip" method="_on_Body_just_jumped"]
 [connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
+[connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
 [connection signal="just_landed" from="Body" to="ScaredAnimation" method="_on_Body_just_landed"]
 [connection signal="just_uncrouched" from="Body" to="OtherAnimations" method="_on_Body_just_uncrouched"]

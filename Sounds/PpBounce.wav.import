@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/PpBounce.wav-a761e2b32a5ad5340d7a8f39a58c32c3.sample"
+
+[deps]
+
+source_file="res://Sounds/PpBounce.wav"
+dest_files=[ "res://.import/PpBounce.wav-a761e2b32a5ad5340d7a8f39a58c32c3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

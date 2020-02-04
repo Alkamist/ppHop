@@ -8,12 +8,12 @@ var phase := 0.0
 const TWOPI := PI * 2.0
 
 func _process(delta):
-	var jiggle_scale = clamp(1.0 - sin(phase) * amplitude, 0.6, 1.4)
+	var jiggle_scale = clamp(1.0 - sin(phase) * amplitude, 0.9, 1.1)
 	if abs(1.0 - jiggle_scale) < 0.01:
 		jiggle_scale = 1.0
 	scale.x = jiggle_scale
 	scale.y = jiggle_scale
-	position.y = pow(3.0 * (1.0 - jiggle_scale), 2.0)
+	position.y = pow(12.0 * (1.0 - jiggle_scale), 2.0)
 	amplitude -= dampening * amplitude * delta
 	amplitude = max(amplitude, 0.0)
 	phase += speed * delta
@@ -21,5 +21,5 @@ func _process(delta):
 		phase -= TWOPI
 
 func _on_Body_just_bounced(body, collision):
-	amplitude = body.velocity.length() * 0.001
+	amplitude = body.velocity.length() * 0.00025
 	phase = 0.0
