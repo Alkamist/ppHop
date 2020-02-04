@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 var bounciness := 0.8
 var gravity := 2400.0
-var maximum_fall_speed := 1920.0
+var maximum_fall_speed := 1920.0 
 var ground_friction := 99999999999.9
 var minimum_y_velocity_on_slope := 60.0
 var slide_friction := 2.0

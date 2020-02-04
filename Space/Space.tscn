@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Space/spaceTilemap.tmx" type="PackedScene" id=1]
+[ext_resource path="res://Space/SpaceArea.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 2606, 2820 )
+
+[node name="Space" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+visible = false
+position = Vector2( -2560.94, -5471.71 )
+scale = Vector2( 1.306, 1.429 )
+rect = Rect2( -10, -10, 4000, 4000 )
+process_parent = true
+physics_process_parent = true
+
+[node name="spaceTilemap" parent="." instance=ExtResource( 1 )]
+position = Vector2( -2522, -5400 )
+scale = Vector2( 4, 4 )
+
+[node name="SpaceArea" type="Area2D" parent="."]
+visible = false
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpaceArea"]
+position = Vector2( 36, -2614 )
+shape = SubResource( 1 )
+[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
