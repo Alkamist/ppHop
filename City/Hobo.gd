@@ -33,6 +33,7 @@ func _attack_target_if_possible(delta):
 		else:
 			path_follow.global_position += maximum_move
 		if path_follow.global_position.distance_to(attack_target.global_position) < 20.0:
+			attack_target.velocity = Vector2.ZERO
 			attack_target.launch(Vector2(direction_to_target.x * launch_x_speed, launch_y_speed))
 			time_of_attack = time
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Marsh/Marsh.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Forest/Forest.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://City/City.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=5]
 [ext_resource path="res://Space/Space.tscn" type="PackedScene" id=6]
+[ext_resource path="res://CosmicHorror/CosmicHorror.tscn" type="PackedScene" id=7]
 
 [node name="Game" type="Node"]
 script = ExtResource( 5 )
@@ -22,10 +23,14 @@ visible = false
 position = Vector2( 94, -11256 )
 
 [node name="Sky" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 234, -15476 )
 
 [node name="Space" parent="." instance=ExtResource( 6 )]
 position = Vector2( 218, -21136 )
 
+[node name="CosmicHorror" parent="." instance=ExtResource( 7 )]
+position = Vector2( 216, -26762 )
+
 [node name="Spawn" type="Position2D" parent="."]
-position = Vector2( -718, -21054 )
+position = Vector2( 141, -26403 )
