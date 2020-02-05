@@ -1,0 +1,78 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://RealmOfChampions/realmOfChampionsTilemap.tmx" type="PackedScene" id=1]
+[ext_resource path="res://RealmOfChampions/ElectricBlock.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=13]
+
+[node name="RealmOfChampions" type="Node2D"]
+script = ExtResource( 13 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+visible = false
+position = Vector2( 539, -5385 )
+scale = Vector2( 1.04, 2.856 )
+rect = Rect2( -3000, 0, 5000, 2000 )
+process_parent = true
+physics_process_parent = true
+
+[node name="realmOfChampionsTilemap" parent="." instance=ExtResource( 1 )]
+position = Vector2( -2546, -5310 )
+scale = Vector2( 4, 4 )
+
+[node name="ElectricBlock" parent="." instance=ExtResource( 2 )]
+position = Vector2( 62, -1838 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock" index="1"]
+launch_vector = Vector2( 200, -100 )
+
+[node name="ElectricBlock2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -578, -1838 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock2" index="1"]
+launch_vector = Vector2( 200, -100 )
+
+[node name="ElectricBlock3" parent="." instance=ExtResource( 2 )]
+position = Vector2( -258, -2286 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock3" index="1"]
+launch_vector = Vector2( -200, -100 )
+
+[node name="ElectricBlock4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 318, -2286 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock4" index="1"]
+launch_vector = Vector2( -200, -100 )
+
+[node name="ElectricBlock5" parent="." instance=ExtResource( 2 )]
+position = Vector2( -290, -2894 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock5" index="1"]
+launch_vector = Vector2( 200, -100 )
+
+[node name="ElectricBlock6" parent="." instance=ExtResource( 2 )]
+position = Vector2( -514, -4686 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock6" index="1"]
+launch_vector = Vector2( -200, -100 )
+
+[node name="ElectricBlock7" parent="." instance=ExtResource( 2 )]
+position = Vector2( -194, -4718 )
+
+[node name="ElectricBlockBody" parent="ElectricBlock7" index="1"]
+launch_vector = Vector2( -200, -100 )
+[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
+
+[editable path="ElectricBlock"]
+
+[editable path="ElectricBlock2"]
+
+[editable path="ElectricBlock3"]
+
+[editable path="ElectricBlock4"]
+
+[editable path="ElectricBlock5"]
+
+[editable path="ElectricBlock6"]
+
+[editable path="ElectricBlock7"]

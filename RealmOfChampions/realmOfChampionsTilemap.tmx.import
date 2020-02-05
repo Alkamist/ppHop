@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/realmOfChampionsTilemap.tmx-d26a576fdc20eebf5adb2cd7f5d8de1b.scn"
+
+[deps]
+
+source_file="res://RealmOfChampions/realmOfChampionsTilemap.tmx"
+dest_files=[ "res://.import/realmOfChampionsTilemap.tmx-d26a576fdc20eebf5adb2cd7f5d8de1b.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=3
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script=""

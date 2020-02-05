@@ -1,7 +1,7 @@
 extends Camera2D
 
-var look_speed := 40.0
-var maximum_look_distance := 400.0
+var look_speed := 10.0
+var maximum_look_distance := 550.0
 
 func _process(delta):
 	offset = offset

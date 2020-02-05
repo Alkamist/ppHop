@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://CosmicHorror/cosmicHorrorTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://CosmicHorror/CosmicEnemy.tscn" type="PackedScene" id=2]
@@ -116,6 +116,48 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, -1, 0, 0, 0, 0, 92, 161, 0, 0, 0, 0, 128, 161, 0, 0, 0, 0, 92, 161, 0, 0, 0, 0, 96, 482, 0, 0, 0, 0, 139, 482 )
 }
 
+[sub_resource type="Animation" id=10]
+resource_name = "Move"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.99, 0.0 ]
+}
+
+[sub_resource type="Curve2D" id=11]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -275 )
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "Move"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.99, 0.0 ]
+}
+
+[sub_resource type="Curve2D" id=13]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 239 )
+}
+
 [node name="CosmicHorror" type="Node2D"]
 script = ExtResource( 3 )
 
@@ -213,6 +255,30 @@ launch_vector = Vector2( -1000, -300 )
 [node name="Path2D" parent="CosmicEnemy7" index="3"]
 curve = SubResource( 9 )
 
+[node name="CosmicEnemy8" parent="." instance=ExtResource( 2 )]
+position = Vector2( 567, -1677 )
+
+[node name="AnimationPlayer" parent="CosmicEnemy8" index="0"]
+anims/Move = SubResource( 10 )
+
+[node name="Area2D" parent="CosmicEnemy8" index="2"]
+launch_vector = Vector2( -1000, -300 )
+
+[node name="Path2D" parent="CosmicEnemy8" index="3"]
+curve = SubResource( 11 )
+
+[node name="CosmicEnemy9" parent="." instance=ExtResource( 2 )]
+position = Vector2( 908, -1915 )
+
+[node name="AnimationPlayer" parent="CosmicEnemy9" index="0"]
+anims/Move = SubResource( 12 )
+
+[node name="Area2D" parent="CosmicEnemy9" index="2"]
+launch_vector = Vector2( -1000, -300 )
+
+[node name="Path2D" parent="CosmicEnemy9" index="3"]
+curve = SubResource( 13 )
+
 [node name="CosmicChomper" parent="." instance=ExtResource( 4 )]
 position = Vector2( -216, -1007 )
 chomp_vector = Vector2( 0, -180 )
@@ -278,6 +344,10 @@ launch_vector = Vector2( 1000, 0 )
 [editable path="CosmicEnemy6"]
 
 [editable path="CosmicEnemy7"]
+
+[editable path="CosmicEnemy8"]
+
+[editable path="CosmicEnemy9"]
 
 [editable path="CosmicChomper3"]
 
