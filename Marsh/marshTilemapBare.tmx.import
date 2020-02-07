@@ -2,19 +2,19 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/marshTilemap.tmx-2df89fe34d3efbc3e4d8265db1bc7919.scn"
+path="res://.import/marshTilemapBare.tmx-761549887dd39b2e8c61fee7736e69d4.scn"
 
 [deps]
 
-source_file="res://Marsh/marshTilemap.tmx"
-dest_files=[ "res://.import/marshTilemap.tmx-2df89fe34d3efbc3e4d8265db1bc7919.scn" ]
+source_file="res://Marsh/marshTilemapBare.tmx"
+dest_files=[ "res://.import/marshTilemapBare.tmx-761549887dd39b2e8c61fee7736e69d4.scn" ]
 
 [params]
 
 custom_properties=true
 tile_metadata=false
 uv_clip=true
-image_flags=0
+image_flags=7
 collision_layer=1
 embed_internal_images=false
 save_tiled_properties=false

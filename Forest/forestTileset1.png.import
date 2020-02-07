@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bogTilemap1.png-b4c0aeeb5bf0ee764f4c6847d31033f0.stex"
+path="res://.import/forestTileset1.png-207c430247a9a899b80090c84ea1c1b8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marsh/bogTilemap1.png"
-dest_files=[ "res://.import/bogTilemap1.png-b4c0aeeb5bf0ee764f4c6847d31033f0.stex" ]
+source_file="res://Forest/forestTileset1.png"
+dest_files=[ "res://.import/forestTileset1.png-207c430247a9a899b80090c84ea1c1b8.stex" ]
 
 [params]
 

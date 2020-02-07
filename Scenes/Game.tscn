@@ -13,30 +13,29 @@
 script = ExtResource( 5 )
 
 [node name="Marsh" parent="." instance=ExtResource( 1 )]
-visible = false
 
 [node name="Forest" parent="." instance=ExtResource( 2 )]
 visible = false
-position = Vector2( 146, -6152 )
+position = Vector2( 146, -6144 )
 
 [node name="City" parent="." instance=ExtResource( 4 )]
 visible = false
-position = Vector2( 94, -11256 )
+position = Vector2( 94, -11248 )
 
 [node name="Sky" parent="." instance=ExtResource( 3 )]
 visible = false
-position = Vector2( 234, -15476 )
+position = Vector2( 234, -15468 )
 
 [node name="Space" parent="." instance=ExtResource( 6 )]
 visible = false
-position = Vector2( 218, -21136 )
+position = Vector2( 218, -21128 )
 
 [node name="CosmicHorror" parent="." instance=ExtResource( 7 )]
 visible = false
-position = Vector2( 216, -26762 )
+position = Vector2( 216, -26754 )
 
 [node name="RealmOfChampions" parent="." instance=ExtResource( 8 )]
 visible = false
-position = Vector2( 242, -32490 )
+position = Vector2( 242, -32482 )
 
 [node name="Spawn" type="Position2D" parent="."]

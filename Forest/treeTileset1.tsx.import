@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/treeTileset1.tsx-11efc7009acf47af0df81a70a91d372d.res"
+
+[deps]
+
+source_file="res://Forest/treeTileset1.tsx"
+dest_files=[ "res://.import/treeTileset1.tsx-11efc7009acf47af0df81a70a91d372d.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""
