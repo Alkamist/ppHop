@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/marshBackground6.png-ac83f1ca1ae9e4ea3c8f3743b0d2638a.stex"
+path="res://.import/MEGALUL.png-a304d557eca2cb46e3545ddf42fec20e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marsh/marshBackground6.png"
-dest_files=[ "res://.import/marshBackground6.png-ac83f1ca1ae9e4ea3c8f3743b0d2638a.stex" ]
+source_file="res://Marsh/MEGALUL.png"
+dest_files=[ "res://.import/MEGALUL.png-a304d557eca2cb46e3545ddf42fec20e.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

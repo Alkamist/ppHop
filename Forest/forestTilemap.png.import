@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/marshBackground4.png-d10edf37c84da3ce562b5d4c277900a8.stex"
+path="res://.import/forestTilemap.png-27e1ecf24899caf5d5ab933381bd3837.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marsh/marshBackground4.png"
-dest_files=[ "res://.import/marshBackground4.png-d10edf37c84da3ce562b5d4c277900a8.stex" ]
+source_file="res://Forest/forestTilemap.png"
+dest_files=[ "res://.import/forestTilemap.png-27e1ecf24899caf5d5ab933381bd3837.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

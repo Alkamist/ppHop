@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://PP/ppCamera.gd" type="Script" id=1]
 [ext_resource path="res://PP/ppL.png" type="Texture" id=2]
@@ -116,6 +116,9 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 6 ), Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 12, 10 )
+
 [node name="Pp" type="Node2D"]
 z_index = 1
 
@@ -172,13 +175,13 @@ texture = ExtResource( 2 )
 ]]
 script = ExtResource( 4 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2( 0, 2 )
-polygon = PoolVector2Array( -11, 9, -11, -9, 11, -9, 11, 9 )
+shape = SubResource( 5 )
 [connection signal="just_became_airborne" from="Body" to="ScaredAnimation" method="_on_Body_just_became_airborne"]
 [connection signal="just_bounced" from="Body" to="Smoothing2D/Visuals/Jiggler" method="_on_Body_just_bounced"]
 [connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
-[connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
 [connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
+[connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
 [connection signal="just_landed" from="Body" to="ScaredAnimation" method="_on_Body_just_landed"]
 [connection signal="just_uncrouched" from="Body" to="OtherAnimations" method="_on_Body_just_uncrouched"]
