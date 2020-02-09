@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/skyTileset1.tsx-e71095eb9b61fed03ef3d1ad3592a9ca.res"
+
+[deps]
+
+source_file="res://Sky/skyTileset1.tsx"
+dest_files=[ "res://.import/skyTileset1.tsx-e71095eb9b61fed03ef3d1ad3592a9ca.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""

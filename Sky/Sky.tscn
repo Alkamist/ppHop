@@ -1,8 +1,11 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Sky/skyTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/ShowOnStart.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/CanvasLayerOffset.gd" type="Script" id=6]
+[ext_resource path="res://Sky/skyTilemap.png" type="Texture" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Move"
@@ -237,8 +240,64 @@ process_parent = true
 physics_process_parent = true
 
 [node name="skyTilemap" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( -2538, -5428 )
 scale = Vector2( 4, 4 )
+
+[node name="LevelImage" type="Sprite" parent="."]
+position = Vector2( 22, -2644 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 7 )
+
+[node name="CanvasLayer4" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enable = true
+follow_viewport_scale = 0.98
+script = ExtResource( 6 )
+
+[node name="LevelImage" type="Sprite" parent="CanvasLayer4"]
+visible = false
+position = Vector2( 22, -2644 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 7 )
+script = ExtResource( 5 )
+
+[node name="CanvasLayer5" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enable = true
+follow_viewport_scale = 0.99
+script = ExtResource( 6 )
+
+[node name="LevelImage" type="Sprite" parent="CanvasLayer5"]
+visible = false
+position = Vector2( 22, -2644 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 7 )
+script = ExtResource( 5 )
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+follow_viewport_scale = 1.01
+script = ExtResource( 6 )
+
+[node name="LevelImage" type="Sprite" parent="CanvasLayer2"]
+visible = false
+position = Vector2( 22, -2644 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 7 )
+script = ExtResource( 5 )
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+follow_viewport_scale = 1.02
+script = ExtResource( 6 )
+
+[node name="LevelImage" type="Sprite" parent="CanvasLayer3"]
+visible = false
+position = Vector2( 22, -2644 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 7 )
+script = ExtResource( 5 )
 
 [node name="MovingPlatform2" parent="." instance=ExtResource( 2 )]
 position = Vector2( -164, -342 )
