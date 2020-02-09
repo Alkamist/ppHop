@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/cityTileset3.tsx-d1e4d69a0b2d1f142738fbdaf7be79f4.res"
+
+[deps]
+
+source_file="res://City/cityTileset3.tsx"
+dest_files=[ "res://.import/cityTileset3.tsx-d1e4d69a0b2d1f142738fbdaf7be79f4.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""
