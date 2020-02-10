@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/cosmicTileset1.tsx-e2e51917f2881823be8755f03a3ab9ae.res"
+
+[deps]
+
+source_file="res://CosmicHorror/cosmicTileset1.tsx"
+dest_files=[ "res://.import/cosmicTileset1.tsx-e2e51917f2881823be8755f03a3ab9ae.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""

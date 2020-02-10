@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/realmOfChampionsTileset1.tsx-2cf7da06dfbc2d248f3673448e66e32d.res"
+
+[deps]
+
+source_file="res://RealmOfChampions/realmOfChampionsTileset1.tsx"
+dest_files=[ "res://.import/realmOfChampionsTileset1.tsx-2cf7da06dfbc2d248f3673448e66e32d.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""

@@ -66,6 +66,7 @@ texture = ExtResource( 7 )
 script = ExtResource( 6 )
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 3
 follow_viewport_enable = true
 follow_viewport_scale = 1.01
 script = ExtResource( 5 )
@@ -78,6 +79,7 @@ texture = ExtResource( 7 )
 script = ExtResource( 6 )
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="."]
+layer = 3
 follow_viewport_enable = true
 follow_viewport_scale = 1.02
 script = ExtResource( 5 )
