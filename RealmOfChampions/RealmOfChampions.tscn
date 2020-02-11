@@ -80,8 +80,6 @@ texture = ExtResource( 5 )
 position = Vector2( 926, -4494 )
 scale = Vector2( -4, 4 )
 texture = ExtResource( 7 )
-[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
 
 [editable path="ElectricBlock"]
 

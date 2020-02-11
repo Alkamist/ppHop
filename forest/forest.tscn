@@ -1,7 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Forest/forestBackground2.png" type="Texture" id=2]
+[ext_resource path="res://Forest/forestBackground3.png" type="Texture" id=3]
+[ext_resource path="res://ParallaxSystem/ParallaxSystem.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=5]
+[ext_resource path="res://Forest/forestMarshDropBackground.png" type="Texture" id=6]
 [ext_resource path="res://Forest/forestTilemap.tmx" type="PackedScene" id=7]
+[ext_resource path="res://Forest/forestBackground1.png" type="Texture" id=8]
+[ext_resource path="res://Forest/forestBackground4.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=10]
 [ext_resource path="res://Forest/forestTilemap.png" type="Texture" id=13]
 
@@ -16,6 +23,58 @@ rect = Rect2( 0, 0, 4000, 4000 )
 process_parent = true
 physics_process_parent = true
 
+[node name="ParallaxSystem" parent="." instance=ExtResource( 4 )]
+fade_time = 0.2
+
+[node name="VisibilityNotifier2D" parent="ParallaxSystem" index="1"]
+visible = false
+position = Vector2( -1497, -3676 )
+rect = Rect2( 0, 0, 3000, 4500 )
+
+[node name="ParallaxBackground" parent="ParallaxSystem" index="2"]
+offset = Vector2( 0, -1400 )
+transform = Transform2D( 1, 0, 0, 1, 0, -1400 )
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="0"]
+motion_scale = Vector2( 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer4"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 8 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="1"]
+motion_scale = Vector2( 0.57, 0.57 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 2 )
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="2"]
+motion_scale = Vector2( 0.65, 0.65 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer2"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 3 )
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="3"]
+motion_scale = Vector2( 0.8, 0.8 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer3"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 9 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -5
+offset = Vector2( 930, 1692 )
+transform = Transform2D( 1, 0, 0, 1, 930, 1692 )
+follow_viewport_enable = true
+follow_viewport_scale = 0.98
+script = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 6 )
+
 [node name="forestTilemap" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( -2450, -3488 )
@@ -25,5 +84,5 @@ scale = Vector2( 4, 4 )
 position = Vector2( 110, -704 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 13 )
-[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
+
+[editable path="ParallaxSystem"]

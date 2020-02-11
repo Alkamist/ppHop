@@ -360,8 +360,6 @@ anims/Move = SubResource( 21 )
 
 [node name="Path2D" parent="MovingPlatform12" index="3"]
 curve = SubResource( 22 )
-[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
 
 [editable path="MovingPlatform2"]
 

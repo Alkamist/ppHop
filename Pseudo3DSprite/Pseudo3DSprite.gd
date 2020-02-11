@@ -2,7 +2,7 @@ extends Sprite
 
 export var depth := 2
 export var spacing := 0.01
-export var darkening := 0.5
+export var darkening := 0.3
 export var y_skew := 350.0
 
 var background_layers := []

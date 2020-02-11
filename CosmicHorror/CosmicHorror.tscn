@@ -336,8 +336,6 @@ chomp_time = 1.6
 
 [node name="Body" parent="CosmicChomper6" index="2"]
 launch_vector = Vector2( 1000, 0 )
-[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
 
 [editable path="CosmicEnemy"]
 
