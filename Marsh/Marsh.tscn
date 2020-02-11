@@ -1,21 +1,15 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
-[ext_resource path="res://Marsh/marshBackground2.png" type="Texture" id=3]
-[ext_resource path="res://Marsh/marshBackground3.png" type="Texture" id=4]
-[ext_resource path="res://Scripts/ShowOnStart.gd" type="Script" id=5]
-[ext_resource path="res://Scripts/CanvasLayerOffset.gd" type="Script" id=6]
+[ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
-[ext_resource path="res://Scripts/EncapsulatedParallax.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
 [ext_resource path="res://Marsh/MEGALUL.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=13]
 [ext_resource path="res://Marsh/marshTilemap.png" type="Texture" id=14]
 
-
-
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 9 )
 shader_param/color = Vector3( 0.28, 0.11, 0.11 )
 shader_param/OCTAVES = 2
@@ -31,88 +25,12 @@ rect = Rect2( -3000, 0, 5000, 2000 )
 process_parent = true
 physics_process_parent = true
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-offset = Vector2( 220, 0 )
-transform = Transform2D( 1, 0, 0, 1, 220, 0 )
-script = ExtResource( 8 )
-fade_time = 0.02
-
-[node name="Tween" type="Tween" parent="ParallaxBackground"]
-
-[node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.4, 0.4 )
-script = ExtResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer1"]
-position = Vector2( 0, -890 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 3 )
-
-[node name="Layer2" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.7, 0.7 )
-script = ExtResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/Layer2"]
-position = Vector2( 0, -1272 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 4 )
-
 [node name="marshTilemap" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( -2304, -4000 )
 scale = Vector2( 4, 4 )
 
-[node name="CanvasLayer4" type="CanvasLayer" parent="."]
-layer = -1
-follow_viewport_enable = true
-follow_viewport_scale = 0.98
-script = ExtResource( 6 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer4"]
-visible = false
-position = Vector2( 256, -1216 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 14 )
-script = ExtResource( 5 )
-
-[node name="CanvasLayer5" type="CanvasLayer" parent="."]
-layer = -1
-follow_viewport_enable = true
-follow_viewport_scale = 0.99
-script = ExtResource( 6 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer5"]
-visible = false
-position = Vector2( 256, -1216 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 14 )
-script = ExtResource( 5 )
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
-follow_viewport_scale = 1.01
-script = ExtResource( 6 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer2"]
-visible = false
-position = Vector2( 256, -1216 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 14 )
-script = ExtResource( 5 )
-
-[node name="CanvasLayer3" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
-follow_viewport_scale = 1.02
-script = ExtResource( 6 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer3"]
-visible = false
-position = Vector2( 256, -1216 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 14 )
-script = ExtResource( 5 )
-
-[node name="LevelImage" type="Sprite" parent="."]
+[node name="Pseudo3DSprite" parent="." instance=ExtResource( 3 )]
 position = Vector2( 256, -1216 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 14 )
@@ -126,12 +44,10 @@ script = ExtResource( 1 )
 [node name="Fog" type="Sprite" parent="."]
 visible = false
 light_mask = 2
-material = SubResource( 1 )
+material = SubResource( 2 )
 position = Vector2( 320, -1856 )
 scale = Vector2( 260, 260 )
 z_index = 2
 texture = ExtResource( 2 )
-[connection signal="screen_entered" from="VisibilityEnabler2D" to="ParallaxBackground" method="_on_VisibilityEnabler2D_screen_entered"]
 [connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityEnabler2D" to="ParallaxBackground" method="_on_VisibilityEnabler2D_screen_exited"]
 [connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]

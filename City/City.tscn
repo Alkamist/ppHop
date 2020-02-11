@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
@@ -10,8 +10,7 @@
 [ext_resource path="res://City/cityTilemap.png" type="Texture" id=8]
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
-[ext_resource path="res://Scripts/ShowOnStart.gd" type="Script" id=11]
-[ext_resource path="res://Scripts/CanvasLayerOffset.gd" type="Script" id=12]
+[ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 432, 322 )
@@ -29,13 +28,6 @@ _data = {
 [node name="City" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="AudioFade" type="Tween" parent="."]
-
-[node name="HoboChaseSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-script = ExtResource( 5 )
-fade_tween_path = NodePath("../AudioFade")
-
 [node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
 visible = false
 position = Vector2( -2450.92, -4063.74 )
@@ -44,6 +36,13 @@ rect = Rect2( -10, -10, 4000, 4000 )
 process_parent = true
 physics_process_parent = true
 
+[node name="AudioFade" type="Tween" parent="."]
+
+[node name="HoboChaseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+script = ExtResource( 5 )
+fade_tween_path = NodePath("../AudioFade")
+
 [node name="Hobo" type="Node2D" parent="."]
 position = Vector2( -864, 4 )
 script = ExtResource( 7 )
@@ -51,18 +50,21 @@ script = ExtResource( 7 )
 [node name="Tween" type="Tween" parent="Hobo"]
 
 [node name="ChaseTrigger" type="Area2D" parent="Hobo"]
+visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/ChaseTrigger"]
 position = Vector2( 16, 0 )
 polygon = PoolVector2Array( -64, -614, 368, -614, 370, -456, 692, -448, 684, -1130, -64, -1132 )
 
 [node name="StopChaseTrigger" type="Area2D" parent="Hobo"]
+visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hobo/StopChaseTrigger"]
 position = Vector2( 16, 0 )
 polygon = PoolVector2Array( -90, -434, 698, -430, 682, -1382, 172, -1380, 88, -1220, -84, -1218 )
 
 [node name="AttackTrigger" type="Area2D" parent="Hobo"]
+visible = false
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hobo/AttackTrigger"]
@@ -100,66 +102,16 @@ visible = false
 position = Vector2( -2398, -4016 )
 scale = Vector2( 4, 4 )
 
-[node name="LevelImage" type="Sprite" parent="."]
+[node name="Pseudo3DSprite" parent="." instance=ExtResource( 11 )]
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-
-[node name="CanvasLayer4" type="CanvasLayer" parent="."]
-layer = -2
-follow_viewport_enable = true
-follow_viewport_scale = 0.98
-script = ExtResource( 12 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer4"]
-visible = false
-position = Vector2( 162, -1232 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 8 )
-script = ExtResource( 11 )
-
-[node name="CanvasLayer5" type="CanvasLayer" parent="."]
-layer = -2
-follow_viewport_enable = true
-follow_viewport_scale = 0.99
-script = ExtResource( 12 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer5"]
-visible = false
-position = Vector2( 162, -1232 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 8 )
-script = ExtResource( 11 )
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
-follow_viewport_scale = 1.01
-script = ExtResource( 12 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer2"]
-visible = false
-position = Vector2( 162, -1232 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 8 )
-script = ExtResource( 11 )
-
-[node name="CanvasLayer3" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
-follow_viewport_scale = 1.02
-script = ExtResource( 12 )
-
-[node name="LevelImage" type="Sprite" parent="CanvasLayer3"]
-visible = false
-position = Vector2( 162, -1232 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 8 )
-script = ExtResource( 11 )
 [connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
 
 [editable path="MovingPlatform"]
