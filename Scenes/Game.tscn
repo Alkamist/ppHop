@@ -9,8 +9,6 @@
 [ext_resource path="res://CosmicHorror/CosmicHorror.tscn" type="PackedScene" id=7]
 [ext_resource path="res://RealmOfChampions/RealmOfChampions.tscn" type="PackedScene" id=8]
 
-
-
 [node name="Game" type="Node"]
 script = ExtResource( 5 )
 
@@ -35,3 +33,4 @@ position = Vector2( 216, -26754 )
 position = Vector2( 242, -32482 )
 
 [node name="Spawn" type="Position2D" parent="."]
+position = Vector2( 578, -29286 )
