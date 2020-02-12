@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
@@ -11,6 +11,9 @@
 [ext_resource path="res://Marsh/MEGALUL.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=13]
 [ext_resource path="res://Marsh/marshTilemap.png" type="Texture" id=14]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 1760, 2706 )
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 9 )
@@ -31,10 +34,9 @@ physics_process_parent = true
 [node name="ParallaxSystem" parent="." instance=ExtResource( 5 )]
 fade_time = 0.2
 
-[node name="VisibilityNotifier2D" parent="ParallaxSystem" index="1"]
-visible = false
-position = Vector2( -1328, -3792 )
-rect = Rect2( 0, 0, 3000, 4000 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D" index="0"]
+position = Vector2( 240, -1694 )
+shape = SubResource( 2 )
 
 [node name="ParallaxBackground" parent="ParallaxSystem" index="2"]
 offset = Vector2( 200, -1850 )

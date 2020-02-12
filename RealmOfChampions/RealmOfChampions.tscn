@@ -24,7 +24,7 @@ visible = false
 position = Vector2( -2546, -5310 )
 scale = Vector2( 4, 4 )
 
-[node name="Pseudo3DSprite" parent="." instance=ExtResource( 3 )]
+[node name="levelImage" parent="." instance=ExtResource( 3 )]
 position = Vector2( 14, -2526 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 6 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
@@ -11,6 +11,13 @@
 [ext_resource path="res://City/AttackTrigger.gd" type="Script" id=9]
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=11]
+[ext_resource path="res://ParallaxSystem/ParallaxSystem.tscn" type="PackedScene" id=12]
+[ext_resource path="res://City/cityBackground3.png" type="Texture" id=14]
+[ext_resource path="res://City/cityBackground1.png" type="Texture" id=15]
+[ext_resource path="res://City/cityBackground2.png" type="Texture" id=16]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 1725, 2460 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 432, 322 )
@@ -35,6 +42,37 @@ scale = Vector2( 1.308, 1.4265 )
 rect = Rect2( -10, -10, 4000, 4000 )
 process_parent = true
 physics_process_parent = true
+
+[node name="ParallaxSystem" parent="." instance=ExtResource( 12 )]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D" index="0"]
+position = Vector2( 100, -1645 )
+shape = SubResource( 4 )
+
+[node name="ParallaxBackground" parent="ParallaxSystem" index="2"]
+offset = Vector2( 0, -2400 )
+transform = Transform2D( 1, 0, 0, 1, 0, -2400 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="0"]
+motion_scale = Vector2( 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 15 )
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="1"]
+motion_scale = Vector2( 0.3, 0.355 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer2"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 16 )
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="2"]
+motion_scale = Vector2( 0.51, 0.51 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer3"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 14 )
 
 [node name="AudioFade" type="Tween" parent="."]
 
@@ -102,14 +140,16 @@ visible = false
 position = Vector2( -2398, -4016 )
 scale = Vector2( 4, 4 )
 
-[node name="Pseudo3DSprite" parent="." instance=ExtResource( 11 )]
+[node name="levelImage" parent="." instance=ExtResource( 11 )]
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
+
+[editable path="ParallaxSystem"]
 
 [editable path="MovingPlatform"]
