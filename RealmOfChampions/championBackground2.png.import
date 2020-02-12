@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex"
+path="res://.import/championBackground2.png-1fe07f552219112dbe9bf677fd7e7ea5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CosmicHorror/cosmicObserver.png"
-dest_files=[ "res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex" ]
+source_file="res://RealmOfChampions/championBackground2.png"
+dest_files=[ "res://.import/championBackground2.png-1fe07f552219112dbe9bf677fd7e7ea5.stex" ]
 
 [params]
 

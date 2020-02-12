@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex"
+path="res://.import/cosmicBackground1.png-431782f738af572b8c769427f35de87f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CosmicHorror/cosmicObserver.png"
-dest_files=[ "res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex" ]
+source_file="res://CosmicHorror/cosmicBackground1.png"
+dest_files=[ "res://.import/cosmicBackground1.png-431782f738af572b8c769427f35de87f.stex" ]
 
 [params]
 

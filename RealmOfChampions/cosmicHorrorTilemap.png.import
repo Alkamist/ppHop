@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex"
+path="res://.import/cosmicHorrorTilemap.png-e60b1aac41241c4262309aa0dd12c5f4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CosmicHorror/cosmicObserver.png"
-dest_files=[ "res://.import/cosmicObserver.png-92aec1941486daf94adf7365a1b12efe.stex" ]
+source_file="res://RealmOfChampions/cosmicHorrorTilemap.png"
+dest_files=[ "res://.import/cosmicHorrorTilemap.png-e60b1aac41241c4262309aa0dd12c5f4.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
