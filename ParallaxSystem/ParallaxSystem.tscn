@@ -9,4 +9,6 @@ script = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Visuals"]
