@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/skyBackground2.png-7f39a9c25bbf870834a8f293da6a7ec7.stex"
+path="res://.import/ppLOld.png-91a95c8b2d0f05cd1269b3f6ccd73370.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sky/skyBackground2.png"
-dest_files=[ "res://.import/skyBackground2.png-7f39a9c25bbf870834a8f293da6a7ec7.stex" ]
+source_file="res://PP/ppLOld.png"
+dest_files=[ "res://.import/ppLOld.png-91a95c8b2d0f05cd1269b3f6ccd73370.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

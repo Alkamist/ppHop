@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ParallaxSystem/ParallaxBackgroundExtension.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=3]
+[ext_resource path="res://Forest/forestBackground1.png" type="Texture" id=4]
 [ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=5]
 [ext_resource path="res://Forest/forestMarshDropBackground.png" type="Texture" id=6]
 [ext_resource path="res://Forest/forestTilemap.tmx" type="PackedScene" id=7]
@@ -26,7 +27,6 @@ physics_process_parent = true
 
 [node name="ParallaxSystem" type="Node2D" parent="."]
 script = ExtResource( 3 )
-fade_time = 0.2
 
 [node name="Tween" type="Tween" parent="ParallaxSystem"]
 
@@ -39,23 +39,31 @@ shape = SubResource( 1 )
 
 [node name="Visuals" type="Node2D" parent="ParallaxSystem"]
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackground"]
+motion_scale = Vector2( 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackground/ParallaxLayer"]
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 3000 )
+
 [node name="ParallaxBackgroundExtension" parent="ParallaxSystem/Visuals" instance=ExtResource( 2 )]
-offset = Vector2( 0, -1460 )
-transform = Transform2D( 1, 0, 0, 1, 0, -1460 )
-distance_tint = Color( 0, 0.196078, 0.152941, 1 )
-depth = 8
-spacing = 0.6
-tinting = 0.125
-x_variation = 600.0
+offset = Vector2( 0, -1750 )
+transform = Transform2D( 1, 0, 0, 1, 0, -1750 )
+distance_tint = Color( 0.188235, 0.529412, 0.521569, 1 )
+depth = 12
+spacing = 0.8
 
 [node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
-motion_scale = Vector2( 0.8, 0.8 )
+motion_scale = Vector2( 0.7, 0.7 )
 
 [node name="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer" index="0"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 9 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1400, 1968 )
+region_rect = Rect2( 0, 0, 1400, 3928 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -5

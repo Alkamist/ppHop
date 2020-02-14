@@ -2,7 +2,7 @@ extends Node2D
 
 export var enter_alpha := 1.0
 export var exit_alpha := 0.0
-export var fade_time := 1.0
+export var fade_time := 0.1
 
 var alpha := 0.0
 var previous_alpha := 0.0
@@ -12,10 +12,6 @@ onready var tween := get_node("Tween")
 onready var active_area := get_node("Area2D")
 
 func _ready():
-	for child in visuals.get_children():
-		if child is ParallaxBackground:
-			child.scroll_base_offset = child.offset + get_parent().global_position
-			child.offset = Vector2.ZERO
 	active_area.connect("body_entered", self, "_on_body_entered")
 	active_area.connect("body_exited", self, "_on_body_exited")
 	var pp_is_present = false

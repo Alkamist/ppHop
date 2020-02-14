@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=1]
-[ext_resource path="res://Shaders/Desaturate.shader" type="Shader" id=2]
+[ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=2]
+
+
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )

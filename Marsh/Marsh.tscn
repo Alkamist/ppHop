@@ -1,12 +1,13 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Marsh/marshBackground1.png" type="Texture" id=4]
-[ext_resource path="res://ParallaxSystem/ParallaxSystem.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=5]
 [ext_resource path="res://Marsh/marshBackground2.png" type="Texture" id=6]
 [ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
+[ext_resource path="res://ParallaxSystem/ParallaxOffset.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
 [ext_resource path="res://Marsh/MEGALUL.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=13]
@@ -31,30 +32,36 @@ rect = Rect2( -3000, 0, 5000, 2000 )
 process_parent = true
 physics_process_parent = true
 
-[node name="ParallaxSystem" parent="." instance=ExtResource( 5 )]
-fade_time = 0.2
+[node name="ParallaxSystem" type="Node2D" parent="."]
+script = ExtResource( 5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D" index="0"]
+[node name="Tween" type="Tween" parent="ParallaxSystem"]
+
+[node name="Area2D" type="Area2D" parent="ParallaxSystem"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D"]
 position = Vector2( 240, -1694 )
 shape = SubResource( 1 )
 
-[node name="ParallaxBackground" parent="ParallaxSystem" index="2"]
+[node name="Visuals" type="Node2D" parent="ParallaxSystem"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
 offset = Vector2( 200, -1850 )
 transform = Transform2D( 1, 0, 0, 1, 200, -1850 )
+script = ExtResource( 8 )
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="0"]
-visible = false
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackground"]
 motion_scale = Vector2( 0.4, 0.4 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer"]
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackground/ParallaxLayer"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 4 )
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxSystem/ParallaxBackground" index="1"]
-visible = false
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackground"]
 motion_scale = Vector2( 0.7, 0.7 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxSystem/ParallaxBackground/ParallaxLayer2"]
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackground/ParallaxLayer2"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 6 )
 
@@ -82,5 +89,3 @@ position = Vector2( 320, -1856 )
 scale = Vector2( 260, 260 )
 z_index = 2
 texture = ExtResource( 2 )
-
-[editable path="ParallaxSystem"]
