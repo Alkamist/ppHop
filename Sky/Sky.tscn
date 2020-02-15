@@ -275,10 +275,9 @@ region_rect = Rect2( 0, 0, 1000, 1500 )
 [node name="ParallaxBackgroundExtension" parent="ParallaxSystem/Visuals" instance=ExtResource( 6 )]
 offset = Vector2( 0, -2500 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2500 )
-distance_tint = Color( 0.101961, 0.321569, 0.509804, 1 )
+distance_tint = Color( 0.176471, 0.168627, 0.12549, 1 )
 depth = 12
-spacing = 2.0
-tinting = 0.7
+spacing = 1.2
 
 [node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
 motion_scale = Vector2( 0.3, 0.3 )

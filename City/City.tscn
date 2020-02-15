@@ -70,10 +70,9 @@ region_rect = Rect2( 0, 0, 3000, 3000 )
 [node name="ParallaxBackgroundExtension" parent="ParallaxSystem/Visuals" instance=ExtResource( 13 )]
 offset = Vector2( 0, -2000 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2000 )
-distance_tint = Color( 0.458824, 0.490196, 0.34902, 1 )
+distance_tint = Color( 0.356863, 0.356863, 0.305882, 1 )
 depth = 12
-spacing = 2.0
-tinting = 1.0
+spacing = 1.2
 
 [node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
 motion_scale = Vector2( 0.4, 0.4 )
@@ -154,10 +153,10 @@ scale = Vector2( 4, 4 )
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
 
 [editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
