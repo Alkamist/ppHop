@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cosmicBackground2.png-c215c9bdcbb8ae16c3629a7a73b9e46e.stex"
+path="res://.import/spaceBackground3.png-b4ceb7943d39a271ff5e46e3f7f3f697.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CosmicHorror/cosmicBackground2.png"
-dest_files=[ "res://.import/cosmicBackground2.png-c215c9bdcbb8ae16c3629a7a73b9e46e.stex" ]
+source_file="res://Space/spaceBackground3.png"
+dest_files=[ "res://.import/spaceBackground3.png-b4ceb7943d39a271ff5e46e3f7f3f697.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=1
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
