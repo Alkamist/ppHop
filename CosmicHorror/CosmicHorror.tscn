@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://CosmicHorror/cosmicHorrorTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://CosmicHorror/CosmicEnemy.tscn" type="PackedScene" id=2]
@@ -6,9 +6,7 @@
 [ext_resource path="res://CosmicHorror/CosmicChomper.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ParallaxSystem/ParallaxBackgroundExtension.tscn" type="PackedScene" id=6]
-[ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=7]
 [ext_resource path="res://CosmicHorror/cosmicHorrorTilemap.png" type="Texture" id=8]
-[ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=9]
 [ext_resource path="res://ParallaxSystem/ParallaxOffset.gd" type="Script" id=10]
 [ext_resource path="res://CosmicHorror/cosmicObserver.png" type="Texture" id=11]
 [ext_resource path="res://CosmicHorror/cosmicBackground3.png" type="Texture" id=12]
@@ -17,11 +15,6 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1478, 2820 )
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 7 )
-shader_param/fade_color = null
-shader_param/tint_strength = 0.0
 
 [sub_resource type="Animation" id=3]
 loop = true
@@ -205,23 +198,21 @@ texture = ExtResource( 13 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1000, 1500 )
 
-[node name="ParallaxBackgroundExtension" type="ParallaxBackground" parent="ParallaxSystem/Visuals" instance=ExtResource( 6 )]
-offset = Vector2( 0, -2500 )
-transform = Transform2D( 1, 0, 0, 1, 0, -2500 )
-script = ExtResource( 9 )
+[node name="ParallaxBackgroundExtension2" parent="ParallaxSystem/Visuals" instance=ExtResource( 6 )]
+offset = Vector2( 0, -3000 )
+transform = Transform2D( 1, 0, 0, 1, 0, -3000 )
 distance_tint = Color( 0.27451, 0.0823529, 0.0823529, 1 )
 depth = 12
 spacing = 1.2
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
-motion_scale = Vector2( 0.3, 0.3 )
+[node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension2" index="0"]
+motion_scale = Vector2( 0.42, 0.42 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer" index="0"]
-material = SubResource( 2 )
+[node name="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension2/ParallaxLayer" index="0"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 12 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 3276, 3044 )
+region_rect = Rect2( 0, 0, 3000, 3044 )
 
 [node name="cosmicHorrorTilemap" parent="." instance=ExtResource( 1 )]
 visible = false
@@ -401,7 +392,7 @@ chomp_time = 1.6
 [node name="Body" parent="CosmicChomper6" index="2"]
 launch_vector = Vector2( 1000, 0 )
 
-[editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
+[editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension2"]
 
 [editable path="CosmicEnemy"]
 
