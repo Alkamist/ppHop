@@ -31,7 +31,7 @@ func _add_depth_layer(at_depth):
 	return new_layer
 
 func _ready():
-	scroll_base_offset = offset + get_parent().global_position
+	scroll_base_offset += offset + get_parent().global_position
 	offset = Vector2.ZERO
 	for i in range(depth, 0, -1):
 		layers.push_back(_add_depth_layer(i))
