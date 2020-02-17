@@ -1,11 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Marsh/marshBackground1.png" type="Texture" id=4]
 [ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=5]
-[ext_resource path="res://Marsh/marshBackground2.png" type="Texture" id=6]
 [ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
 [ext_resource path="res://ParallaxSystem/ParallaxOffset.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
@@ -14,9 +13,18 @@
 [ext_resource path="res://Images/lightTest1.png" type="Texture" id=12]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=13]
 [ext_resource path="res://Marsh/marshTilemap.png" type="Texture" id=14]
+[ext_resource path="res://Marsh/marshBackground3.png" type="Texture" id=15]
+[ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=16]
+[ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=17]
+[ext_resource path="res://ParallaxSystem/ParallaxBackgroundExtension.tscn" type="PackedScene" id=18]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1760, 2706 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 16 )
+shader_param/fade_color = null
+shader_param/tint_strength = 0.0
 
 [sub_resource type="CanvasItemMaterial" id=2]
 blend_mode = 2
@@ -52,23 +60,34 @@ shape = SubResource( 1 )
 [node name="Visuals" type="Node2D" parent="ParallaxSystem"]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
-offset = Vector2( 200, -1850 )
-transform = Transform2D( 1, 0, 0, 1, 200, -1850 )
 script = ExtResource( 8 )
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackground"]
-motion_scale = Vector2( 0.4, 0.4 )
+motion_scale = Vector2( 0, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackground/ParallaxLayer"]
 scale = Vector2( 4, 4 )
 texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1000, 1500 )
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackground"]
-motion_scale = Vector2( 0.7, 0.7 )
+[node name="ParallaxBackgroundExtension2" type="ParallaxBackground" parent="ParallaxSystem/Visuals" instance=ExtResource( 18 )]
+offset = Vector2( 0, -3000 )
+transform = Transform2D( 1, 0, 0, 1, 0, -3000 )
+scroll_base_offset = Vector2( 0, 1200 )
+script = ExtResource( 17 )
+distance_tint = Color( 0.0901961, 0.0666667, 0.117647, 1 )
+depth = 12
 
-[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackground/ParallaxLayer2"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension2" index="0"]
+motion_scale = Vector2( 0.65, 0.65 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension2/ParallaxLayer" index="0"]
+material = SubResource( 4 )
 scale = Vector2( 4, 4 )
-texture = ExtResource( 6 )
+texture = ExtResource( 15 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 3000, 3044 )
 
 [node name="marshTilemap" parent="." instance=ExtResource( 7 )]
 visible = false
@@ -114,3 +133,5 @@ position = Vector2( 320, -1856 )
 scale = Vector2( 260, 260 )
 z_index = 2
 texture = ExtResource( 2 )
+
+[editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension2"]

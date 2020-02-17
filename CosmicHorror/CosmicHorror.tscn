@@ -16,6 +16,21 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1478, 2820 )
 
+[sub_resource type="Animation" id=2]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.99, 0.0 ]
+}
+
 [sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
@@ -31,7 +46,12 @@ tracks/0/keys = {
 "values": [ 0.0, 0.99, 0.0 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Curve2D" id=4]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 213, 0 )
+}
+
+[sub_resource type="Animation" id=5]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
@@ -44,11 +64,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ 0.0, 0.99, 0.0 ]
-}
-
-[sub_resource type="Curve2D" id=5]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 213, 0 )
 }
 
 [sub_resource type="Animation" id=6]
@@ -81,27 +96,12 @@ tracks/0/keys = {
 "values": [ 0.0, 0.99, 0.0 ]
 }
 
-[sub_resource type="Animation" id=8]
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, 0.99, 0.0 ]
-}
-
-[sub_resource type="Curve2D" id=9]
+[sub_resource type="Curve2D" id=8]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -111, -1, 0, 0, 0, 0, -110, -322, 0, 0, 0, 0, 0, -322, 0, 0, 0, 0, -110, -322, 0, 0, 0, 0, -110, -635, 0, 0, 0, 0, 1, -635 )
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=9]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
@@ -116,12 +116,12 @@ tracks/0/keys = {
 "values": [ 0.0, 0.99, 0.0 ]
 }
 
-[sub_resource type="Curve2D" id=11]
+[sub_resource type="Curve2D" id=10]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, -1, 0, 0, 0, 0, 92, 161, 0, 0, 0, 0, 128, 161, 0, 0, 0, 0, 92, 161, 0, 0, 0, 0, 96, 482, 0, 0, 0, 0, 139, 482 )
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
@@ -136,12 +136,12 @@ tracks/0/keys = {
 "values": [ 0.0, 0.99, 0.0 ]
 }
 
-[sub_resource type="Curve2D" id=13]
+[sub_resource type="Curve2D" id=12]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -275 )
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
@@ -156,7 +156,7 @@ tracks/0/keys = {
 "values": [ 0.0, 0.99, 0.0 ]
 }
 
-[sub_resource type="Curve2D" id=15]
+[sub_resource type="Curve2D" id=14]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 239 )
 }
@@ -201,7 +201,7 @@ region_rect = Rect2( 0, 0, 1000, 1500 )
 [node name="ParallaxBackgroundExtension2" parent="ParallaxSystem/Visuals" instance=ExtResource( 6 )]
 offset = Vector2( 0, -3000 )
 transform = Transform2D( 1, 0, 0, 1, 0, -3000 )
-distance_tint = Color( 0.27451, 0.0823529, 0.0823529, 1 )
+distance_tint = Color( 0.211765, 0.0705882, 0.0705882, 1 )
 depth = 12
 spacing = 1.2
 
@@ -236,7 +236,7 @@ position = Vector2( -584, -83 )
 duration = 2.0
 
 [node name="AnimationPlayer" parent="CosmicEnemy2" index="0"]
-anims/Move = SubResource( 3 )
+anims/Move = SubResource( 2 )
 
 [node name="Area2D" parent="CosmicEnemy2" index="2"]
 launch_vector = Vector2( 1000, -300 )
@@ -246,46 +246,46 @@ position = Vector2( 249, -373 )
 duration = 1.8
 
 [node name="AnimationPlayer" parent="CosmicEnemy3" index="0"]
-anims/Move = SubResource( 4 )
+anims/Move = SubResource( 3 )
 
 [node name="Area2D" parent="CosmicEnemy3" index="2"]
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy3" index="3"]
-curve = SubResource( 5 )
+curve = SubResource( 4 )
 
 [node name="CosmicEnemy4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 524, -375 )
 duration = 1.8
 
 [node name="AnimationPlayer" parent="CosmicEnemy4" index="0"]
-anims/Move = SubResource( 6 )
+anims/Move = SubResource( 5 )
 
 [node name="Area2D" parent="CosmicEnemy4" index="2"]
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy4" index="3"]
-curve = SubResource( 5 )
+curve = SubResource( 4 )
 
 [node name="CosmicEnemy5" parent="." instance=ExtResource( 2 )]
 position = Vector2( 803, -376 )
 duration = 1.8
 
 [node name="AnimationPlayer" parent="CosmicEnemy5" index="0"]
-anims/Move = SubResource( 7 )
+anims/Move = SubResource( 6 )
 
 [node name="Area2D" parent="CosmicEnemy5" index="2"]
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy5" index="3"]
-curve = SubResource( 5 )
+curve = SubResource( 4 )
 
 [node name="CosmicEnemy6" parent="." instance=ExtResource( 2 )]
 position = Vector2( 888, -755 )
 duration = 3.5
 
 [node name="AnimationPlayer" parent="CosmicEnemy6" index="0"]
-anims/Move = SubResource( 8 )
+anims/Move = SubResource( 7 )
 
 [node name="Sprite" parent="CosmicEnemy6/Smoothing2D" index="0"]
 texture = ExtResource( 11 )
@@ -294,14 +294,14 @@ texture = ExtResource( 11 )
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy6" index="3"]
-curve = SubResource( 9 )
+curve = SubResource( 8 )
 
 [node name="CosmicEnemy7" parent="." instance=ExtResource( 2 )]
 position = Vector2( 887, -1402 )
 duration = 3.5
 
 [node name="AnimationPlayer" parent="CosmicEnemy7" index="0"]
-anims/Move = SubResource( 10 )
+anims/Move = SubResource( 9 )
 
 [node name="Sprite" parent="CosmicEnemy7/Smoothing2D" index="0"]
 texture = ExtResource( 11 )
@@ -310,13 +310,13 @@ texture = ExtResource( 11 )
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy7" index="3"]
-curve = SubResource( 11 )
+curve = SubResource( 10 )
 
 [node name="CosmicEnemy8" parent="." instance=ExtResource( 2 )]
 position = Vector2( 567, -1677 )
 
 [node name="AnimationPlayer" parent="CosmicEnemy8" index="0"]
-anims/Move = SubResource( 12 )
+anims/Move = SubResource( 11 )
 
 [node name="Sprite" parent="CosmicEnemy8/Smoothing2D" index="0"]
 texture = ExtResource( 11 )
@@ -325,13 +325,13 @@ texture = ExtResource( 11 )
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy8" index="3"]
-curve = SubResource( 13 )
+curve = SubResource( 12 )
 
 [node name="CosmicEnemy9" parent="." instance=ExtResource( 2 )]
 position = Vector2( 908, -1915 )
 
 [node name="AnimationPlayer" parent="CosmicEnemy9" index="0"]
-anims/Move = SubResource( 14 )
+anims/Move = SubResource( 13 )
 
 [node name="Sprite" parent="CosmicEnemy9/Smoothing2D" index="0"]
 texture = ExtResource( 11 )
@@ -340,7 +340,7 @@ texture = ExtResource( 11 )
 launch_vector = Vector2( -1000, -300 )
 
 [node name="Path2D" parent="CosmicEnemy9" index="3"]
-curve = SubResource( 15 )
+curve = SubResource( 14 )
 
 [node name="CosmicChomper" parent="." instance=ExtResource( 4 )]
 position = Vector2( -216, -1007 )
