@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
@@ -12,14 +12,20 @@
 [ext_resource path="res://City/garbageBags.png" type="Texture" id=10]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=11]
 [ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=12]
-[ext_resource path="res://ParallaxSystem/ParallaxBackgroundExtension.tscn" type="PackedScene" id=13]
+[ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=13]
 [ext_resource path="res://City/cityBackground3.png" type="Texture" id=14]
 [ext_resource path="res://City/cityBackground1.png" type="Texture" id=15]
+[ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 1725, 2460 )
+extents = Vector2( 1725, 2382.75 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 13 )
+shader_param/fade_color = null
+shader_param/tint_strength = 0.0
+
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 432, 322 )
 
 [sub_resource type="Curve2D" id=3]
@@ -49,10 +55,9 @@ script = ExtResource( 12 )
 [node name="Tween" type="Tween" parent="ParallaxSystem"]
 
 [node name="Area2D" type="Area2D" parent="ParallaxSystem"]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D"]
-position = Vector2( 100, -1645 )
+position = Vector2( 91.8774, -1580.02 )
 shape = SubResource( 1 )
 
 [node name="Visuals" type="Node2D" parent="ParallaxSystem"]
@@ -67,17 +72,20 @@ texture = ExtResource( 15 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 3000, 3000 )
 
-[node name="ParallaxBackgroundExtension" parent="ParallaxSystem/Visuals" instance=ExtResource( 13 )]
+[node name="ParallaxBackgroundExtension" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
 offset = Vector2( 0, -2000 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2000 )
+scroll_base_offset = Vector2( 0, 600 )
+script = ExtResource( 16 )
 distance_tint = Color( 0.356863, 0.356863, 0.305882, 1 )
 depth = 12
 spacing = 1.2
 
-[node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
 motion_scale = Vector2( 0.4, 0.4 )
 
-[node name="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer" index="0"]
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer"]
+material = SubResource( 2 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 14 )
 region_enabled = true
@@ -116,7 +124,7 @@ script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hobo/AttackTrigger"]
 position = Vector2( 308, 298 )
-shape = SubResource( 2 )
+shape = SubResource( 5 )
 
 [node name="Path2D" type="Path2D" parent="Hobo"]
 curve = SubResource( 3 )
@@ -158,7 +166,5 @@ texture = ExtResource( 8 )
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
-
-[editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
 
 [editable path="MovingPlatform"]

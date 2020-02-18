@@ -1,20 +1,26 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://Sky/skyTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/SceneHider.gd" type="Script" id=3]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=5]
-[ext_resource path="res://ParallaxSystem/ParallaxBackgroundExtension.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=6]
 [ext_resource path="res://Sky/skyTilemap.png" type="Texture" id=7]
 [ext_resource path="res://Sky/skyBackground3.png" type="Texture" id=8]
 [ext_resource path="res://Sky/skyBackground1.png" type="Texture" id=9]
 [ext_resource path="res://ParallaxSystem/ParallaxOffset.gd" type="Script" id=10]
+[ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 1660, 2750 )
+extents = Vector2( 1660, 2867 )
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 6 )
+shader_param/fade_color = null
+shader_param/tint_strength = 0.0
+
+[sub_resource type="Animation" id=24]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Path2D/PathFollow2D:unit_offset")
@@ -251,10 +257,9 @@ script = ExtResource( 5 )
 [node name="Tween" type="Tween" parent="ParallaxSystem"]
 
 [node name="Area2D" type="Area2D" parent="ParallaxSystem"]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D"]
-position = Vector2( 20, -2693 )
+position = Vector2( -1, -2620 )
 shape = SubResource( 1 )
 
 [node name="Visuals" type="Node2D" parent="ParallaxSystem"]
@@ -272,23 +277,27 @@ texture = ExtResource( 9 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1000, 1500 )
 
-[node name="ParallaxBackgroundExtension" parent="ParallaxSystem/Visuals" instance=ExtResource( 6 )]
+[node name="ParallaxBackgroundExtension" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
 offset = Vector2( 0, -2500 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2500 )
-distance_tint = Color( 0.176471, 0.168627, 0.12549, 1 )
+scroll_base_offset = Vector2( 0, -500 )
+script = ExtResource( 11 )
+distance_tint = Color( 0.133333, 0.145098, 0.188235, 1 )
 depth = 12
 spacing = 1.2
 
-[node name="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension" index="0"]
-motion_scale = Vector2( 0.3, 0.3 )
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
+motion_scale = Vector2( 0.5, 0.5 )
 
-[node name="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer" index="0"]
+[node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer"]
+material = SubResource( 2 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 3276, 3692 )
 
 [node name="skyTilemap" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( -2538, -5428 )
 scale = Vector2( 4, 4 )
 
@@ -302,7 +311,7 @@ position = Vector2( -164, -342 )
 duration = 3.5
 
 [node name="AnimationPlayer" parent="MovingPlatform2" index="0"]
-anims/Move = SubResource( 2 )
+anims/Move = SubResource( 24 )
 
 [node name="Path2D" parent="MovingPlatform2" index="3"]
 curve = SubResource( 3 )
@@ -409,8 +418,6 @@ anims/Move = SubResource( 22 )
 
 [node name="Path2D" parent="MovingPlatform12" index="3"]
 curve = SubResource( 23 )
-
-[editable path="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
 
 [editable path="MovingPlatform2"]
 
