@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://PP/ppCamera.gd" type="Script" id=1]
 [ext_resource path="res://PP/ppL.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://PP/Jiggler.gd" type="Script" id=7]
 [ext_resource path="res://PP/ppNervousSpriteSheet.png" type="Texture" id=8]
 [ext_resource path="res://PP/ScaredAnimation.gd" type="Script" id=9]
+[ext_resource path="res://PP/ppLShadow.png" type="Texture" id=10]
 [ext_resource path="res://PP/OtherAnimations.gd" type="Script" id=11]
 
 [sub_resource type="Animation" id=1]
@@ -116,7 +117,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 6 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 12, 7 )
 
 [node name="Pp" type="Node2D"]
@@ -145,6 +146,14 @@ target = NodePath("../Body")
 current = true
 script = ExtResource( 1 )
 
+[node name="Light2D" type="Light2D" parent="Smoothing2D"]
+texture = ExtResource( 10 )
+offset = Vector2( 0, 120 )
+texture_scale = 4.0
+energy = 0.4
+mode = 2
+range_layer_min = -1
+
 [node name="JumpLine" type="Node2D" parent="Smoothing2D"]
 script = ExtResource( 6 )
 body_path = NodePath("../../Body")
@@ -160,12 +169,14 @@ body_path = NodePath("../../../../Body")
 
 [node name="Scared" type="Sprite" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
 visible = false
+light_mask = 2
 position = Vector2( 4, -12 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
 hframes = 8
 
 [node name="Idle" type="Sprite" parent="Smoothing2D/Visuals/Jiggler/SpriteFlip"]
+light_mask = 2
 position = Vector2( 4, 0 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
@@ -173,15 +184,16 @@ texture = ExtResource( 2 )
 [node name="Body" type="KinematicBody2D" parent="." groups=[
 "ppBody",
 ]]
+collision_layer = 2
 script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2( 0, 5 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 [connection signal="just_became_airborne" from="Body" to="ScaredAnimation" method="_on_Body_just_became_airborne"]
 [connection signal="just_bounced" from="Body" to="Smoothing2D/Visuals/Jiggler" method="_on_Body_just_bounced"]
 [connection signal="just_crouched" from="Body" to="OtherAnimations" method="_on_Body_just_crouched"]
-[connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
 [connection signal="just_jumped" from="Body" to="OtherAnimations" method="_on_Body_just_jumped"]
+[connection signal="just_jumped" from="Body" to="Smoothing2D/Visuals/Jiggler/SpriteFlip" method="_on_Body_just_jumped"]
 [connection signal="just_landed" from="Body" to="ScaredAnimation" method="_on_Body_just_landed"]
 [connection signal="just_uncrouched" from="Body" to="OtherAnimations" method="_on_Body_just_uncrouched"]

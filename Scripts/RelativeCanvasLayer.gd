@@ -1,4 +1,4 @@
 extends CanvasLayer
 
-func _ready():
-	offset += get_parent().global_position
+func _process(delta: float):
+	offset = get_parent().global_position

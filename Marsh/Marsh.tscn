@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
 [ext_resource path="res://Pseudo3DSprite/Pseudo3DSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Marsh/marshBackground1.png" type="Texture" id=4]
 [ext_resource path="res://ParallaxSystem/ParallaxSystem.gd" type="Script" id=5]
+[ext_resource path="res://TextSystem/TextTrigger.gd" type="Script" id=6]
 [ext_resource path="res://Marsh/marshTilemap.tmx" type="PackedScene" id=7]
 [ext_resource path="res://ParallaxSystem/ParallaxOffset.gd" type="Script" id=8]
 [ext_resource path="res://Marsh/fog.shader" type="Shader" id=9]
@@ -16,6 +17,8 @@
 [ext_resource path="res://Marsh/marshBackground3.png" type="Texture" id=15]
 [ext_resource path="res://ParallaxSystem/ParallaxColor.shader" type="Shader" id=16]
 [ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=17]
+[ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=18]
+[ext_resource path="res://TextSystem/TextFadeLabel.gd" type="Script" id=19]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1760, 2706 )
@@ -25,10 +28,21 @@ shader = ExtResource( 16 )
 shader_param/fade_color = null
 shader_param/tint_strength = 0.0
 
-[sub_resource type="CanvasItemMaterial" id=3]
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 94, 45.5 )
+
+[sub_resource type="DynamicFontData" id=4]
+antialiased = false
+font_path = "res://Fonts/manaspc.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = SubResource( 4 )
+
+[sub_resource type="CanvasItemMaterial" id=6]
 blend_mode = 2
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=7]
 shader = ExtResource( 9 )
 shader_param/color = Vector3( 0.28, 0.11, 0.11 )
 shader_param/OCTAVES = 2
@@ -98,11 +112,51 @@ position = Vector2( 256, -1216 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 14 )
 
+[node name="TextTrigger" type="Area2D" parent="."]
+position = Vector2( -592, -128 )
+scale = Vector2( 4, 4 )
+script = ExtResource( 6 )
+label_path = NodePath("../MEGALUL/TextLayer/RichTextLabel")
+phrases = [ "Welcome home, little one.", "Stay with me, it's better down here.", "Yes, let the anger consume you.", "In a way, you've been here all along.", "This is where you belong." ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TextTrigger"]
+position = Vector2( 24, 4 )
+shape = SubResource( 3 )
+
 [node name="MEGALUL" type="Sprite" parent="."]
+light_mask = 2
 position = Vector2( -592, -128 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 10 )
 script = ExtResource( 1 )
+
+[node name="TextLayer" type="CanvasLayer" parent="MEGALUL"]
+layer = 4
+follow_viewport_enable = true
+script = ExtResource( 18 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MEGALUL/TextLayer"]
+margin_left = -600.0
+margin_top = -200.0
+margin_right = 600.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0.682353, 0.105882, 0.105882, 1 )
+scroll_active = false
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeTween" type="Tween" parent="MEGALUL/TextLayer/RichTextLabel"]
+
+[node name="ClearTimer" type="Timer" parent="MEGALUL/TextLayer/RichTextLabel"]
+wait_time = 6.0
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="MEGALUL/TextLayer/RichTextLabel"]
+wait_time = 15.0
+one_shot = true
 
 [node name="Light2D" type="Light2D" parent="."]
 visible = false
@@ -118,7 +172,7 @@ follow_viewport_enable = true
 [node name="Shadow" type="Sprite" parent="CanvasLayer"]
 visible = false
 modulate = Color( 0.521569, 1, 1, 0.054902 )
-material = SubResource( 3 )
+material = SubResource( 6 )
 position = Vector2( 256, -2304 )
 scale = Vector2( 4, 4 )
 z_index = 3
@@ -127,7 +181,7 @@ texture = ExtResource( 11 )
 [node name="Fog" type="Sprite" parent="."]
 visible = false
 light_mask = 2
-material = SubResource( 4 )
+material = SubResource( 7 )
 position = Vector2( 320, -1856 )
 scale = Vector2( 260, 260 )
 z_index = 2
