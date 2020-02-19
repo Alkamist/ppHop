@@ -1,9 +1,11 @@
 Game:
-- Add NPC text and monologue.
+*- Add NPC text and monologue.
 *- Add a dynamic shadow underneath pp.
-*- Add a shadow underneath the marsh monster.
+- Add a shadow underneath the marsh monster.
 - Figure out progress saving.
 - Work on the menu system.
+- Make the sky better and more interesting.
+- Animate and polish the cosmic horror place.
 - Figure out how to do intro and ending cutscenes.
 - Do the forest/city back cover.
 - Do the space/cosmic transition.

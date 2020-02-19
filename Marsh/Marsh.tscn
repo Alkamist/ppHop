@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=17]
 [ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=18]
 [ext_resource path="res://TextSystem/TextFadeLabel.gd" type="Script" id=19]
+[ext_resource path="res://PP/ppLShadow.png" type="Texture" id=20]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1760, 2706 )
@@ -129,6 +130,16 @@ position = Vector2( -592, -128 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 10 )
 script = ExtResource( 1 )
+
+[node name="Light2D2" type="Light2D" parent="MEGALUL"]
+position = Vector2( 0, 10 )
+scale = Vector2( 2.3, 0.25 )
+texture = ExtResource( 20 )
+offset = Vector2( 0, 120 )
+texture_scale = 4.0
+energy = 0.7
+mode = 2
+range_layer_min = -1
 
 [node name="TextLayer" type="CanvasLayer" parent="MEGALUL"]
 layer = 4

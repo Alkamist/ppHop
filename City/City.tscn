@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=18]
 [ext_resource path="res://TextSystem/TextTrigger.gd" type="Script" id=19]
 [ext_resource path="res://City/HoboAttackTrigger.gd" type="Script" id=20]
+[ext_resource path="res://PP/ppLShadow.png" type="Texture" id=21]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1725, 2382.75 )
@@ -166,6 +167,15 @@ position = Vector2( -2, -6 )
 rotate = false
 loop = false
 
+[node name="Light2D" type="Light2D" parent="Hobo/Path2D/PathFollow2D"]
+scale = Vector2( 1.8, 1 )
+texture = ExtResource( 21 )
+offset = Vector2( 0, 120 )
+texture_scale = 4.0
+energy = 0.4
+mode = 2
+range_layer_min = -1
+
 [node name="TextLayer" type="CanvasLayer" parent="Hobo/Path2D/PathFollow2D"]
 layer = 4
 follow_viewport_enable = true
@@ -223,10 +233,10 @@ scale = Vector2( 4, 4 )
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
 
 [editable path="MovingPlatform"]
