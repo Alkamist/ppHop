@@ -94,7 +94,7 @@ offset = Vector2( 0, -2000 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2000 )
 scroll_base_offset = Vector2( 0, 600 )
 script = ExtResource( 16 )
-distance_tint = Color( 0.356863, 0.356863, 0.305882, 1 )
+distance_tint = Color( 0.364706, 0.364706, 0.305882, 1 )
 depth = 12
 spacing = 1.2
 
@@ -115,7 +115,9 @@ stream = ExtResource( 4 )
 script = ExtResource( 5 )
 fade_tween_path = NodePath("../AudioFade")
 
-[node name="Hobo" type="Node2D" parent="."]
+[node name="Hobo" type="Node2D" parent="." groups=[
+"save",
+]]
 position = Vector2( -864, 4 )
 script = ExtResource( 7 )
 
@@ -233,10 +235,10 @@ scale = Vector2( 4, 4 )
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
 
 [editable path="MovingPlatform"]

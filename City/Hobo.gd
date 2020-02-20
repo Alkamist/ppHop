@@ -14,7 +14,7 @@ onready var attack_trigger := get_node("AttackTrigger")
 onready var chase_trigger := get_node("ChaseTrigger")
 onready var previous_position = path_follow.position
 
-var time := 0.0
+var time := attack_cooldown
 var time_of_attack := 0.0
 var attack_target
 var attack_starting_point := Vector2.ZERO
@@ -90,3 +90,19 @@ func _on_StopChaseTrigger_body_exited(body):
 				yield(tween, "tween_completed")
 			_go_back_to_start()
 			attack_target = null
+
+func save_game():
+	var save_data = {
+		"node_name" : name,
+		"path_unit_offset" : path_follow.unit_offset
+	}
+	return save_data
+
+func load_game(node_data):
+	path_follow.unit_offset = node_data.path_unit_offset
+	var pp_is_in_chase_area := false
+	for body in chase_trigger.get_overlapping_bodies():
+		if body.is_in_group("ppBody"):
+			pp_is_in_chase_area = true
+	if not pp_is_in_chase_area:
+		_go_back_to_start()

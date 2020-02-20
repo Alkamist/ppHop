@@ -28,7 +28,9 @@ _data = {
 "points": PoolVector2Array(  )
 }
 
-[node name="MovingPlatform" type="Node2D"]
+[node name="MovingPlatform" type="Node2D" groups=[
+"save",
+]]
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

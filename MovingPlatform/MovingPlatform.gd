@@ -9,3 +9,13 @@ func _ready():
 	if duration > 0.0:
 		var playback_speed = 1.0 / duration
 		animation.play("Move", -1.0, playback_speed)
+
+func save_game():
+	var save_data = {
+		"node_name" : name,
+		"animation_position" : animation.current_animation_position
+	}
+	return save_data
+
+func load_game(node_data):
+	animation.seek(node_data.animation_position)

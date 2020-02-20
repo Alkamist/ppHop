@@ -1,10 +1,8 @@
 Game:
-*- Add NPC text and monologue.
-*- Add a dynamic shadow underneath pp.
-- Add a shadow underneath the marsh monster.
-- Figure out progress saving.
+*- Figure out progress saving.
 - Work on the menu system.
-- Make the sky better and more interesting.
+*- Make the sky better and more interesting.
+- Add the names for the places that pop up.
 - Animate and polish the cosmic horror place.
 - Figure out how to do intro and ending cutscenes.
 - Do the forest/city back cover.
