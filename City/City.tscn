@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://City/cityTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://City/hobo.png" type="Texture" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://TextSystem/TextTrigger.gd" type="Script" id=19]
 [ext_resource path="res://City/HoboAttackTrigger.gd" type="Script" id=20]
 [ext_resource path="res://PP/ppLShadow.png" type="Texture" id=21]
+[ext_resource path="res://City/cityTransitionBackground.png" type="Texture" id=22]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1725, 2382.75 )
@@ -92,14 +93,13 @@ region_rect = Rect2( 0, 0, 3000, 3000 )
 [node name="ParallaxBackgroundExtension" type="ParallaxBackground" parent="ParallaxSystem/Visuals"]
 offset = Vector2( 0, -2000 )
 transform = Transform2D( 1, 0, 0, 1, 0, -2000 )
-scroll_base_offset = Vector2( 0, 600 )
 script = ExtResource( 16 )
 distance_tint = Color( 0.364706, 0.364706, 0.305882, 1 )
 depth = 12
 spacing = 1.2
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension"]
-motion_scale = Vector2( 0.4, 0.4 )
+motion_scale = Vector2( 0.55, 0.55 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension/ParallaxLayer"]
 material = SubResource( 2 )
@@ -226,6 +226,17 @@ duration = 5.0
 [node name="Path2D" parent="MovingPlatform" index="3"]
 curve = SubResource( 8 )
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -5
+follow_viewport_enable = true
+follow_viewport_scale = 0.98
+script = ExtResource( 18 )
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 122, 1100 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 22 )
+
 [node name="cityTilemap" parent="." instance=ExtResource( 1 )]
 visible = false
 position = Vector2( -2398, -4016 )
@@ -235,10 +246,10 @@ scale = Vector2( 4, 4 )
 position = Vector2( 162, -1232 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 8 )
-[connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_entered" from="Hobo/ChaseTrigger" to="Hobo" method="_on_ChaseTrigger_body_entered"]
-[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_entered" from="Hobo/ChaseTrigger" to="HoboChaseSound" method="_on_ChaseTrigger_body_entered"]
 [connection signal="body_exited" from="Hobo/StopChaseTrigger" to="Hobo" method="_on_StopChaseTrigger_body_exited"]
+[connection signal="body_exited" from="Hobo/StopChaseTrigger" to="HoboChaseSound" method="_on_StopChaseTrigger_body_exited"]
 [connection signal="body_entered" from="Hobo/AttackTrigger" to="Hobo" method="_on_AttackTrigger_body_entered"]
 
 [editable path="MovingPlatform"]

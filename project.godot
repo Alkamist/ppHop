@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="ppHop"
-run/main_scene="res://MainMenu/MainMenu.tscn"
+run/main_scene="res://Menus/MainMenu.tscn"
 
 [autoload]
 

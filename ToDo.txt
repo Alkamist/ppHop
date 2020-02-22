@@ -5,10 +5,11 @@ Game:
 - Add the names for the places that pop up.
 - Animate and polish the cosmic horror place.
 - Figure out how to do intro and ending cutscenes.
-- Do the forest/city back cover.
+*- Do the forest/city back cover.
 - Do the space/cosmic transition.
 - Do the cosmic/champion transition.
 - Possibly add more collision tiles for safety.
+- I am stuck button?
 
 Music:
 - Marsh
