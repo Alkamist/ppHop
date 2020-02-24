@@ -1,13 +1,21 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
 
-[node name="GameMenu" type="Control"]
+[ext_resource path="res://Menus/GameMenu.gd" type="Script" id=1]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+layer = 128
+
+[node name="GameMenu" type="Control" parent="."]
+pause_mode = 2
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="GameMenu"]
 anchor_left = 0.4
 anchor_top = 0.2
 anchor_right = 0.6
@@ -16,25 +24,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Resume" type="Button" parent="VBoxContainer"]
+[node name="Resume" type="Button" parent="GameMenu/VBoxContainer"]
 margin_right = 192.0
 margin_bottom = 20.0
 text = "Resume"
 
-[node name="Options" type="Button" parent="VBoxContainer"]
+[node name="Options" type="Button" parent="GameMenu/VBoxContainer"]
 margin_top = 24.0
 margin_right = 192.0
 margin_bottom = 44.0
 text = "Options"
 
-[node name="MainMenu" type="Button" parent="VBoxContainer"]
+[node name="MainMenu" type="Button" parent="GameMenu/VBoxContainer"]
 margin_top = 48.0
 margin_right = 192.0
 margin_bottom = 68.0
 text = "Main Menu"
 
-[node name="ExitGame" type="Button" parent="VBoxContainer"]
+[node name="ExitGame" type="Button" parent="GameMenu/VBoxContainer"]
 margin_top = 72.0
 margin_right = 192.0
 margin_bottom = 92.0
 text = "Exit Game"
+[connection signal="pressed" from="GameMenu/VBoxContainer/Resume" to="GameMenu" method="_on_Resume_pressed"]
+[connection signal="pressed" from="GameMenu/VBoxContainer/MainMenu" to="GameMenu" method="_on_MainMenu_pressed"]
+[connection signal="pressed" from="GameMenu/VBoxContainer/ExitGame" to="GameMenu" method="_on_ExitGame_pressed"]

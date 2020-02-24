@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
@@ -20,9 +20,10 @@
 [ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=18]
 [ext_resource path="res://TextSystem/TextFadeLabel.gd" type="Script" id=19]
 [ext_resource path="res://PP/ppLShadow.png" type="Texture" id=20]
+[ext_resource path="res://Scripts/TitleTrigger.gd" type="Script" id=22]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 1760, 2706 )
+extents = Vector2( 1568, 2722 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 16 )
@@ -30,20 +31,23 @@ shader_param/fade_color = null
 shader_param/tint_strength = 0.0
 
 [sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 1568, 2210 )
+
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 94, 45.5 )
 
-[sub_resource type="DynamicFontData" id=4]
+[sub_resource type="DynamicFontData" id=5]
 antialiased = false
 font_path = "res://Fonts/manaspc.ttf"
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 32
-font_data = SubResource( 4 )
+font_data = SubResource( 5 )
 
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=7]
 blend_mode = 2
 
-[sub_resource type="ShaderMaterial" id=7]
+[sub_resource type="ShaderMaterial" id=8]
 shader = ExtResource( 9 )
 shader_param/color = Vector3( 0.28, 0.11, 0.11 )
 shader_param/OCTAVES = 2
@@ -113,6 +117,21 @@ position = Vector2( 256, -1216 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 14 )
 
+[node name="TitleInactiveTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+autostart = true
+
+[node name="TitleTrigger" type="Area2D" parent="."]
+visible = false
+monitoring = false
+script = ExtResource( 22 )
+title = "Malding Marsh"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TitleTrigger"]
+position = Vector2( 176, -1616 )
+shape = SubResource( 3 )
+
 [node name="TextTrigger" type="Area2D" parent="."]
 position = Vector2( -592, -128 )
 scale = Vector2( 4, 4 )
@@ -122,7 +141,7 @@ phrases = [ "Welcome home, little one.", "Stay with me, it's better down here.",
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TextTrigger"]
 position = Vector2( 24, 4 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="MEGALUL" type="Sprite" parent="."]
 light_mask = 2
@@ -151,7 +170,7 @@ margin_left = -600.0
 margin_top = -200.0
 margin_right = 600.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0.682353, 0.105882, 0.105882, 1 )
 scroll_active = false
 script = ExtResource( 19 )
@@ -183,7 +202,7 @@ follow_viewport_enable = true
 [node name="Shadow" type="Sprite" parent="CanvasLayer"]
 visible = false
 modulate = Color( 0.521569, 1, 1, 0.054902 )
-material = SubResource( 6 )
+material = SubResource( 7 )
 position = Vector2( 256, -2304 )
 scale = Vector2( 4, 4 )
 z_index = 3
@@ -192,8 +211,9 @@ texture = ExtResource( 11 )
 [node name="Fog" type="Sprite" parent="."]
 visible = false
 light_mask = 2
-material = SubResource( 7 )
+material = SubResource( 8 )
 position = Vector2( 320, -1856 )
 scale = Vector2( 260, 260 )
 z_index = 2
 texture = ExtResource( 2 )
+[connection signal="timeout" from="TitleInactiveTimer" to="TitleTrigger" method="_on_TitleInactiveTimer_timeout"]

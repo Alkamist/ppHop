@@ -21,8 +21,8 @@ run/main_scene="res://Menus/MainMenu.tscn"
 [autoload]
 
 SFX="*res://Scenes/SFX.tscn"
-Network="*res://Scripts/Network.gd"
 GameSaver="*res://Save/GameSaver.gd"
+BiomeTitleText="*res://Scenes/BiomeTitleText.tscn"
 
 [display]
 

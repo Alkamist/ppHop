@@ -1,15 +1,16 @@
 Game:
-*- Figure out progress saving.
-- Work on the menu system.
-*- Make the sky better and more interesting.
-- Add the names for the places that pop up.
 - Animate and polish the cosmic horror place.
-- Figure out how to do intro and ending cutscenes.
-*- Do the forest/city back cover.
 - Do the space/cosmic transition.
 - Do the cosmic/champion transition.
+- Work on the menu system.
+- Figure out how to do intro and ending cutscenes.
 - Possibly add more collision tiles for safety.
 - I am stuck button?
+
+*- Add the names for the places that pop up.
+*- Make the sky better and more interesting.
+*- Figure out progress saving.
+*- Do the forest/city back cover.
 
 Music:
 - Marsh

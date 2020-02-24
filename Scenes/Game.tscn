@@ -13,11 +13,7 @@
 [node name="Game" type="Node"]
 script = ExtResource( 5 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 128
-
-[node name="GameMenu" parent="CanvasLayer" instance=ExtResource( 9 )]
-visible = false
+[node name="CanvasLayer" parent="." instance=ExtResource( 9 )]
 
 [node name="Marsh" parent="." instance=ExtResource( 1 )]
 
