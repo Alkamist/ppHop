@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Scripts/SlowBob.gd" type="Script" id=1]
 [ext_resource path="res://Images/graySquare.png" type="Texture" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://Scripts/RelativeCanvasLayer.gd" type="Script" id=18]
 [ext_resource path="res://TextSystem/TextFadeLabel.gd" type="Script" id=19]
 [ext_resource path="res://PP/ppLShadow.png" type="Texture" id=20]
+[ext_resource path="res://Scripts/SongTrigger.gd" type="Script" id=21]
 [ext_resource path="res://Scripts/TitleTrigger.gd" type="Script" id=22]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -35,6 +36,9 @@ extents = Vector2( 1568, 2210 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 94, 45.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 1568, 2166 )
 
 [sub_resource type="DynamicFontData" id=5]
 antialiased = false
@@ -142,6 +146,14 @@ phrases = [ "Welcome home, little one.", "Stay with me, it's better down here.",
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TextTrigger"]
 position = Vector2( 24, 4 )
 shape = SubResource( 4 )
+
+[node name="SongTrigger" type="Area2D" parent="."]
+script = ExtResource( 21 )
+song_name = "MarshSong"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SongTrigger"]
+position = Vector2( 192, -1824 )
+shape = SubResource( 9 )
 
 [node name="MEGALUL" type="Sprite" parent="."]
 light_mask = 2

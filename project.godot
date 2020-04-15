@@ -23,6 +23,7 @@ run/main_scene="res://Menus/MainMenu.tscn"
 SFX="*res://Scenes/SFX.tscn"
 GameSaver="*res://Save/GameSaver.gd"
 BiomeTitleText="*res://Scenes/BiomeTitleText.tscn"
+Songs="*res://Scenes/Songs.tscn"
 
 [display]
 

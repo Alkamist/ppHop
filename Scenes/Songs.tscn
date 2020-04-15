@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/Songs.gd" type="Script" id=1]
+[ext_resource path="res://Songs/ForestSong.wav" type="AudioStream" id=2]
+[ext_resource path="res://Songs/MarshSong.wav" type="AudioStream" id=3]
+[ext_resource path="res://Scripts/FadingSong.gd" type="Script" id=4]
+
+[node name="Songs" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="MarshSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -6.0
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="MarshSong"]
+
+[node name="ForestSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -6.0
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="ForestSong"]
