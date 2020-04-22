@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Songs.gd" type="Script" id=1]
 [ext_resource path="res://Songs/ForestSong.wav" type="AudioStream" id=2]
 [ext_resource path="res://Songs/MarshSong.wav" type="AudioStream" id=3]
 [ext_resource path="res://Scripts/FadingSong.gd" type="Script" id=4]
+[ext_resource path="res://Songs/CitySong.wav" type="AudioStream" id=5]
+[ext_resource path="res://Songs/SpaceSong.wav" type="AudioStream" id=6]
 
 [node name="Songs" type="Node2D"]
 script = ExtResource( 1 )
@@ -21,3 +23,17 @@ volume_db = -6.0
 script = ExtResource( 4 )
 
 [node name="Tween" type="Tween" parent="ForestSong"]
+
+[node name="CitySong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -6.0
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="CitySong"]
+
+[node name="SpaceSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -6.0
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="SpaceSong"]

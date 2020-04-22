@@ -10,9 +10,11 @@ func _on_ChaseTrigger_body_entered(body):
 		fade_tween.stop_all()
 		volume_db = 0.0
 		play(0.0)
+		Songs.pause()
 
 func _on_StopChaseTrigger_body_exited(body):
 	if body.is_in_group("ppBody"):
+		Songs.resume()
 		is_chasing = false
 		if get_playback_position() < 2.7:
 			fade_tween.interpolate_property(self, "volume_db", volume_db, -80.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Space/spaceTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://Space/SpaceArea.gd" type="Script" id=2]
@@ -13,20 +13,24 @@
 [ext_resource path="res://Space/spaceBackground1.png" type="Texture" id=11]
 [ext_resource path="res://Space/spaceBackground3.png" type="Texture" id=12]
 [ext_resource path="res://Space/spaceBackground2.png" type="Texture" id=13]
+[ext_resource path="res://Scripts/SongTrigger.gd" type="Script" id=14]
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1742, 2810 )
 
-[sub_resource type="ShaderMaterial" id=12]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 5 )
 shader_param/fade_color = null
 shader_param/tint_strength = 0.0
 
-[sub_resource type="RectangleShape2D" id=14]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 1568, 2768 )
 
-[sub_resource type="RectangleShape2D" id=13]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 2606, 2820 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 1568, 2766 )
 
 [node name="Space" type="Node2D"]
 script = ExtResource( 3 )
@@ -49,7 +53,7 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ParallaxSystem/Area2D"]
 position = Vector2( 32, -2636 )
-shape = SubResource( 11 )
+shape = SubResource( 1 )
 
 [node name="Visuals" type="Node2D" parent="ParallaxSystem"]
 
@@ -76,7 +80,7 @@ depth = 3
 motion_scale = Vector2( 0.02, 0.02 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxSystem/Visuals/ParallaxBackgroundExtension2/ParallaxLayer"]
-material = SubResource( 12 )
+material = SubResource( 2 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 12 )
 region_enabled = true
@@ -101,7 +105,7 @@ title = "Space"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TitleTrigger"]
 position = Vector2( 64, -2608 )
-shape = SubResource( 14 )
+shape = SubResource( 3 )
 
 [node name="SpaceArea" type="Area2D" parent="."]
 visible = false
@@ -109,7 +113,15 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpaceArea"]
 position = Vector2( 36, -2614 )
-shape = SubResource( 13 )
+shape = SubResource( 4 )
+
+[node name="SongTrigger" type="Area2D" parent="."]
+script = ExtResource( 14 )
+song_name = "SpaceSong"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SongTrigger"]
+position = Vector2( 60, -2608 )
+shape = SubResource( 5 )
 
 [node name="spaceTilemap" parent="." instance=ExtResource( 1 )]
 visible = false
