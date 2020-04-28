@@ -3,12 +3,13 @@ extends AudioStreamPlayer
 export var fade_tween_path : NodePath
 onready var fade_tween = get_node(fade_tween_path)
 var is_chasing := false
+var starting_volume := volume_db
 
 func _on_ChaseTrigger_body_entered(body):
 	if body.is_in_group("ppBody") and not is_chasing:
 		is_chasing = true
 		fade_tween.stop_all()
-		volume_db = 0.0
+		volume_db = starting_volume
 		play(0.0)
 		Songs.pause()
 

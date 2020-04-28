@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/SkySong.wav-1c04f44ba50095efebd4641b9401c1ba.sample"
+
+[deps]
+
+source_file="res://Songs/SkySong.wav"
+dest_files=[ "res://.import/SkySong.wav-1c04f44ba50095efebd4641b9401c1ba.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

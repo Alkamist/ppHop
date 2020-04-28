@@ -26,7 +26,7 @@ shader = ExtResource( 2 )
 shader_param/fade_color = null
 shader_param/tint_strength = 0.0
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 1568, 2166 )
 
 [sub_resource type="RectangleShape2D" id=4]
@@ -119,16 +119,18 @@ script = ExtResource( 16 )
 title = "Forest"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TitleTrigger"]
+visible = false
 position = Vector2( 115, -1382 )
-shape = SubResource( 9 )
+shape = SubResource( 3 )
 
 [node name="SongTrigger" type="Area2D" parent="."]
 script = ExtResource( 17 )
 song_name = "ForestSong"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SongTrigger"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="SongTrigger"]
+visible = false
 position = Vector2( 115, -1382 )
-shape = SubResource( 9 )
+shape = SubResource( 3 )
 
 [node name="TextTrigger" type="Area2D" parent="."]
 scale = Vector2( 4, 4 )

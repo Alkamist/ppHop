@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Sky/skyTilemap.tmx" type="PackedScene" id=1]
 [ext_resource path="res://MovingPlatform/MovingPlatform.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://ParallaxSystem/ParallaxLayerExtension.gd" type="Script" id=11]
 [ext_resource path="res://ParallaxSystem/SpriteWind.gd" type="Script" id=12]
 [ext_resource path="res://Scripts/TitleTrigger.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/SongTrigger.gd" type="Script" id=14]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1660, 2867 )
@@ -315,11 +316,21 @@ position = Vector2( 22, -2644 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 7 )
 
+[node name="SongTrigger" type="Area2D" parent="."]
+script = ExtResource( 14 )
+song_name = "SkySong"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="SongTrigger"]
+visible = false
+position = Vector2( 137, -2612 )
+shape = SubResource( 3 )
+
 [node name="TitleTrigger" type="Area2D" parent="."]
 script = ExtResource( 13 )
 title = "Sky"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TitleTrigger"]
+visible = false
 position = Vector2( 137, -2612 )
 shape = SubResource( 3 )
 
